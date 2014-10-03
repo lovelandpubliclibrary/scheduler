@@ -1,0 +1,88 @@
+<?php # login.php
+session_save_path("../sess_tmp/");
+session_name ('VisitID');
+session_start();
+include('./includes/allsessionvariables.php');
+if (isset($_SESSION['role'])){
+	$url = 'http://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF']);
+	if ((substr($url, -1) == '/') OR (substr($url, -1) == '\\')){
+		$url = substr($url, 0, -1);
+		}
+	$url .= '/';
+	header("Location: $url");
+	exit();
+	}
+else {
+	if (isset($_POST['submitted'])){
+		require_once('../mysql_connect_sched2.php');
+		$errors = array();
+		if (empty($_POST['username'])){
+			$errors[] = 'You forgot to enter your username';
+			}
+		else {
+			$user = escape_data($_POST['username']);
+			}
+		if (empty($_POST['password'])){
+			$errors[] = 'You forgot to enter your password.';
+			}
+		else {
+			$p = escape_data($_POST['password']);
+			}
+		if (empty($errors)){
+			$query = "SELECT login_id, username, role, employee_number FROM logins WHERE username ='$user' AND password=SHA('$p')";
+			$result = @mysql_query($query);
+			$row = mysql_fetch_array($result, MYSQL_NUM);
+			
+			if ($row){
+				$_SESSION['role'] = $row[2];
+				$_SESSION['username'] = $row[1];
+				$_SESSION['this_empno'] = $row[3];
+				
+				$url = 'http://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF']);
+				if ((substr($url, -1) == '/') OR (substr($url, -1) == '\\')){
+					$url = substr($url, 0, -1);
+					}
+				$url .= '';
+				header("Location: $url");
+				exit();
+				}
+			else {
+				$errors[] = 'The user name and password <br/>do not match those on file.';
+				}
+			}
+		mysql_close();
+		}
+	else {
+		$errors = NULL;
+		}
+	$page_title = 'Login';
+	include ('./includes/loginheader.html');
+?>
+	
+	<div class="loginwrapper">
+		<div class="loginform">
+		<h2>LPL Scheduler Login</h2>
+<?php
+	if (!empty($errors)){
+		echo '<div class="login_errors"><div class="errormessage"><h3>Error!</h3><br/>'."\n".
+			'The following error(s) occurred:<p>';
+		foreach ($errors as $msg){
+			echo " $msg<br/>\n";
+			}
+		echo '</p></div></div>';
+		}
+?>
+			<form action="login" method="post">
+				<p><div class="label">Username:</div><input type="text" name="username" size="20" maxlength="40" 
+					value="<?php if (isset($_POST['username'])){echo $_POST['username'];} ?>" /></p>
+				<p><div class="label">Password:</div><input type="password" name="password" size="20" maxlength="20" /></p>
+				<p><div class="submit"><input type="submit" name="submit" value="Login" /></div></p>
+				<input type="hidden" name="submitted" value="TRUE" />
+			</form>
+		</div>
+	</div>
+
+<?php
+	include ('./includes/footer.html');
+}
+?>
