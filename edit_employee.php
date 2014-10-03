@@ -241,7 +241,9 @@ function showMe (it, box) {
 	<p><div class="label">Division:</div> 
 		<select name="division">
 			<option value="select" disabled="disabled">- Select -</option>
-			<?php foreach ($divisions as $k=>$v){echo '<option value="'.$v.'">'.$v.'</option>';} ?>
+			<?php foreach ($divisions as $k=>$v){echo '<option value="'.$v.'"';
+			if ((isset($division))&&($division == $v)){echo 'selected="selected"';}
+			echo '>'.$v.'</option>';} ?>
 		</select>
 	</p>
 	<p><div class="label">Exempt Status:</div> <input type="radio" name="exempt_status" value="Exempt" 
