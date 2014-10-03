@@ -10,7 +10,7 @@ $year_range = strtotime ('+5 years' , strtotime ( $thisyear ) ) ;
 $year_range = date('Y' , $year_range );
 
 //Query database to get last year and holidays
-require_once ('/home/teulberg/lpl-repository.com/mysql_connect_sched2.php');
+require_once ('/home/teulberg/dev.lpl-repository.com/mysql_connect_sched2.php');
 $query = "SELECT year, memorial_day, labor_day FROM holidays ORDER BY year desc LIMIT 1";
 $result = mysql_query($query) or die(mysql_error($dbc));
 
