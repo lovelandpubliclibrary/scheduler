@@ -2577,8 +2577,8 @@ function division_weekly($division, $now) {
 		$season = 'fall';
 		}
 	//Get division names.
-	$query = "SELECT first_name, last_name, name_dup, employee_number FROM employees 
-		WHERE division = '$division' and active = 'Active'
+	$query = "SELECT first_name, last_name, name_dup, employee_number FROM employees, divisions 
+		WHERE div_link = '$division' and division=div_name and active = 'Active'
 		and (employee_lastday >= '$today' or employee_lastday is null) ORDER BY exempt_status asc, weekly_hours desc, first_name asc";
 	$result = mysql_query($query);
 	if ($result){
