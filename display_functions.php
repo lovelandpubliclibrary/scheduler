@@ -3103,10 +3103,9 @@ function division_master($sched_id){
 			echo '<td class="day">'.$v1.'</td>';
 			}
 		echo '<td class="hrs">Hrs</td></tr>'."\n";
-	
+		
 		$query = "SELECT first_name, last_name, name_dup, employee_number FROM employees, divisions 
-			WHERE div_link = '$division' and division=div_name 
-			and weekly_hours != '15' and active = 'Active'
+			WHERE div_link = '$division' and division=div_name and active = 'Active'
 			and (employee_lastday >= '$today' or employee_lastday is null)
 			ORDER BY division asc, exempt_status asc, weekly_hours desc, first_name asc";
 		$result = mysql_query($query);
