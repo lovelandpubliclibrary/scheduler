@@ -2631,8 +2631,8 @@ function division_weekly($division, $now) {
 						time_format(desk_end2,'%i') as desk_end2_minutes, time_format(lunch_start,'%k') as lunch_start, 
 						time_format(lunch_start,'%i') as lunch_start_minutes, time_format(lunch_end,'%k') as lunch_end, 
 						time_format(lunch_end,'%i') as lunch_end_minutes 
-						FROM employees as e, shifts as a, schedules as s, divisions as d
-						WHERE div_link = '$division' and division=div_name and e.employee_number = '$empno' 
+						FROM employees as e, shifts as a, schedules as s 
+						WHERE e.employee_number = '$empno' 
 						and e.employee_number = a.employee_number and schedule_start_date <= '$v' and schedule_end_date >= '$v' 
 						and week_type='$week_type' and shift_day='$day' and a.specific_schedule=s.specific_schedule 
 						and e.active = 'Active' and (e.employee_lastday >= '$v' or e.employee_lastday is null)";
