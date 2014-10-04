@@ -3032,11 +3032,11 @@ function division_master($sched_id){
 	$daysofweek = array('sat','sun','mon','tue','wed','thu','fri');
 	$shifts = array();
 
-	$query = "SELECT * from schedules WHERE schedule_id='$sched_id'";
+	$query = "SELECT * from schedules, divisions WHERE schedule_id='$sched_id' and division=div_name";
 	$result = mysql_query($query);
 	
 	while ($row = mysql_fetch_array($result, MYSQL_ASSOC)){
-		$division = $row['division'];
+		$division = $row['div_link'];
 		$specific_schedule = $row['specific_schedule'];
 		$schedule_start_date = $row['schedule_start_date'];
 		$schedule_end_date = $row['schedule_end_date'];
