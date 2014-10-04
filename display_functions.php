@@ -2111,8 +2111,8 @@ function division_timeoff($division, $today){
 	$query = "SELECT first_name, last_name, name_dup, e.employee_number, time_format(timeoff_start_time,'%k') as timeoff_start, 
 		time_format(timeoff_start_time,'%i') as timeoff_start_minutes, time_format(timeoff_end_time,'%k') as timeoff_end, 
 		time_format(timeoff_end_time,'%i') as timeoff_end_minutes, timeoff_start_date, timeoff_end_date
-		FROM employees as e, timeoff as t 
-		WHERE e.division = '$division' and e.employee_number = t.employee_number and e.active = 'Active' 
+		FROM employees as e, timeoff as t, divisions
+		WHERE div_link = '$division' and division=div_name and e.employee_number = t.employee_number and e.active = 'Active' 
 		and (e.employee_lastday >= '$today' or e.employee_lastday is null)
 		and (timeoff_start_date >= '$today' OR (timeoff_start_date < '$today' AND timeoff_end_date >= '$today'))
 		ORDER by timeoff_start_date asc, first_name asc";
@@ -2373,8 +2373,8 @@ function subs_weekly($division, $now) {
 		}
 
 	//Get Subs names.
-	$query = "SELECT first_name, last_name, name_dup, employee_number FROM employees 
-		WHERE division = '$division' and active = 'Active'
+	$query = "SELECT first_name, last_name, name_dup, employee_number FROM employees, divisions 
+		WHERE div_link = '$division' and division=div_name and active = 'Active'
 		and (employee_lastday >= '$today' or employee_lastday is null) ORDER BY first_name asc";
 	$result = mysql_query($query);
 	if ($result){
@@ -2630,9 +2630,10 @@ function division_weekly($division, $now) {
 						time_format(desk_start2,'%i') as desk_start2_minutes, time_format(desk_end2,'%k') as desk_end2, 
 						time_format(desk_end2,'%i') as desk_end2_minutes, time_format(lunch_start,'%k') as lunch_start, 
 						time_format(lunch_start,'%i') as lunch_start_minutes, time_format(lunch_end,'%k') as lunch_end, 
-						time_format(lunch_end,'%i') as lunch_end_minutes from employees as e, shifts as a, schedules as s 
-						WHERE e.division = '$division' and e.employee_number = '$empno' and e.employee_number = a.employee_number and 
-						schedule_start_date <= '$v' and schedule_end_date >= '$v' 
+						time_format(lunch_end,'%i') as lunch_end_minutes 
+						FROM employees as e, shifts as a, schedules as s, divisions as d
+						WHERE div_link = '$division' and division=div_name and e.employee_number = '$empno' 
+						and e.employee_number = a.employee_number and schedule_start_date <= '$v' and schedule_end_date >= '$v' 
 						and week_type='$week_type' and shift_day='$day' and a.specific_schedule=s.specific_schedule 
 						and e.active = 'Active' and (e.employee_lastday >= '$v' or e.employee_lastday is null)";
 					$result2 = mysql_query($query2);
@@ -3103,7 +3104,8 @@ function division_master($sched_id){
 			}
 		echo '<td class="hrs">Hrs</td></tr>'."\n";
 	
-		$query = "SELECT first_name, last_name, name_dup, employee_number FROM employees WHERE division='$division' 
+		$query = "SELECT first_name, last_name, name_dup, employee_number FROM employees, divisions 
+			WHERE div_link = '$division' and division=div_name 
 			and weekly_hours != '15' and active = 'Active'
 			and (employee_lastday >= '$today' or employee_lastday is null)
 			ORDER BY division asc, exempt_status asc, weekly_hours desc, first_name asc";
