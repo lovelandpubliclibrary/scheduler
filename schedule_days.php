@@ -813,8 +813,13 @@ $(document).ready(function() {
 			}
 		});
 	$(':text').blur(function(){
+		var att = $(this).val();
 		if ($(this).val() == '0'){
 			$(this).val('00');
+			}
+		var intRegex = /^[0-9]+$/;
+		if(!att.match(intRegex)){
+			$(this).val('');
 			}
 		});
 		

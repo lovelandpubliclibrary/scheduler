@@ -97,10 +97,8 @@ if (isset($_POST['edited'])) {
 	$errors = array(); //Initialize error array.
 	
 	$cd_onoff = $_POST['onoff'];
-	if (($cd_onoff == 'Off')||($cd_onoff == 'Busy')){
-		if (!empty($_POST['reason'])){
-			$cd_reason = $_POST['reason'];
-			}
+	if (($cd_onoff != 'On')&&(!empty($_POST['reason']))){
+		$cd_reason = $_POST['reason'];
 		}
 	else{
 		$cd_reason = NULL;

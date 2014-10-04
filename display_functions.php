@@ -718,7 +718,7 @@ function daily_schedule($now, $divisions) {
 									}
 								}
 
-							if (($divrow != 'Admin') && ($divrow != 'Tech Services')){
+							if (($divrow != 'Admin') && ($divrow != 'Tech Services') && ($divrow != 'Shelvers')){
 								if ($divrow == 'Customer Service'){
 									if (in_array(1,$alert_custserv)){
 										echo '<tr class="emps"><td class="first_name"><b>NEEDED</b></td>';
@@ -1714,7 +1714,7 @@ function division_daily($division, $now) {
 								}
 							}
 						}
-					if (($divrow != 'Admin') && ($divrow != 'Tech Services')){
+					if (($divrow != 'Admin') && ($divrow != 'Tech Services')&&($divrow != 'Shelvers')){
 						if ($divrow == 'Customer Service'){
 							if (in_array("1",$alert_custserv)){
 								echo '<tr class="emps"><td class="first_name"><b>NEEDED</b></td>';
