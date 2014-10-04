@@ -2971,7 +2971,7 @@ function division_weekly($division, $now) {
 								$ls12 = NULL;
 								}
 							else{
-								$ls12 = $lunch_start;
+								$ls12 = (int)$lunch_start;
 								}
 							if (($lunch_start_minutes != '00') && ($lunch_start_minutes != null)){
 								$ls12 .= ':'.$lunch_start_minutes;
@@ -2984,7 +2984,7 @@ function division_weekly($division, $now) {
 								$le12 = NULL;
 								}
 							else{
-								$le12 = $lunch_end;
+								$le12 = (int)$lunch_end;
 								}
 							if (($lunch_end_minutes != '00') && ($lunch_end_minutes != null)){
 								$le12 .= ':'.$lunch_end_minutes;
