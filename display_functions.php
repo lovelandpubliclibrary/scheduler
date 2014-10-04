@@ -2638,6 +2638,12 @@ function division_weekly($division, $now) {
 					$result2 = mysql_query($query2);
 					if($result2){
 						while ($row2 = mysql_fetch_array($result2, MYSQL_ASSOC)){
+							$working_start = 0;
+							$working_end = 0;
+							$working_desk_start = 0;
+							$working_desk_end = 0;
+							$working_desk_start2 = 0;
+							$working_desk_end2 = 0;
 							$shift_start = $row2['shift_start'];
 							$shift_start_minutes = $row2['shift_start_minutes'];
 							$shift_end = $row2['shift_end'];
@@ -2658,13 +2664,13 @@ function division_weekly($division, $now) {
 							$desk_array = array();
 							
 							if ($shift_start_minutes != '00') {
-								$working_start += dec_minutes($shift_start_minutes);
+								$working_start = $shift_start + dec_minutes($shift_start_minutes);
 								}
 							else{
 								$working_start = $shift_start;
 								}
 							if ($shift_end_minutes != '00') {
-								$working_end += dec_minutes($shift_end_minutes);
+								$working_end = $shift_end + dec_minutes($shift_end_minutes);
 								}
 							else{
 								$working_end = $shift_end;
@@ -2673,13 +2679,13 @@ function division_weekly($division, $now) {
 							
 							if ($desk_start != '00'){
 								if ($desk_start_minutes != '00') {
-									$working_desk_start += dec_minutes($desk_start_minutes);
+									$working_desk_start = $desk_start + dec_minutes($desk_start_minutes);
 									}
 								else{
 									$working_desk_start = $desk_start;
 									}
 								if ($desk_end_minutes != '00') {
-									$working_desk_end += dec_minutes($desk_end_minutes);
+									$working_desk_end = $desk_end + dec_minutes($desk_end_minutes);
 									}
 								else{
 									$working_desk_end = $desk_end;
@@ -2688,13 +2694,13 @@ function division_weekly($division, $now) {
 								}
 							if ($desk_start2 != '00'){
 								if ($desk_start2_minutes != '00') {
-									$working_desk_start2 += dec_minutes($desk_start2_minutes);
+									$working_desk_start2 = $desk_start2 + dec_minutes($desk_start2_minutes);
 									}
 								else{
 									$working_desk_start2 = $desk_start2;
 									}
 								if ($desk_end2_minutes != '00') {
-									$working_desk_end2 += dec_minutes($desk_end2_minutes);
+									$working_desk_end2 = $desk_end2 + dec_minutes($desk_end2_minutes);
 									}
 								else{
 									$working_desk_end2 = $desk_end2;
@@ -2859,24 +2865,24 @@ function division_weekly($division, $now) {
 									}
 								usort($shift_array, 'sortByOrder');
 								foreach ($shift_array as $row=>$shift){
-									if ($shift[0] > 12){
+									if ((int)$shift[0] > 12){
 										$ss12 = $shift[0] - 12;
 										}
 									else{
 										$ss12 = $shift[0];
 										}
-									if (round($shift[0], 0) != $shift[0]){
-										$ss12 = (int)$shift[0].':'.(int)($shift[0] * 60) % 100;
+									if (round($ss12, 0) != $ss12){
+										$ss12 = (int)$ss12.':'.(int)(($ss12-(int)$ss12) * 60);
 										}
 								
-									if ($shift[1] > 12){
+									if ((int)$shift[1] > 12){
 										$se12 = $shift[1] - 12;
 										}
 									else{
 										$se12 = $shift[1];
 										}
-									if (round($shift[1], 0) != $shift[1]){
-										$se12 = (int)$shift[1].':'.(int)($shift[1] * 60) % 100;
+									if (round($se12, 0) != $se12){
+										$se12 = (int)$se12.':'.(int)(($se12-(int)$se12) * 60);
 										}
 									if (isset($ss12)){
 										if ($row != 0){
@@ -2889,7 +2895,7 @@ function division_weekly($division, $now) {
 									}
 								}
 							else{
-								if ($working_start > 12){
+								if ((int)$working_start > 12){
 									$ss12 = $working_start - 12;
 									}
 								elseif($working_start == 0){
@@ -2898,11 +2904,11 @@ function division_weekly($division, $now) {
 								else{
 									$ss12 = $working_start;
 									}
-								if (round($working_start, 0) != $working_start){
-									$ss12 = (int)$working_start.':'.(int)($working_start * 60) % 100;
+								if (round($ss12, 0) != $ss12){
+									$ss12 = (int)$ss12.':'.(int)(($ss12-(int)$ss12) * 60);
 									}
 							
-								if ($working_end > 12){
+								if ((int)$working_end > 12){
 									$se12 = $working_end - 12;
 									}
 								elseif($working_end == 0){
@@ -2911,8 +2917,8 @@ function division_weekly($division, $now) {
 								else{
 									$se12 = $working_end;
 									}
-								if (round($working_end, 0) != $working_end){
-									$se12 = (int)$working_end.':'.(int)($working_end * 60) % 100;
+								if (round($se12, 0) != $se12){
+									$se12 = (int)$se12.':'.(int)(($se12-(int)$se12) * 60);
 									}
 								if (isset($ss12)){
 									$shift_display .= $ss12 . '-' . $se12;
@@ -2928,24 +2934,24 @@ function division_weekly($division, $now) {
 									}
 								usort($desk_array, 'sortByOrder');
 								foreach ($desk_array as $row=>$desk){
-									if ($desk[0] > 12){
+									if ((int)$desk[0] > 12){
 										$ds12 = $desk[0] - 12;
 										}
 									else{
 										$ds12 = $desk[0];
 										}
-									if (round($desk[0], 0) != $desk[0]){
-										$ds12 = (int)$desk[0].':'.(int)($desk[0] * 60) % 100;
+									if (round($ds12, 0) != $ds12){
+										$ds12 = (int)$ds12.':'.(int)(($ds12-(int)$ds12) * 60);
 										}
 								
-									if ($desk[1] > 12){
+									if ((int)$desk[1] > 12){
 										$de12 = $desk[1] - 12;
 										}
 									else{
 										$de12 = $desk[1];
 										}
-									if (round($desk[1], 0) != $desk[1]){
-										$de12 = (int)$desk[1].':'.(int)($desk[1] * 60) % 100;
+									if (round($de12, 0) != $de12){
+										$de12 = (int)$de12.':'.(int)(($de12-(int)$de12) * 60);
 										}
 									if (isset($ds12)){
 										if ($row != 0){
@@ -2958,8 +2964,8 @@ function division_weekly($division, $now) {
 									}
 								}
 
-							if ($lunch_start > 12){
-								$ls12 = $lunch_start - 12;
+							if ((int)$lunch_start > 12){
+								$ls12 = (int)$lunch_start - 12;
 								}
 							elseif($lunch_start == 0){
 								$ls12 = NULL;
@@ -2971,8 +2977,8 @@ function division_weekly($division, $now) {
 								$ls12 .= ':'.$lunch_start_minutes;
 								}
 						
-							if ($lunch_end > 12){
-								$le12 = $lunch_end - 12;
+							if ((int)$lunch_end > 12){
+								$le12 = (int)$lunch_end - 12;
 								}
 							elseif($lunch_end == 0){
 								$le12 = NULL;
