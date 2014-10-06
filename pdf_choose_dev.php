@@ -9,11 +9,11 @@ if (isset($_POST['submitted'])){
 	list($pdf_mon, $pdf_day, $pdf_yr) = explode('/',$_POST['PDF_date']);
 	$pdf_date = "$pdf_yr-$pdf_mon-$pdf_day";
 
-	require_once("/home/teulberg/lpl-repository.com/scheduler2/dompdf/dompdf_config.inc.php");
+	require_once("/home/teulberg/dev.lpl-repository.com/scheduler2/dompdf/dompdf_config.inc.php");
 
 	ob_start();
-	echo '<link rel="stylesheet" type="text/css" media="all" href="/home/teulberg/lpl-repository.com/scheduler2/style/dompdf.css" />';
-	echo '<link rel="stylesheet" type="text/css" media="all" href="/home/teulberg/lpl-repository.com/scheduler2/style/scheduler_tables.css" />';
+	echo '<link rel="stylesheet" type="text/css" media="all" href="/home/teulberg/dev.lpl-repository.com/scheduler2/style/dompdf.css" />';
+	echo '<link rel="stylesheet" type="text/css" media="all" href="/home/teulberg/dev.lpl-repository.com/scheduler2/style/scheduler_tables.css" />';
 
 	$today = $pdf_date;
 	$day = date('j',strtotime($pdf_date));

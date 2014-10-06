@@ -2,11 +2,6 @@
 
 $page_title = 'Person In Charge';
 include('./includes/supersessionstart.php');
-
-if (isset($_SESSION['came_from'])){
-	$came_from = $_SESSION['came_from'];
-	}
-
 include('./includes/allsessionvariables.php');
 include ('./includes/header.html');
 include ('./includes/supersidebar.html');

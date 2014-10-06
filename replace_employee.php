@@ -127,11 +127,8 @@ function validateForm() {
 
 <?php
 
-//Check if the form has been submitted.
 if (isset($_POST['submitted'])) {
-
-		
-	$errors = array(); //Initialize error array.
+	$errors = array();
 	
 	//Assign Old Employee Variable.
 	$oldempno = $_POST['oldemployee'];
