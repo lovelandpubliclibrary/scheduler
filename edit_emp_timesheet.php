@@ -98,7 +98,7 @@ if (($result) && (mysql_num_rows($result)!=0)){
 		$previous[$entry_date][$hour_code] = $hours;
 		}
 	}
-	
+
 $page_title = 'Edit Employee Timesheet | '.$pp_start_friendly;
 
 include ('./includes/header.html');
@@ -293,8 +293,10 @@ foreach ($array as $k=>$v){
 	echo '<td class="entry">';
 	$reg_hours = 0;
 	
-	if((isset($previous[$v]))&&(isset($previous[$v]['02']))){
-		$reg_hours = $previous[$v]['02'];
+	if(isset($previous[$v])){
+		if(isset($previous[$v]['02'])){
+			$reg_hours = $previous[$v]['02'];
+			}
 		}
 	else{
 		$query = "SELECT date, week_type FROM dates where date = '$v'";
@@ -559,8 +561,10 @@ foreach ($array as $k=>$v){
 	echo '<td class="entry">';
 	$reg_hours = 0;
 	
-	if((isset($previous[$v]))&&(isset($previous[$v]['02']))){
-		$reg_hours = $previous[$v]['02'];
+	if(isset($previous[$v])){
+		if(isset($previous[$v]['02'])){
+			$reg_hours = $previous[$v]['02'];
+			}
 		}
 	else{
 		$query = "SELECT date, week_type FROM dates where date = '$v'";
