@@ -550,7 +550,7 @@ function schedule_form($day, $week_type, $employees, $prev_schedules, $prev_def)
 			$schedule_form .= ' value="'.$data['shift_end']['minutes'].'"';
 			}
 		$schedule_form .= '/></div>
-				</div><br/><br/>
+				</div><span class="screen"><br/><br/></span>
 				<input type="checkbox" name="divdesk"';
 		if ((isset($data))&&!(($data['desk_start']['hours']=='')||($data['desk_start']['hours']==0))){
 			$schedule_form .= ' checked/>Add Desk Shift(s)
@@ -619,7 +619,7 @@ function schedule_form($day, $week_type, $employees, $prev_schedules, $prev_def)
 			}
 		$schedule_form .= '/>
 						</div>
-					</div><br/>
+					</div><span class="screen"><br/></span>
 				</div><br/>
 				<input type="checkbox" name="divlunch"';
 		if ((isset($data))&&!(($data['lunch_start']['hours']=='')||($data['lunch_start']['hours']==0))){
@@ -851,7 +851,7 @@ $(document).ready(function() {
 $schedstart_disp = date('n', strtotime($schedstart)).'/'.date('j', strtotime($schedstart)).'/'.date('Y', strtotime($schedstart));
 $schedend_disp = date('n', strtotime($schedend)).'/'.date('j', strtotime($schedend)).'/'.date('Y', strtotime($schedend));
 echo '<div class="editlabel">';
-echo "<b>Editing:</b> $division Schedule for $schedstart_disp to $schedend_disp$additional_dates<br/>";
+echo "<b>Editing:</b> $division Schedule for $schedstart_disp to $schedend_disp$additional_dates</div>";
 echo '<div class="daymenu">';
 echo '<div class="weeklinks">';
 foreach ($week_types as $k2=>$v2){

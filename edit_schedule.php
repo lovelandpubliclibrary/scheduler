@@ -243,7 +243,7 @@ if (isset($_POST['delete'])){
 	}
 ?>
 <form action="edit_schedule" method="post" name="select_division">
-<p class="divform" style="min-width:500px;">Division: 
+<p class="divform editsched">Division: 
 		<select name="division" onchange="this.form.submit();">
 			<option value="select" disabled="disabled" selected="selected">- Select -</option>
 			<?php foreach ($divisions as $k=>$v){
@@ -270,8 +270,8 @@ if ((isset($_POST['submitted']))||(isset($division))){
 	if ($result){
 		$num_rows = mysql_num_rows($result);
 		if ($num_rows != 0) {
-			echo '<div class="divboxes"><table class="timeoff">
-				<tr><th>Schedule ID</th><th>Start</th><th>End</th><th></th><th></th><th></th><th></th></tr>';
+			echo '<div class="divboxes"><table class="timeoff editschedule">
+				<tr class="headrow"><th>Schedule ID</th><th>Start</th><th>End</th><th></th><th></th><th></th><th></th></tr>';
 			while ($row = mysql_fetch_array($result, MYSQL_ASSOC)){
 				$schedule_id = $row['schedule_id'];
 				$schedule_start_date = $row['schedule_start_date'];
@@ -280,8 +280,8 @@ if ((isset($_POST['submitted']))||(isset($division))){
 				$schedule_end = date('M', strtotime($schedule_end_date)).' '.date('j', strtotime($schedule_end_date)).', '.date('Y', strtotime($schedule_end_date));
 				$specific_schedule = $row['specific_schedule'];
 				$count = $row['count'];
-				echo '<tr><td>'.$specific_schedule.'</td><td class="scheddate">'.$schedule_start.'</td><td class="scheddate">'.$schedule_end.'</td>';
-				echo '<td><form action="schedule_days" method="post"';
+				echo '<tr><td><span class="mobile" style="float:left;">Schedule #</span>'.$specific_schedule.'</td><td class="scheddate start">'.$schedule_start.'</td><td class="scheddate"><span class="mobile" style="float:left;padding-right:12px;">to</span>'.$schedule_end.'</td>';
+				echo '<td class="editbutton"><form action="schedule_days" method="post"';
 				if ($count > 1){
 					echo 'data-count="true"';
 					}
@@ -292,20 +292,20 @@ if ((isset($_POST['submitted']))||(isset($division))){
 					<input type="hidden" name="specific_schedule" value="'.$specific_schedule.'"/>
 					<input type="hidden" name="division" value="'.$division.'"/>
 					<input type="submit" name="submit" value="Edit Schedule" class="editing" /></form></td>';
-				echo '<td><form action="edit_schedule_dates" method="post">
+				echo '<td class="editbutton"><form action="edit_schedule_dates" method="post">
 					<input type="hidden" name="schedule_id" value="'.$schedule_id.'"/>
 					<input type="hidden" name="schedstart" value="'.$schedule_start_date.'"/>
 					<input type="hidden" name="schedend" value="'.$schedule_end_date.'"/>
 					<input type="hidden" name="division" value="'.$division.'"/>
 					<input type="submit" name="submit" value="Adjust Dates" /></form></td>';
-				echo '<td><form action="copy_schedule" method="post">
+				echo '<td class="editbutton"><form action="copy_schedule" method="post">
 					<input type="hidden" name="schedule_id" value="'.$schedule_id.'"/>
 					<input type="hidden" name="specific_schedule" value="'.$specific_schedule.'"/>
 					<input type="hidden" name="schedstart" value="'.$schedule_start_date.'"/>
 					<input type="hidden" name="schedend" value="'.$schedule_end_date.'"/>
 					<input type="hidden" name="division" value="'.$division.'"/>
 					<input type="submit" name="submit" value="Copy" /></form></td>';
-				echo '<td><form action="edit_schedule" method="post" onsubmit="return deleteSchedule()">
+				echo '<td class="editbutton"><form action="edit_schedule" method="post" onsubmit="return deleteSchedule()">
 					<input type="hidden" name="schedule_id" value="'.$schedule_id.'"/>
 					<input type="hidden" name="specific_schedule" value="'.$specific_schedule.'"/>
 					<input type="hidden" name="schedstart" value="'.$schedule_start_date.'"/>

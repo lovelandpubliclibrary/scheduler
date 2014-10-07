@@ -788,6 +788,10 @@ float:left;
 margin-right:10px;
 }
 
+.editsched{
+min-width:500px;
+}
+
 /* Detail Form */
 .detailform{
 float:left;

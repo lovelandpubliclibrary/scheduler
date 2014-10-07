@@ -349,6 +349,10 @@ margin-bottom:15px;
 margin-top:15px;
 }
 
+.sub_needs_wrapper{
+min-width:inherit;
+}
+
 .sub_needs table, .sub_needs thead, 
 .sub_needs tbody, .sub_needs th, 
 .sub_needs td, .sub_needs tr { 
@@ -408,4 +412,54 @@ margin-bottom:10px;
 
 #masterDiv{
 margin-top:-10px;
+}
+
+.editsched{
+min-width:inherit;
+}
+
+.editschedule table, .editschedule thead, 
+.editschedule tbody, .editschedule th, 
+.editschedule td, .editschedule tr { 
+display:block; 
+border:none !important;
+}
+
+.editschedule tr{
+border:1px solid #BFBFBF !important;
+clear:both;
+overflow:auto;
+}
+
+.editschedule td{
+width:auto !important;
+padding: 5px 15px;
+}
+
+.editschedule .headrow{
+display:none;
+}
+
+.editschedule{
+min-width:240px;
+}
+
+.scheddate.start{
+float:left;
+}
+
+.editbutton{
+padding:0px 15px !important;
+}
+
+.editbutton input[type="submit"]{
+float:left;
+}
+
+.editwrapper, .addeditsched{
+overflow:auto;
+}
+
+.daylink{
+padding:0px 11px;
 }

@@ -234,7 +234,7 @@ if (($_SESSION['role'] == 'Admin')||($_SESSION['role'] == 'Supervisor')){
 		$num_rows = mysql_num_rows($result);
 		if ($num_rows != 0) {
 			echo '<div class="divboxes">'."\n".'<table class="sub_needs sort">'."\n";
-			echo '<tr><th class="division">Division</th><th class="datetime">Shift</th>
+			echo '<tr class="headrow"><th class="division">Division</th><th class="datetime">Shift</th>
 				<th class="assign">Assign</th><th class="confirm"></th><th></th></tr>';
 			while ($row = mysql_fetch_array($result, MYSQL_ASSOC)){
 				$sub_needs_id = $row['sub_needs_id'];
