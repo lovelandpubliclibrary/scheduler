@@ -34,7 +34,7 @@ if (isset($_POST['submitted'])) {
 	$division = $_POST['division'];
 	}
 
-echo '<div class="mobilewrapper_outer"><div class="mobilewrapper_inner">
+echo '<div class="wideview">
 	<span class="date"><h1>'.$page_title.'</h1></span>';
 
 if (($came_from == 'view_emp_timesheet') && (isset($_SESSION['timesheet_approved']))){
@@ -186,6 +186,6 @@ else{
 		}
 	}
 
-echo '</div></div>';
+echo '</div>';
 include ('./includes/footer.html');
 ?>

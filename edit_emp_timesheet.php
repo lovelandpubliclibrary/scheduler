@@ -109,7 +109,7 @@ $page_title = 'Edit Employee Timesheet | '.$pp_start_friendly;
 include ('./includes/header.html');
 include ('./includes/sidebar.html');
 
-echo '<div class="mobilewrapper_outer"><div class="mobilewrapper_inner">
+echo '<div class="wideview">
 	<span class="date"><h1>Edit Timesheet for '.$pp_start_friendly.'</h1></span>';
 ?>
 <script>
@@ -950,7 +950,7 @@ echo '<input type="submit" name="submit" value="Save Edited Timesheet" />
 	<input type="hidden" name="employee_number" value="'.$empno.'"/>
 	<input type="hidden" name="employee_name" value="'.$employee_name.'"/>';
 echo '</form>';
-echo '</div></div>';
+echo '</div>';
 
 include ('./includes/footer.html');
 ?>

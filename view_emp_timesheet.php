@@ -131,7 +131,7 @@ if (($result) && (mysql_num_rows($result)!=0)){
 		}
 	}
 
-echo '<div class="mobilewrapper_outer"><div class="mobilewrapper_inner">
+echo '<div class="wideview">
 	<span class="date"><h1>Employee Timesheet</h1></span>
 	<p style="margin:10px 0 -10px 0;font-size:14px;color:#013953;font-weight:bold;text-align:center;" class="divform">Timesheet for '.$pp_start_friendly.', '.$employee_name.'</p>';
 
@@ -868,6 +868,6 @@ echo '<form action="view_emp_timesheet" method="post">
 	<input type="hidden" name="approved" value="TRUE"/>
 	<input type="submit" name="submit" value="Approve Timesheet" /></form>';
 	
-echo '</div></div>';
+echo '</div>';
 include ('./includes/footer.html');
 ?>
