@@ -104,6 +104,13 @@ width:100%;
 margin:0px !important;
 }
 
+.wideview{
+background:#ffffff;
+float:left;
+padding-top:50px;
+margin-top:-50px;
+}
+
 /* Login Page */
 
 .loginwrapper{
