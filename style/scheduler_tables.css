@@ -2,6 +2,10 @@ tr.shaded {
 background:#E0EEE0;
 }
 
+tr.specialshaded{
+background:#B6E3B6;
+}
+
 /* Full Daily Schedule */
 .divrow{
 margin-left:10px;

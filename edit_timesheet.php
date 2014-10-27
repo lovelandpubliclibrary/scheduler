@@ -189,18 +189,21 @@ function validateTotals(){
 	var falseness;
 	$(document).ready(function(){
 		$('.weekly_total').each(function(){
+			var week_no = $(this).data("week");
 			var weekly_total = Number($(this).text());
 			var shift_total = Number($(this).parent().parent().parent().find('.shift_total').text());
 			if (weekly_total > shift_total){
-				var conf = confirm("Shifts exceed allotted weekly hours. Confirm anyway?");
+				var conf = confirm("Shifts exceed allotted weekly hours in week #"+week_no+". Confirm anyway?");
 				if (!conf){
 					falseness = false;
+					return false;
 					}
 				}
 			else if (weekly_total < shift_total){
-				var conf = confirm("Weekly hours not accounted for. Confirm anyway?");
+				var conf = confirm("Weekly hours not accounted for in week #"+week_no+". Confirm anyway?");
 				if (!conf){
 					falseness = false;
+					return false;
 					}
 				}
 			});
@@ -268,8 +271,8 @@ foreach ($array as $k=>$v){
 			else{
 				$ss12 = $shift_start;
 				}
-			if (round($shift_start, 0) != $shift_start){
-				$ss12 = (int)$shift_start.':'.(int)($shift_start * 60) % 100;
+			if ($shift_start_minutes != '00') {
+				$ss12 = $ss12.':'.$shift_start_minutes;
 				}
 		
 			if ($shift_end > 12){
@@ -281,14 +284,78 @@ foreach ($array as $k=>$v){
 			else{
 				$se12 = $shift_end;
 				}
-			if (round($shift_end, 0) != $shift_end){
-				$se12 = (int)$shift_end.':'.(int)($shift_end * 60) % 100;
+			if ($shift_end_minutes != '00') {
+				$se12 = $se12.':'.$shift_end_minutes;
 				}
 			if (isset($ss12)){
 				$shift_display .= $ss12 . '-' . $se12;
 				}
 			if (!empty($shift_display)){
 				echo $shift_display;
+				}
+			}
+		}
+	if ($_SESSION['role'] == 'Subs'){
+		$sub_query = "SELECT weekly_hours, time_format(coverage_start_time,'%k') as cov_start, 
+			time_format(coverage_start_time,'%i') as cov_start_minutes, time_format(coverage_end_time,'%k') as cov_end, 
+			time_format(coverage_end_time,'%i') as cov_end_minutes from coverage c, employees e
+			WHERE coverage_date = '$v' and c.employee_number = '$this_empno' and c.employee_number=e.employee_number 
+			ORDER BY coverage_start_time asc";
+		$sub_result = mysql_query($sub_query);
+		if ($sub_result){
+			$num = mysql_num_rows($sub_result);
+			if ($num>0) {
+				$sub_array = array();
+				while($sub_row = mysql_fetch_array($sub_result, MYSQL_ASSOC)){
+					$cov_start = $sub_row['cov_start'];
+					$cov_start_minutes = $sub_row['cov_start_minutes'];
+					$cov_end = $sub_row['cov_end'];
+					$cov_end_minutes = $sub_row['cov_end_minutes'];
+					$weekly_hours = $sub_row['weekly_hours'];
+					
+					if ($cov_start > 12){
+						$cs12 = $cov_start - 12;
+						}
+					elseif($cov_start == 0){
+						$cs12 = NULL;
+						}
+					else{
+						$cs12 = $cov_start;
+						}
+					if ($cov_start_minutes != '00'){
+						$cs12 = $cs12.':'.$cov_start_minutes;
+						}
+				
+					if ($cov_end > 12){
+						$ce12 = $cov_end - 12;
+						}
+					elseif($cov_end == 0){
+						$ce12 = NULL;
+						}
+					else{
+						$ce12 = $cov_end;
+						}
+					if ($cov_end_minutes != '00'){
+						$ce12 = $ce12.':'.$cov_end_minutes;
+						}
+					
+					$sub_array[] = array($cs12, $ce12);
+					}
+				if (count($sub_array)==1){
+					echo $sub_array[0][0].'-'.$sub_array[0][1];
+					}
+				else{
+					$cov_display = '';
+					foreach ($sub_array as $item=>$covs){
+						if ($item == 0){
+							$cov_display .= $covs[0].'-'.$covs[1];
+							}
+						else{
+							$cov_display .= '<br/>'.$covs[0].'-'.$covs[1];
+							}
+						}
+					echo $cov_display;
+					}
 				}
 			}
 		}
@@ -300,7 +367,7 @@ if (isset($weekly_hours)){
 	}
 echo '</td></tr>';
 
-echo '<tr class="shaded"><td class="hours_type">Regular Hours Worked</td>';
+echo '<tr class="specialshaded"><td class="hours_type"><b>Regular Hours Worked</b></td>';
 
 foreach ($array as $k=>$v){
 	echo '<td class="entry">';
@@ -386,6 +453,32 @@ foreach ($array as $k=>$v){
 								}
 							$reg_hours -= $closure;
 							}
+						}
+					}
+				}
+			}
+		if ($_SESSION['role'] == 'Subs'){
+			$sub_query = "SELECT time_format(coverage_start_time,'%k') as cov_start, 
+				time_format(coverage_start_time,'%i') as cov_start_minutes, time_format(coverage_end_time,'%k') as cov_end, 
+				time_format(coverage_end_time,'%i') as cov_end_minutes from coverage 
+				WHERE coverage_date = '$v' and employee_number = '$this_empno' ORDER BY coverage_start_time asc";
+			$sub_result = mysql_query($sub_query);
+			if ($sub_result){
+				$num = mysql_num_rows($sub_result);
+				if ($num>0) {
+					while ($sub_row = mysql_fetch_array($sub_result, MYSQL_ASSOC)){
+						$cov_start = $sub_row['cov_start'];
+						$cov_start_minutes = $sub_row['cov_start_minutes'];
+						$cov_end = $sub_row['cov_end'];
+						$cov_end_minutes = $sub_row['cov_end_minutes'];
+						if ($cov_start_minutes != '00') {
+							$cov_start += dec_minutes($cov_start_minutes);
+							}
+						if ($cov_end_minutes != '00') {
+							$cov_end += dec_minutes($cov_end_minutes);
+							}
+						$shift = $cov_end-$cov_start;
+						$reg_hours += $shift;
 						}
 					}
 				}
@@ -489,7 +582,7 @@ foreach ($array as $k=>$v){
 	}
 echo '<td class="total"></td></tr>';
 
-echo '<tr><td></td><td></td><td></td><td></td><td></td><td></td><td class="week_style label" colspan="2">Weekly Total</td><td class="week_style weekly_total"></td></tr>';
+echo '<tr><td></td><td></td><td></td><td></td><td></td><td></td><td class="week_style label" colspan="2">Weekly Total</td><td data-week="1" class="week_style weekly_total"></td></tr>';
 echo '</table>';
 
 //Timesheet Week #2
@@ -540,8 +633,8 @@ foreach ($array as $k=>$v){
 			else{
 				$ss12 = $shift_start;
 				}
-			if (round($shift_start, 0) != $shift_start){
-				$ss12 = (int)$shift_start.':'.(int)($shift_start * 60) % 100;
+			if ($shift_start_minutes != '00') {
+				$ss12 = $ss12.':'.$shift_start_minutes;
 				}
 		
 			if ($shift_end > 12){
@@ -553,14 +646,76 @@ foreach ($array as $k=>$v){
 			else{
 				$se12 = $shift_end;
 				}
-			if (round($shift_end, 0) != $shift_end){
-				$se12 = (int)$shift_end.':'.(int)($shift_end * 60) % 100;
+			if ($shift_end_minutes != '00') {
+				$se12 = $se12.':'.$shift_end_minutes;
 				}
 			if (isset($ss12)){
 				$shift_display .= $ss12 . '-' . $se12;
 				}
 			if (!empty($shift_display)){
 				echo $shift_display;
+				}
+			}
+		}
+	if ($_SESSION['role'] == 'Subs'){
+		$sub_query = "SELECT time_format(coverage_start_time,'%k') as cov_start, 
+			time_format(coverage_start_time,'%i') as cov_start_minutes, time_format(coverage_end_time,'%k') as cov_end, 
+			time_format(coverage_end_time,'%i') as cov_end_minutes from coverage 
+			WHERE coverage_date = '$v' and employee_number = '$this_empno' ORDER BY coverage_start_time asc";
+		$sub_result = mysql_query($sub_query);
+		if ($sub_result){
+			$num = mysql_num_rows($sub_result);
+			if ($num>0) {
+				$sub_array = array();
+				while($sub_row = mysql_fetch_array($sub_result, MYSQL_ASSOC)){
+					$cov_start = $sub_row['cov_start'];
+					$cov_start_minutes = $sub_row['cov_start_minutes'];
+					$cov_end = $sub_row['cov_end'];
+					$cov_end_minutes = $sub_row['cov_end_minutes'];
+					
+					if ($cov_start > 12){
+						$cs12 = $cov_start - 12;
+						}
+					elseif($cov_start == 0){
+						$cs12 = NULL;
+						}
+					else{
+						$cs12 = $cov_start;
+						}
+					if ($cov_start_minutes != '00'){
+						$cs12 = $cs12.':'.$cov_start_minutes;
+						}
+				
+					if ($cov_end > 12){
+						$ce12 = $cov_end - 12;
+						}
+					elseif($cov_end == 0){
+						$ce12 = NULL;
+						}
+					else{
+						$ce12 = $cov_end;
+						}
+					if ($cov_end_minutes != '00'){
+						$ce12 = $ce12.':'.$cov_end_minutes;
+						}
+					
+					$sub_array[] = array($cs12, $ce12);
+					}
+				if (count($sub_array)==1){
+					echo $sub_array[0][0].'-'.$sub_array[0][1];
+					}
+				else{
+					$cov_display = '';
+					foreach ($sub_array as $item=>$covs){
+						if ($item == 0){
+							$cov_display .= $covs[0].'-'.$covs[1];
+							}
+						else{
+							$cov_display .= '<br/>'.$covs[0].'-'.$covs[1];
+							}
+						}
+					echo $cov_display;
+					}
 				}
 			}
 		}
@@ -572,7 +727,7 @@ if (isset($weekly_hours)){
 	}
 echo '</td></tr>';
 
-echo '<tr class="shaded"><td class="hours_type">Regular Hours Worked</td>';
+echo '<tr class="specialshaded"><td class="hours_type"><b>Regular Hours Worked</b></td>';
 
 foreach ($array as $k=>$v){
 	echo '<td class="entry">';
@@ -659,6 +814,32 @@ foreach ($array as $k=>$v){
 							$reg_hours -= $closure;
 							}
 						}
+					}
+				}
+			}
+		}
+	if ($_SESSION['role'] == 'Subs'){
+		$sub_query = "SELECT time_format(coverage_start_time,'%k') as cov_start, 
+			time_format(coverage_start_time,'%i') as cov_start_minutes, time_format(coverage_end_time,'%k') as cov_end, 
+			time_format(coverage_end_time,'%i') as cov_end_minutes from coverage 
+			WHERE coverage_date = '$v' and employee_number = '$this_empno' ORDER BY coverage_start_time asc";
+		$sub_result = mysql_query($sub_query);
+		if ($sub_result){
+			$num = mysql_num_rows($sub_result);
+			if ($num>0) {
+				while ($sub_row = mysql_fetch_array($sub_result, MYSQL_ASSOC)){
+					$cov_start = $sub_row['cov_start'];
+					$cov_start_minutes = $sub_row['cov_start_minutes'];
+					$cov_end = $sub_row['cov_end'];
+					$cov_end_minutes = $sub_row['cov_end_minutes'];
+					if ($cov_start_minutes != '00') {
+						$cov_start += dec_minutes($cov_start_minutes);
+						}
+					if ($cov_end_minutes != '00') {
+						$cov_end += dec_minutes($cov_end_minutes);
+						}
+					$shift = $cov_end-$cov_start;
+					$reg_hours += $shift;
 					}
 				}
 			}
@@ -761,7 +942,7 @@ foreach ($array as $k=>$v){
 	}
 echo '<td class="total"></td></tr>';
 
-echo '<tr><td></td><td></td><td></td><td></td><td></td><td></td><td class="week_style label" colspan="2">Weekly Total</td><td class="week_style weekly_total"></td></tr>';
+echo '<tr><td></td><td></td><td></td><td></td><td></td><td></td><td class="week_style label" colspan="2">Weekly Total</td><td data-week="2" class="week_style weekly_total"></td></tr>';
 echo '</table>';
 
 echo '<input type="submit" name="submit" value="Confirm Timesheet" />

@@ -2,6 +2,12 @@
 session_save_path("../sess_tmp/");
 session_name ('VisitID');
 session_start();
+if ((isset($_SESSION['came_from']))&&($_SESSION['came_from']!='login')&&($_SESSION['came_from']!='logout')){
+	$_SESSION['redirect'] = $_SESSION['came_from'];
+	}
+if(isset($_SESSION['redirect'])){
+	$came_from = $_SESSION['redirect'];
+	}
 include('./includes/allsessionvariables.php');
 if (isset($_SESSION['role'])){
 	$url = 'http://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF']);
@@ -43,6 +49,9 @@ else {
 					$url = substr($url, 0, -1);
 					}
 				$url .= '';
+				if (isset($came_from)){
+					$url.= '/'.$came_from;
+					}
 				header("Location: $url");
 				exit();
 				}
