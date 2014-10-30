@@ -46,9 +46,10 @@ if (isset($_POST['pp_id'])){
 
 $employee_name = $_POST['employee_name'];
 $empno = $_POST['employee_number'];
-$query = "SELECT division from employees WHERE employee_number='$empno'";
+$query = "SELECT weekly_hours, division from employees WHERE employee_number='$empno'";
 $result = mysql_query($query);
 while ($row = mysql_fetch_array($result, MYSQL_ASSOC)){
+	$weekly_hours = $row['weekly_hours'];
 	$emp_division = $row['division'];
 	}
 	
@@ -110,7 +111,8 @@ include ('./includes/header.html');
 include ('./includes/sidebar.html');
 
 echo '<div class="wideview">
-	<span class="date"><h1>Edit Timesheet for '.$pp_start_friendly.'</h1></span>';
+	<span class="date"><h1>Edit Timesheet</h1></span>
+	<p style="margin:10px 0 -10px 0;font-size:14px;color:#013953;font-weight:bold;text-align:center;" class="divform">Timesheet for '.$pp_start_friendly.', '.$employee_name.'</p>';
 ?>
 <script>
 function calcTotals(){
@@ -241,7 +243,7 @@ foreach ($array as $k=>$v){
 
 	$day = date('D', strtotime($v));
 	
-	$query2 = "SELECT weekly_hours, time_format(shift_start,'%k') as shift_start, 
+	$query2 = "SELECT time_format(shift_start,'%k') as shift_start, 
 		time_format(shift_start,'%i') as shift_start_minutes, time_format(shift_end,'%k') as shift_end, 
 		time_format(shift_end,'%i') as shift_end_minutes from employees as e, shifts as a, schedules as s 
 		WHERE e.employee_number = '$empno' and e.employee_number = a.employee_number and 
@@ -255,7 +257,6 @@ foreach ($array as $k=>$v){
 			$shift_start_minutes = $row2['shift_start_minutes'];
 			$shift_end = $row2['shift_end'];
 			$shift_end_minutes = $row2['shift_end_minutes'];
-			$weekly_hours = $row2['weekly_hours'];
 			$shift_display = '';
 			
 			if ($shift_start > 12){
@@ -292,7 +293,7 @@ foreach ($array as $k=>$v){
 			}
 		}
 	if ($emp_division == 'Subs'){
-		$sub_query = "SELECT weekly_hours, time_format(coverage_start_time,'%k') as cov_start, 
+		$sub_query = "SELECT time_format(coverage_start_time,'%k') as cov_start, 
 			time_format(coverage_start_time,'%i') as cov_start_minutes, time_format(coverage_end_time,'%k') as cov_end, 
 			time_format(coverage_end_time,'%i') as cov_end_minutes from coverage c, employees e
 			WHERE coverage_date = '$v' and c.employee_number = '$empno' and c.employee_number=e.employee_number 
@@ -307,7 +308,6 @@ foreach ($array as $k=>$v){
 					$cov_start_minutes = $sub_row['cov_start_minutes'];
 					$cov_end = $sub_row['cov_end'];
 					$cov_end_minutes = $sub_row['cov_end_minutes'];
-					$weekly_hours = $sub_row['weekly_hours'];
 					
 					if ($cov_start > 12){
 						$cs12 = $cov_start - 12;
@@ -603,7 +603,7 @@ foreach ($array as $k=>$v){
 
 	$day = date('D', strtotime($v));
 	
-	$query2 = "SELECT weekly_hours, time_format(shift_start,'%k') as shift_start, 
+	$query2 = "SELECT time_format(shift_start,'%k') as shift_start, 
 		time_format(shift_start,'%i') as shift_start_minutes, time_format(shift_end,'%k') as shift_end, 
 		time_format(shift_end,'%i') as shift_end_minutes from employees as e, shifts as a, schedules as s 
 		WHERE e.employee_number = '$empno' and e.employee_number = a.employee_number and 
@@ -617,7 +617,6 @@ foreach ($array as $k=>$v){
 			$shift_start_minutes = $row2['shift_start_minutes'];
 			$shift_end = $row2['shift_end'];
 			$shift_end_minutes = $row2['shift_end_minutes'];
-			$weekly_hours = $row2['weekly_hours'];
 			$shift_display = '';
 			
 			if ($shift_start > 12){
@@ -654,7 +653,7 @@ foreach ($array as $k=>$v){
 			}
 		}
 	if ($emp_division == 'Subs'){
-		$sub_query = "SELECT weekly_hours, time_format(coverage_start_time,'%k') as cov_start, 
+		$sub_query = "SELECT time_format(coverage_start_time,'%k') as cov_start, 
 			time_format(coverage_start_time,'%i') as cov_start_minutes, time_format(coverage_end_time,'%k') as cov_end, 
 			time_format(coverage_end_time,'%i') as cov_end_minutes from coverage c, employees e
 			WHERE coverage_date = '$v' and c.employee_number = '$empno' and c.employee_number=e.employee_number 
@@ -669,7 +668,6 @@ foreach ($array as $k=>$v){
 					$cov_start_minutes = $sub_row['cov_start_minutes'];
 					$cov_end = $sub_row['cov_end'];
 					$cov_end_minutes = $sub_row['cov_end_minutes'];
-					$weekly_hours = $sub_row['weekly_hours'];
 					
 					if ($cov_start > 12){
 						$cs12 = $cov_start - 12;

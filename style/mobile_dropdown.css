@@ -78,7 +78,6 @@ background: -moz-linear-gradient(top, #EEEEEE, #DDDDDD);
 background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#EEEEEE), to(#DDDDDD));
 }
 .nav > li > .parent {
-background-image: url("images/downArrow.png");
 background-repeat: no-repeat;
 background-position: right;
 }

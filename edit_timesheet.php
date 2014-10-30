@@ -40,6 +40,12 @@ if (($came_from != 'timesheet') && ($came_from != 'edit_timesheet')){
 	
 include('./includes/allsessionvariables.php');
 
+$query = "SELECT weekly_hours from employees WHERE employee_number='$this_empno'";
+$result = mysql_query($query);
+while ($row = mysql_fetch_array($result, MYSQL_ASSOC)){
+	$weekly_hours = $row['weekly_hours'];
+	}
+
 if (isset($_POST['pp_id'])){
 	$pp_id=$_POST['pp_id'];
 	$_SESSION['pp_id'] = $pp_id;
