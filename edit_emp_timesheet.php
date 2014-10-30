@@ -363,7 +363,7 @@ if (isset($weekly_hours)){
 	}
 echo '</td></tr>';
 
-echo '<tr class="shaded"><td class="hours_type">Regular Hours Worked</td>';
+echo '<tr class="specialshaded"><td class="hours_type"><b>Regular Hours Worked</b></td>';
 
 foreach ($array as $k=>$v){
 	echo '<td class="entry">';
@@ -723,7 +723,7 @@ if (isset($weekly_hours)){
 	}
 echo '</td></tr>';
 
-echo '<tr class="shaded"><td class="hours_type">Regular Hours Worked</td>';
+echo '<tr class="specialshaded"><td class="hours_type"><b>Regular Hours Worked</b></td>';
 
 foreach ($array as $k=>$v){
 	echo '<td class="entry">';

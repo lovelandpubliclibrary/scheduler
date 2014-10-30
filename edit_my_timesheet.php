@@ -1,4 +1,4 @@
-<?php #edit_timesheet.php
+<?php #edit_my_timesheet.php
 //Time to decimal function
 function dec_minutes($mins) {
 	$dec_mins = $mins/60;
@@ -34,7 +34,7 @@ if ((!isset($came_from)) || (!isset($_POST['submit']))){
 	header ('Location: timesheet');
 	}
 	
-if (($came_from != 'timesheet') && ($came_from != 'edit_timesheet')){
+if (($came_from != 'timesheet') && ($came_from != 'edit_my_timesheet')){
 	header ('Location: timesheet');
 	}
 	
@@ -120,7 +120,7 @@ include ('./includes/header.html');
 include ('./includes/sidebar.html');
 
 echo '<div class="wideview">
-	<span class="date"><h1>Edit Timesheet for '.$pp_start_friendly.'</h1></span>';
+	<span class="date"><h1>Edit My Timesheet for '.$pp_start_friendly.'</h1></span>';
 ?>
 <script>
 function calcTotals(){
@@ -227,7 +227,7 @@ function validator() {
 	}
 </script>
 <?php
-echo '<form action="edit_timesheet" method="post" name="timesheet" onsubmit="return validator();">';
+echo '<form action="edit_my_timesheet" method="post" name="timesheet" onsubmit="return validator();">';
 
 //Timesheet Week #1
 dates_between_inclusive("$pp_start_date", "$pp_midweek_end_date");

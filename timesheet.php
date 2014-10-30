@@ -12,7 +12,7 @@ echo '<div class="mobilewrapper_outer"><div class="mobilewrapper_inner">
 	<span class="date"><h1>'.$page_title.'</h1></span>';
 	
 if (isset($this_empno)){
-	if (($came_from == 'edit_timesheet') && (isset($_SESSION['timesheet_confirmed']))){
+	if (($came_from == 'edit_my_timesheet') && (isset($_SESSION['timesheet_confirmed']))){
 		$pp_start_date = $_SESSION['pp_start_date'];
 		echo '<div class="message">Your timesheet starting '.$pp_start_date.' has been edited.</div>';
 		unset($_SESSION['pp_id']);
@@ -44,20 +44,23 @@ if (isset($this_empno)){
 			echo '<td class="scheddate confirmed">Timesheet confirmed</td>';
 			$row = mysql_fetch_array($result1, MYSQL_ASSOC);
 			if ($row['locked'] == 'Yes'){
-				echo '<td class="locked">Locked</td>';
-				}
-			else{
-				echo '<td><form action="edit_timesheet" method="post">
+				echo '<td class="locked">Locked</td><td><form action="view_my_timesheet" method="post">
 				<input type="hidden" name="pp_id" value="'.$pp_id.'"/>
 				<input type="hidden" name="pp_start_date" value="'.$pp_start_date.'"/>
-				<input type="submit" name="submit" value="Edit" /></form></td>';
+				<input type="submit" name="submit" value="View" /></form></td>';
+				}
+			else{
+				echo '<td><form action="edit_my_timesheet" method="post">
+				<input type="hidden" name="pp_id" value="'.$pp_id.'"/>
+				<input type="hidden" name="pp_start_date" value="'.$pp_start_date.'"/>
+				<input type="submit" name="submit" value="Edit" /></form></td><td></td>';
 				}
 			}
 		else{
-			echo '<td><form action="edit_timesheet" method="post">
+			echo '<td><form action="edit_my_timesheet" method="post">
 				<input type="hidden" name="pp_id" value="'.$pp_id.'"/>
 				<input type="hidden" name="pp_start_date" value="'.$pp_start_date.'"/>
-				<input type="submit" name="submit" value="Confirm Timesheet" /></form></td><td></td>';
+				<input type="submit" name="submit" value="Confirm Timesheet" /></form></td><td></td><td></td>';
 			}
 		}
 	echo '</table>';

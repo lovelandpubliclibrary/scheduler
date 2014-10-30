@@ -7,7 +7,7 @@
 				include ('./includes/supersubmenu.php');
 				echo '</div>';
 				}
-			elseif($_SESSION['role'] == 'Staff'){
+			elseif(($_SESSION['role'] == 'Staff')&&(isset($this_empno))){
 				echo '<div id="submenu">';
 				include ('./includes/submenu.php');
 				echo '</div>';

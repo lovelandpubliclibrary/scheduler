@@ -1,4 +1,4 @@
-<?php #view_emp_timesheet.php
+<?php #view_my_timesheet.php
 //Time to decimal function
 function dec_minutes($mins) {
 	$dec_mins = $mins/60;
@@ -27,88 +27,46 @@ function dates_between_inclusive($start_date, $end_date){
 	while ($test_date <= $end_date && ++$day_incrementer );
 	}
 
-include('./includes/supersessionstart.php');
+include('./includes/sessionstart.php');
 
 if (isset($_SESSION['came_from'])){
 	$came_from = $_SESSION['came_from'];
 	}
-
-/*if ((!isset($came_from)) || (!isset($_POST['submit']))){
-	header ('Location: approve_timesheets');
-	}*/
 	
-if (($came_from != 'approve_timesheets') && ($came_from != 'view_emp_timesheet') && ($came_from != 'edit_emp_timesheet')){
-	header ('Location: approve_timesheets');
+if (($came_from != 'timesheet')&&($came_from != 'view_my_timesheet')){
+	header ('Location: timesheet');
 	}
 
 include('./includes/allsessionvariables.php');
-if (isset($_POST['employee_name'])){
-	$employee_name = $_POST['employee_name'];
-	$_SESSION['employee_name'] = $employee_name;
-	}
-if (isset($_SESSION['employee_name'])){
-	$employee_name = $_SESSION['employee_name'];
-	}
-if (isset($_POST['employee_number'])){
-	$empno = $_POST['employee_number'];
-	$_SESSION['employee_number'] = $empno;
-	}
-if (isset($_SESSION['employee_number'])){
-	$empno = $_SESSION['employee_number'];
-	}
-if (isset($_POST['pp_id'])){
-	$pp_id = $_POST['pp_id'];
-	$_SESSION['pp_id'] = $pp_id;
-	}
-if (isset($_SESSION['pp_id'])){
-	$pp_id = $_SESSION['pp_id'];
-	}
-$query = "SELECT weekly_hours, division from employees WHERE employee_number='$empno'";
+
+$query = "SELECT weekly_hours, division from employees WHERE employee_number='$this_empno'";
 $result = mysql_query($query);
 while ($row = mysql_fetch_array($result, MYSQL_ASSOC)){
 	$weekly_hours = $row['weekly_hours'];
 	$emp_division = $row['division'];
 	}
 
-$page_title = "Employee Timesheet | ".$employee_name;
-	
-if (isset($_POST['approved'])){
-	$query2 = "SELECT * from timesheet_confirm WHERE employee_number='$empno' and pp_id='$pp_id'";
-	$result2 = mysql_query($query2);
-	if (($result2)&&(mysql_num_rows($result2) == 0)){
-		$query = "INSERT into timesheet_confirm (employee_number, pp_id, employee_confirm, supervisor_approve) 
-			VALUES ('$empno','$pp_id','N','Y')";
-		}
-	else{
-		$query = "UPDATE timesheet_confirm set supervisor_approve='Y' WHERE employee_number='$empno' and pp_id='$pp_id'";
-		}
-	$result = mysql_query($query);
-	
-	$query1 = "UPDATE time_entry set locked='Yes' WHERE employee_number='$empno' and pp_id='$pp_id'";
-	$result1 = mysql_query($query1);
-	
-	$_SESSION['timesheet_approved'] = TRUE;
-	header ('Location: approve_timesheets');
+if (isset($_POST['pp_id'])){
+	$pp_id=$_POST['pp_id'];
+	$_SESSION['pp_id'] = $pp_id;
 	}
-	
-include ('./includes/header.html');
-include ('./includes/supersidebar.html');
-	
+
 if (isset($_POST['pp_start_date'])){
 	$pp_start_date = $_POST['pp_start_date'];
 	$_SESSION['pp_start_date'] = $pp_start_date;
+	$pp_start_friendly = date('j M Y', strtotime($pp_start_date));
+	$pp_midweek_end_date = strtotime('+6days', strtotime($pp_start_date));
+	$pp_midweek_end_date = date('Y-m-d' , $pp_midweek_end_date );
+	$pp_midweek_start_date = strtotime('+7days', strtotime($pp_start_date));
+	$pp_midweek_start_date = date('Y-m-d' , $pp_midweek_start_date );
+	$pp_end_date = strtotime('+13days', strtotime($pp_start_date));
+	$pp_end_date = date('Y-m-d' , $pp_end_date );
 	}
-if (isset($_SESSION['pp_start_date'])){
-	$pp_start_date = $_SESSION['pp_start_date'];
-	}
+
+$page_title = 'Timesheet | '.$pp_start_friendly;
 	
-$pp_start_friendly = date('j M Y', strtotime($pp_start_date));
-$pp_midweek_end_date = strtotime('+6days', strtotime($pp_start_date));
-$pp_midweek_end_date = date('Y-m-d' , $pp_midweek_end_date );
-$pp_midweek_start_date = strtotime('+7days', strtotime($pp_start_date));
-$pp_midweek_start_date = date('Y-m-d' , $pp_midweek_start_date );
-$pp_end_date = strtotime('+13days', strtotime($pp_start_date));
-$pp_end_date = date('Y-m-d' , $pp_end_date );
+include ('./includes/header.html');
+include ('./includes/sidebar.html');
 
 $other_hours = array();
 $query = "SELECT * from hour_codes WHERE hour_code not in ('02','28','26','24','64','48')";
@@ -120,7 +78,7 @@ while ($row = mysql_fetch_assoc($result)) {
 
 //Get previous entries
 $previous = array();
-$query = "SELECT * from time_entry WHERE employee_number='$empno' and entry_date>='$pp_start_date'
+$query = "SELECT * from time_entry WHERE employee_number='$this_empno' and entry_date>='$pp_start_date'
 	and entry_date<='$pp_end_date'";
 $result = mysql_query($query);
 if (($result) && (mysql_num_rows($result)!=0)){
@@ -133,13 +91,7 @@ if (($result) && (mysql_num_rows($result)!=0)){
 	}
 
 echo '<div class="wideview">
-	<span class="date"><h1>Employee Timesheet</h1></span>
-	<p style="margin:10px 0 -10px 0;font-size:14px;color:#013953;font-weight:bold;text-align:center;" class="divform">Timesheet for '.$pp_start_friendly.', '.$employee_name.'</p>';
-
-if (($came_from == 'edit_emp_timesheet') && (isset($_SESSION['emp_timesheet_edited']))){
-	echo '<div class="message">The timesheet for '.$employee_name.' starting '.$pp_start_date.' has been edited.</div>';
-	unset($_SESSION['emp_timesheet_edited']);
-	}
+	<span class="date"><h1>View My Timesheet for '.$pp_start_friendly.'</h1></span>';
 	?>
 <script>
 function calcTotals(){
@@ -196,7 +148,7 @@ foreach ($array as $k=>$v){
 	$query2 = "SELECT time_format(shift_start,'%k') as shift_start, 
 		time_format(shift_start,'%i') as shift_start_minutes, time_format(shift_end,'%k') as shift_end, 
 		time_format(shift_end,'%i') as shift_end_minutes from employees as e, shifts as a, schedules as s 
-		WHERE e.employee_number = '$empno' and e.employee_number = a.employee_number and 
+		WHERE e.employee_number = '$this_empno' and e.employee_number = a.employee_number and 
 		schedule_start_date <= '$v' and schedule_end_date >= '$v' 
 		and week_type='$week_type' and shift_day='$day' and a.specific_schedule=s.specific_schedule 
 		and e.active = 'Active' and (e.employee_lastday >= '$v' or e.employee_lastday is null)";
@@ -246,7 +198,7 @@ foreach ($array as $k=>$v){
 		$sub_query = "SELECT time_format(coverage_start_time,'%k') as cov_start, 
 			time_format(coverage_start_time,'%i') as cov_start_minutes, time_format(coverage_end_time,'%k') as cov_end, 
 			time_format(coverage_end_time,'%i') as cov_end_minutes from coverage c, employees e
-			WHERE coverage_date = '$v' and c.employee_number = '$empno' and c.employee_number=e.employee_number 
+			WHERE coverage_date = '$v' and c.employee_number = '$this_empno' and c.employee_number=e.employee_number 
 			ORDER BY coverage_start_time asc";
 		$sub_result = mysql_query($sub_query);
 		if ($sub_result){
@@ -336,7 +288,7 @@ foreach ($array as $k=>$v){
 		$query2 = "SELECT time_format(shift_start,'%k') as shift_start, 
 			time_format(shift_start,'%i') as shift_start_minutes, time_format(shift_end,'%k') as shift_end, 
 			time_format(shift_end,'%i') as shift_end_minutes from employees as e, shifts as a, schedules as s 
-			WHERE e.employee_number = '$empno' and e.employee_number = a.employee_number and 
+			WHERE e.employee_number = '$this_empno' and e.employee_number = a.employee_number and 
 			schedule_start_date <= '$v' and schedule_end_date >= '$v' 
 			and week_type='$week_type' and shift_day='$day' and a.specific_schedule=s.specific_schedule 
 			and e.active = 'Active' and (e.employee_lastday >= '$v' or e.employee_lastday is null)";
@@ -407,7 +359,7 @@ foreach ($array as $k=>$v){
 			$sub_query = "SELECT time_format(coverage_start_time,'%k') as cov_start, 
 				time_format(coverage_start_time,'%i') as cov_start_minutes, time_format(coverage_end_time,'%k') as cov_end, 
 				time_format(coverage_end_time,'%i') as cov_end_minutes from coverage 
-				WHERE coverage_date = '$v' and employee_number = '$empno' ORDER BY coverage_start_time asc";
+				WHERE coverage_date = '$v' and employee_number = '$this_empno' ORDER BY coverage_start_time asc";
 			$sub_result = mysql_query($sub_query);
 			if ($sub_result){
 				$num = mysql_num_rows($sub_result);
@@ -536,7 +488,7 @@ foreach ($array as $k=>$v){
 	$query2 = "SELECT time_format(shift_start,'%k') as shift_start, 
 		time_format(shift_start,'%i') as shift_start_minutes, time_format(shift_end,'%k') as shift_end, 
 		time_format(shift_end,'%i') as shift_end_minutes from employees as e, shifts as a, schedules as s 
-		WHERE e.employee_number = '$empno' and e.employee_number = a.employee_number and 
+		WHERE e.employee_number = '$this_empno' and e.employee_number = a.employee_number and 
 		schedule_start_date <= '$v' and schedule_end_date >= '$v' 
 		and week_type='$week_type' and shift_day='$day' and a.specific_schedule=s.specific_schedule 
 		and e.active = 'Active' and (e.employee_lastday >= '$v' or e.employee_lastday is null)";
@@ -586,7 +538,7 @@ foreach ($array as $k=>$v){
 		$sub_query = "SELECT time_format(coverage_start_time,'%k') as cov_start, 
 			time_format(coverage_start_time,'%i') as cov_start_minutes, time_format(coverage_end_time,'%k') as cov_end, 
 			time_format(coverage_end_time,'%i') as cov_end_minutes from coverage c, employees e
-			WHERE coverage_date = '$v' and c.employee_number = '$empno' and c.employee_number=e.employee_number 
+			WHERE coverage_date = '$v' and c.employee_number = '$this_empno' and c.employee_number=e.employee_number 
 			ORDER BY coverage_start_time asc";
 		$sub_result = mysql_query($sub_query);
 		if ($sub_result){
@@ -676,7 +628,7 @@ foreach ($array as $k=>$v){
 		$query2 = "SELECT time_format(shift_start,'%k') as shift_start, 
 			time_format(shift_start,'%i') as shift_start_minutes, time_format(shift_end,'%k') as shift_end, 
 			time_format(shift_end,'%i') as shift_end_minutes from employees as e, shifts as a, schedules as s 
-			WHERE e.employee_number = '$empno' and e.employee_number = a.employee_number and 
+			WHERE e.employee_number = '$this_empno' and e.employee_number = a.employee_number and 
 			schedule_start_date <= '$v' and schedule_end_date >= '$v' 
 			and week_type='$week_type' and shift_day='$day' and a.specific_schedule=s.specific_schedule 
 			and e.active = 'Active' and (e.employee_lastday >= '$v' or e.employee_lastday is null)";
@@ -747,7 +699,7 @@ foreach ($array as $k=>$v){
 			$sub_query = "SELECT time_format(coverage_start_time,'%k') as cov_start, 
 				time_format(coverage_start_time,'%i') as cov_start_minutes, time_format(coverage_end_time,'%k') as cov_end, 
 				time_format(coverage_end_time,'%i') as cov_end_minutes from coverage 
-				WHERE coverage_date = '$v' and employee_number = '$empno' ORDER BY coverage_start_time asc";
+				WHERE coverage_date = '$v' and employee_number = '$this_empno' ORDER BY coverage_start_time asc";
 			$sub_result = mysql_query($sub_query);
 			if ($sub_result){
 				$num = mysql_num_rows($sub_result);
@@ -851,19 +803,8 @@ echo '<td class="total"></td></tr>';
 echo '<tr><td></td><td></td><td></td><td></td><td></td><td></td><td class="week_style label" colspan="2">Weekly Total</td><td class="week_style weekly_total"></td></tr>';
 echo '</table>';	
 	
-echo '<form action="edit_emp_timesheet" method="post" style="float:left;margin-right:10px;">
-	<input type="hidden" name="pp_id" value="'.$pp_id.'"/>
-	<input type="hidden" name="pp_start_date" value="'.$pp_start_date.'"/>
-	<input type="hidden" name="employee_number" value="'.$empno.'"/>
-	<input type="hidden" name="employee_name" value="'.$employee_name.'"/>
-	<input type="submit" name="submit" value="Edit" /></form>';
-echo '<form action="view_emp_timesheet" method="post">
-	<input type="hidden" name="pp_id" value="'.$pp_id.'"/>
-	<input type="hidden" name="pp_start_date" value="'.$pp_start_date.'"/>
-	<input type="hidden" name="employee_number" value="'.$empno.'"/>
-	<input type="hidden" name="employee_name" value="'.$employee_name.'"/>
-	<input type="hidden" name="approved" value="TRUE"/>
-	<input type="submit" name="submit" value="Approve Timesheet" /></form>';
+echo '<form action="timesheet" method="post" style="float:left;margin-right:10px;">
+	<input type="submit" name="submit" value="Back" /></form>';
 	
 echo '</div>';
 include ('./includes/footer.html');
