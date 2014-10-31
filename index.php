@@ -25,16 +25,13 @@ else {
 $date = "$year-$mon-$dom";
 $phpmon = $mon-1;
 
-$day = date('j', mktime(0,0,0,0,$dom));
-$month = date('F', mktime(0,0,0,$mon));
-
-$page_title = "$day $month $year";
+$page_title = date('j F Y',strtotime($date));
 
 include ('./includes/header.html');
 include ('./includes/sidebar.html');
 include ('./display_functions.php');
 
-$now = strtotime("$date");
+$now = strtotime($date);
 
 daily_schedule($now, $divisions);
 	

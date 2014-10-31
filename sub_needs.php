@@ -159,14 +159,10 @@ if (($_SESSION['role'] == 'Admin')||($_SESSION['role'] == 'Supervisor')){
 		if (empty($errors)) {
 			$query1 = "UPDATE sub_needs set sub_needs_covered='Y' WHERE sub_needs_id='$sub_needs_id'";
 			$result1 = mysql_query($query1);
-			$query2 = "INSERT into coverage (coverage_date, coverage_start_time, coverage_end_time, coverage_division, coverage_reason, coverage_create) 
-				VALUES ('$sub_needs_date', '$sub_needs_start_time', '$sub_needs_end_time', '$sub_needs_division', '', null)";
+			$query2 = "INSERT into coverage (employee_number, coverage_date, coverage_start_time, coverage_end_time, coverage_division,
+				coverage_offdesk, coverage_reason, coverage_create) VALUES ('$empno','$sub_needs_date', '$sub_needs_start_time', 
+				'$sub_needs_end_time', '$sub_needs_division', 'On', '', null)";
 			$result2 = mysql_query($query2);
-			if ($result2) {
-				$coverage_id = mysql_insert_id();
-				$query3 = "INSERT into coverageassoc values(null, '$coverage_id', '$empno')";
-				$result3 = mysql_query($query3) or die(mysql_error($dbc));
-				}
 			echo '<div class="message"><b>'. $name . ' on ' . $short_date . '</b> has been confirmed.</div>';
 			}
 		else{
