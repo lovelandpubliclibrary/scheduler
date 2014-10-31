@@ -157,6 +157,10 @@ if(isset($_POST['init'])){
 				SELECT week_type, shift_day, employee_number, shift_start, shift_end, desk_start, desk_end, 
 				desk_start2, desk_end2, lunch_start, lunch_end, '$max', null from shifts where specific_schedule='$specific_schedule'";
 	$result = mysql_query($query);
+	
+	$query = "INSERT into deficiencies (def_schedule, def_week, def_day, def_division, def_start, def_end, def_create)
+		SELECT '$max', def_week, def_day, def_division, def_start, def_end, null from deficiencies where def_schedule='$specific_schedule'";
+	$result = mysql_query($query);
 	}
 ?>
 <script>

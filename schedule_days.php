@@ -672,7 +672,7 @@ function schedule_form($day, $week_type, $employees, $prev_schedules, $prev_def)
 		}
 	$schedule_form .= '<tr><td>
 		<div class="editdef">
-			<input type="checkbox" name="def"';
+			<input type="checkbox" name="deft"';
 		if (isset($defdata)&&(count($defdata) > 0)){
 			$schedule_form .= ' checked/>Schedule Regular Coverage Needed
 				<div class="hidden" style="display:block;">';
