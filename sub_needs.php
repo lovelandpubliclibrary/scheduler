@@ -133,8 +133,8 @@ if (($_SESSION['role'] == 'Admin')||($_SESSION['role'] == 'Supervisor')){
 		
 		//Check for overlaps
 		$query = "SELECT e.employee_number, division, concat(first_name, ' ', last_name) as employee_name, coverage_division,
-			coverage_date, coverage_start_time, coverage_end_time FROM coverage as t, coverageassoc as a, employees as e 
-			WHERE e.employee_number = a.employee_number and t.coverage_id = a.coverage_id and e.employee_number = '$empno' 
+			coverage_date, coverage_start_time, coverage_end_time FROM coverage as t, employees as e 
+			WHERE e.employee_number = t.employee_number and e.employee_number = '$empno' 
 			and coverage_date = '$sub_needs_date' and (('$sub_needs_start_time' >= coverage_start_time and 
 			'$sub_needs_start_time' < coverage_end_time) 
 			or ('$sub_needs_end_time' > coverage_start_time and '$sub_needs_end_time' <= coverage_end_time) 
