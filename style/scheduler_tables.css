@@ -388,6 +388,14 @@ color:#000000;
 min-width:503px;
 }
 
+.extras td{
+padding:0px 10px;
+}
+
+.extras td.times{
+min-width:30px;
+}
+
 /* Employees Table */
 table.employees{
 width:auto;
@@ -716,4 +724,16 @@ padding-left:8px !important;
 width:39px;
 padding:0 12px;
 text-align:center;
+}
+
+/* Pay Periods */
+.pay_periods{
+float:left;
+margin:30px 0px 0px 30px;
+text-align:center;
+}
+
+.pay_periods td{
+text-align:right;
+padding:0px 10px;
 }

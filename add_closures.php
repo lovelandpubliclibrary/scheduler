@@ -78,8 +78,18 @@ function validator() {
 <div class="mobilewrapper_inner">
 <span class="date"><h1>Enter Library Closures</h1></span>
 
-<?php 	
-$dates = getdate();
+<?php 
+$upcoming_closures = array();
+$now = date('Y-m-d');
+$query = "SELECT * from closures WHERE closure_date >= '$now' order by closure_date asc";
+$result = mysql_query($query);
+while ($row = mysql_fetch_array($result, MYSQL_ASSOC)){
+	$cdate = $row['closure_date'];
+	$cstime = $row['closure_start_time'];
+	$cetime = $row['closure_end_time'];
+	$creason = $row['closure_reason'];
+	$upcoming_closures[] = array($cdate, $cstime, $cetime, $creason);
+	}
 	
 if (isset($_POST['submitted'])){
 	list($cd_mon, $cd_day, $cd_yr) = explode('/',$_POST['closure_date']);
@@ -158,13 +168,13 @@ if (isset($_POST['submitted'])){
 	else{
 		echo '<div class=\"errormessage\"><b>Error!</div>
 		<p class="error">The following error(s) occurred:<br/>';
-		foreach ($errors as $msg) { //Print each error
+		foreach ($errors as $msg) {
 			echo " - $msg<br/>\n";
 			}
 		echo '</div>';
 		}
-		mysql_close();
-	}	
+	}
+
 ?>
 <div class="coverform">
 	<form action="add_closures" method="post" name="DateForm" id="closures" onsubmit="return validator();">
@@ -199,6 +209,94 @@ if (isset($_POST['submitted'])){
 		<p><input type="submit" name="submit" value="Save" /></p>
 			<input type="hidden" name="submitted" value="TRUE" />
 	</form>
+</div>
+<div id="timeoff">
+	<div class="divspec">Upcoming Closures</div>
+	<div class="divboxes">
+		<table class="timeoff extras">
+			<tr><th>Date</th><th>Times</th><th>Reason</th></tr>
+<?php
+foreach ($upcoming_closures as $k=>$v){
+	$friendly_date = date('j M Y', strtotime($v[0]));
+	echo '<tr><td>'.$friendly_date.'</td>';
+	if (($v[1] != '00:01:00')&&($v[2] != '23:59:00')){
+		$start = explode(':',$v[1]);
+		$start_hr = $start[0];
+		$start_mn = $start[1];
+		$end = explode(':',$v[2]);
+		$end_hr = $end[0];
+		$end_mn = $end[1];
+		if ($start_hr > 12){
+			$ss12 = $start_hr - 12;
+			}
+		elseif($start_hr == 0){
+			$ss12 = NULL;
+			}
+		else{
+			$ss12 = $start_hr;
+			}
+		if ($start_mn != '00') {
+			$ss12 .= ':'.$start_mn;
+			}
+		
+		if ($end_hr > 12){
+			$se12 = $end_hr - 12;
+			}
+		elseif($end_hr == 0){
+			$se12 = NULL;
+			}
+		else{
+			$se12 = $end_hr;
+			}
+		if ($end_mn != '00') {
+			$se12 .= ':'.$end_mn;
+			}
+		echo '<td class="times">'.$ss12.' - '.$se12.'</td>';
+		}
+	elseif ($v[1] != '00:01:00'){
+		$start = explode(':',$v[1]);
+		$start_hr = $start[0];
+		$start_mn = $start[1];
+		if ($start_hr > 12){
+			$ss12 = $start_hr - 12;
+			}
+		elseif($start_hr == 0){
+			$ss12 = NULL;
+			}
+		else{
+			$ss12 = $start_hr;
+			}
+		if ($start_mn != '00') {
+			$ss12 .= ':'.$start_mn;
+			}
+		echo '<td class="times">After '.$ss12.'</td>';
+		}
+	elseif ($v[2] != '23:59:00'){
+		$end = explode(':',$v[2]);
+		$end_hr = $end[0];
+		$end_mn = $end[1];
+		if ($end_hr > 12){
+			$se12 = $end_hr - 12;
+			}
+		elseif($end_hr == 0){
+			$se12 = NULL;
+			}
+		else{
+			$se12 = $end_hr;
+			}
+		if ($end_mn != '00') {
+			$se12 .= ':'.$end_mn;
+			}
+		echo '<td class="times">Until '.$se12.'</td>';
+		}
+	else {
+		echo '<td class="times">All Day</td>';
+		}
+	echo '<td>'.$v[3].'</td></tr>';
+	}
+?>
+		</table>
+	</div>
 </div>
 </div>
 </div>

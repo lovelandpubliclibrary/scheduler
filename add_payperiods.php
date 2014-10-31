@@ -15,10 +15,21 @@ include ('./includes/supersidebar.html');
 <span class="date"><h1>Enter Yearly Pay Periods</h1></span>
 
 <?php 
-
-$dates = getdate();
+$year = date('Y');
 $error = '';
 $m_error = '';
+
+$query = "SELECT * from pay_periods WHERE pp_year='$year'";
+$result = mysql_query($query);
+$num_rows = mysql_num_rows($result);
+if ($num_rows != 0){
+	$periods = array();
+	while ($row = mysql_fetch_array($result, MYSQL_ASSOC)){
+		$cycle = $row['pp_cycle'];
+		$start_date = $row['pp_start_date'];
+		$periods[$cycle] = $start_date;
+		}
+	}
 	
 if (isset($_POST['submitted'])){
 	$pp_year = $_POST['pp_year'];
@@ -104,10 +115,10 @@ $(document).ready(function() {
 		});
 	});
 </script>
-<div class="coverform">
+<div class="coverform" style="float:left;">
 	<form action="add_payperiods" method="post" name="DateForm" id="pay_periods">
 		<div class="label">Choose Year:</div>
-		<div class="cal"><?php make_calendar_pulldowns(NULL, NULL, $dates['year'], 'pp'); ?></div>
+		<div class="cal"><?php make_calendar_pulldowns(NULL, NULL, $year, 'pp'); ?></div>
 		<table>
 			<tr>
 				<th>Cycle #</th>
@@ -128,6 +139,19 @@ $(document).ready(function() {
 		<p><input type="submit" name="submit" value="Save" /></p>
 			<input type="hidden" name="submitted" value="TRUE" />
 	</form>
+</div>
+<div class="pay_periods">
+	<div class="divspec"><?php echo $year;?> Pay Periods</div>
+	<div class="divboxes">
+		<table class="timeoff">
+		<tr><th>Cycle</th><th>Start Date</th></tr>
+<?php foreach ($periods as $cycle=>$start){
+	echo '<tr><td>'.$cycle.'</td><td>'.$start.'</td></tr>';
+	}
+?>
+	</table>
+	</div><br/>
+<i>Re-add (right) to edit</i>
 </div>
 </div>
 </div>
