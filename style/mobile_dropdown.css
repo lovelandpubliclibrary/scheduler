@@ -100,7 +100,7 @@ z-index:100;
 border-top: 1px solid #B0B0B0;
 }
 
-@media screen and (max-width: 768px) {
+
 .active {
 	display: block;
 }
@@ -117,6 +117,4 @@ border-top: 1px solid #B0B0B0;
 }
 .nav > li.hover > ul , .nav li li.hover ul {
 	position: static;
-}
-
 }
