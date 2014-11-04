@@ -4,11 +4,11 @@ var www = $(window).height();
 var hh = $(window).height()+60;
 
 $('#container').attr('style', function(i,val){
-	if (hh >= www){
+	if (hh >= ww){
 	return 'min-height:'+hh+'px;'
 	}
 	else{
-	return 'min-height:'+www+'px;'
+	return 'min-height:'+ww+'px;'
 	}
 });
 
