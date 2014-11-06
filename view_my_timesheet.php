@@ -69,7 +69,7 @@ include ('./includes/header.html');
 include ('./includes/sidebar.html');
 
 $other_hours = array();
-$query = "SELECT * from hour_codes WHERE hour_code not in ('02','28','26','24','64','48')";
+$query = "SELECT * from hour_codes WHERE hour_code not in ('02','28','26','24','48')";
 $result = mysql_query($query);
 while ($row = mysql_fetch_assoc($result)) {
 	$hour_code = $row['hour_code'];
@@ -407,14 +407,7 @@ foreach ($array as $k=>$v){
 	echo '</td>';
 	}
 echo '<td class="total"></td></tr>';
-echo '<tr class="shaded"><td class="hours_type">Banked Medical</td>';
-foreach ($array as $k=>$v){
-	echo '<td class="disp_hours">';
-	if((isset($previous[$v]))&&(isset($previous[$v]['64']))){echo $previous[$v]['64'];}
-	echo '</td>';
-	}
-echo '<td class="total"></td></tr>';
-echo '<tr><td class="hours_type">Bereavement</td>';
+echo '<tr class="shaded"><td class="hours_type">Bereavement</td>';
 foreach ($array as $k=>$v){
 	echo '<td class="disp_hours">';
 	if((isset($previous[$v]))&&(isset($previous[$v]['48']))){echo $previous[$v]['48'];}
@@ -435,7 +428,7 @@ if(isset($previous)){
 		}
 	}
 
-echo '<tr class="shaded"><td class="hours_type" style="width:185px;">Other: ';
+echo '<tr><td class="hours_type" style="width:185px;">Other: ';
 if (count($selects)>0){
 	$first_code = $selects[0];
 	echo '<b>'.$other_hours[$first_code].'</b>';
@@ -447,7 +440,7 @@ foreach ($array as $k=>$v){
 	echo '</td>';
 	}
 echo '<td class="total"></td></tr>';
-echo '<tr><td class="hours_type" style="width:185px;">Other : ';
+echo '<tr class="shaded"><td class="hours_type" style="width:185px;">Other : ';
 if (count($selects)>1){
 	$second_code = $selects[1];
 	echo '<b>'.$other_hours[$second_code].'</b>';
@@ -747,14 +740,7 @@ foreach ($array as $k=>$v){
 	echo '</td>';
 	}
 echo '<td class="total"></td></tr>';
-echo '<tr class="shaded"><td class="hours_type">Banked Medical</td>';
-foreach ($array as $k=>$v){
-	echo '<td class="disp_hours">';
-	if((isset($previous[$v]))&&(isset($previous[$v]['64']))){echo $previous[$v]['64'];}
-	echo '</td>';
-	}
-echo '<td class="total"></td></tr>';
-echo '<tr><td class="hours_type">Bereavement</td>';
+echo '<tr class="shaded"><td class="hours_type">Bereavement</td>';
 foreach ($array as $k=>$v){
 	echo '<td class="disp_hours">';
 	if((isset($previous[$v]))&&(isset($previous[$v]['48']))){echo $previous[$v]['48'];}
@@ -775,7 +761,7 @@ if(isset($previous)){
 		}
 	}
 
-echo '<tr class="shaded"><td class="hours_type" style="width:185px;">Other: ';
+echo '<tr><td class="hours_type" style="width:185px;">Other: ';
 if (count($selects)>0){
 	$first_code = $selects[0];
 	echo '<b>'.$other_hours[$first_code].'</b>';
@@ -787,7 +773,7 @@ foreach ($array as $k=>$v){
 	echo '</td>';
 	}
 echo '<td class="total"></td></tr>';
-echo '<tr><td class="hours_type" style="width:185px;">Other : ';
+echo '<tr class="shaded"><td class="hours_type" style="width:185px;">Other : ';
 if (count($selects)>1){
 	$second_code = $selects[1];
 	echo '<b>'.$other_hours[$second_code].'</b>';

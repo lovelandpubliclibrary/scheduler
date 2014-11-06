@@ -2997,13 +2997,13 @@ function division_weekly($division, $now) {
 							if (!empty($desk_display)){
 								echo '<br/><span class="desk">'.$desk_display.'</span>';
 								}
-							else{
+							elseif ($division != 'pages'){
 								echo '<br/>';
 								}
 							if (isset($ls12)){
 								echo '<br/><span class="lunch">'.$ls12.'-'.$le12.'</span>';
 								}
-							else{
+							elseif ($division != 'pages'){
 								echo '<br/>&nbsp;';
 								}
 								

@@ -84,7 +84,7 @@ if (isset($_POST['confirmed'])){
 	}
 
 $other_hours = array();
-$query = "SELECT * from hour_codes WHERE hour_code not in ('02','28','26','24','64','48')";
+$query = "SELECT * from hour_codes WHERE hour_code not in ('02','28','26','24','48')";
 $result = mysql_query($query);
 while ($row = mysql_fetch_assoc($result)) {
 	$hour_code = $row['hour_code'];
@@ -505,14 +505,7 @@ foreach ($array as $k=>$v){
 	echo '/></td>';
 	}
 echo '<td class="total"></td></tr>';
-echo '<tr class="shaded"><td class="hours_type">Banked Medical</td>';
-foreach ($array as $k=>$v){
-	echo '<td class="entry"><input type="text" name="time_entry['.$v.'][64]" maxlength="5" size="1" class="hrs"';
-	if((isset($previous[$v]))&&(isset($previous[$v]['64']))){echo ' value="'.$previous[$v]['64'].'"';}
-	echo '/></td>';
-	}
-echo '<td class="total"></td></tr>';
-echo '<tr><td class="hours_type">Bereavement</td>';
+echo '<tr class="shaded"><td class="hours_type">Bereavement</td>';
 foreach ($array as $k=>$v){
 	echo '<td class="entry"><input type="text" name="time_entry['.$v.'][48]" maxlength="5" size="1" class="hrs"';
 	if((isset($previous[$v]))&&(isset($previous[$v]['48']))){echo ' value="'.$previous[$v]['48'].'"';}
@@ -533,7 +526,7 @@ if(isset($previous)){
 		}
 	}
 
-echo '<tr class="shaded"><td class="hours_type">Other <select name="Other1">
+echo '<tr><td class="hours_type">Other <select name="Other1">
 	<option value="X" selected="selected">- Select -</option>';
 foreach ($other_hours as $code=>$desc){
 	echo '<option value="'.$code.'"';
@@ -555,7 +548,7 @@ foreach ($array as $k=>$v){
 	echo '/></td>';
 	}
 echo '<td class="total"></td></tr>';
-echo '<tr><td class="hours_type">Other <select name="Other1">
+echo '<tr class="shaded"><td class="hours_type">Other <select name="Other1">
 	<option value="Y" selected="selected">- Select -</option>';
 foreach ($other_hours as $code=>$desc){
 	echo '<option value="'.$code.'"';
@@ -865,14 +858,7 @@ foreach ($array as $k=>$v){
 	echo '/></td>';
 	}
 echo '<td class="total"></td></tr>';
-echo '<tr class="shaded"><td class="hours_type">Banked Medical</td>';
-foreach ($array as $k=>$v){
-	echo '<td class="entry"><input type="text" name="time_entry['.$v.'][64]" maxlength="5" size="1" class="hrs"';
-	if((isset($previous[$v]))&&(isset($previous[$v]['64']))){echo ' value="'.$previous[$v]['64'].'"';}
-	echo '/></td>';
-	}
-echo '<td class="total"></td></tr>';
-echo '<tr><td class="hours_type">Bereavement</td>';
+echo '<tr class="shaded"><td class="hours_type">Bereavement</td>';
 foreach ($array as $k=>$v){
 	echo '<td class="entry"><input type="text" name="time_entry['.$v.'][48]" maxlength="5" size="1" class="hrs"';
 	if((isset($previous[$v]))&&(isset($previous[$v]['48']))){echo ' value="'.$previous[$v]['48'].'"';}
@@ -893,7 +879,7 @@ if(isset($previous)){
 		}
 	}
 
-echo '<tr class="shaded"><td class="hours_type">Other <select name="Other1">
+echo '<tr><td class="hours_type">Other <select name="Other1">
 	<option value="X" selected="selected">- Select -</option>';
 foreach ($other_hours as $code=>$desc){
 	echo '<option value="'.$code.'"';
@@ -915,7 +901,7 @@ foreach ($array as $k=>$v){
 	echo '/></td>';
 	}
 echo '<td class="total"></td></tr>';
-echo '<tr><td class="hours_type">Other <select name="Other1">
+echo '<tr class="shaded"><td class="hours_type">Other <select name="Other1">
 	<option value="Y" selected="selected">- Select -</option>';
 foreach ($other_hours as $code=>$desc){
 	echo '<option value="'.$code.'"';
