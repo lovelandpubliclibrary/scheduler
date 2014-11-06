@@ -378,7 +378,7 @@ background:#027003;
 }
 
 .busy{
-background:#53007d;
+background:#f75802;
 }
 
 .alert{
@@ -944,11 +944,12 @@ background:#FFEAE8;
 }
 
 .daylink:hover, .dayfocus{
-background: #FCD8D4;
+background: #C1272D;
 border-top:1px solid #735151;
 border-right:1px solid #735151;
 border-left:1px solid #735151;
 z-index:2;
+color:#ffeae8;
 }
 
 .weeklink{
@@ -964,11 +965,12 @@ z-index:0;
 }
 
 .weeklink:hover, .weekfocus{
-background: #dadada;
+background: #828282;
 border-top:1px solid #6F6F6F;
 border-right:1px solid #6F6F6F;
 border-left:1px solid #6F6F6F;
 z-index:1;
+color:#ffffff;
 }
 
 .scheddate{
