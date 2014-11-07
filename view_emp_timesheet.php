@@ -11,6 +11,7 @@ function dates_between_inclusive($start_date, $end_date){
 	$array[] = $start_date;
 	
 	$start_date .= ' 10:00:00am';
+	$end_date .= ' 10:00:00am';
 	$start_date = is_int($start_date) ? $start_date : strtotime($start_date);
 	$end_date = is_int($end_date) ? $end_date : strtotime($end_date);
 	 
