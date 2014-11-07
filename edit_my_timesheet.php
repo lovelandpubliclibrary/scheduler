@@ -10,6 +10,7 @@ function dates_between_inclusive($start_date, $end_date){
 	$array = array();
 	$array[] = $start_date;
 	
+	$start_date .= ' 10:00:00am';
 	$start_date = is_int($start_date) ? $start_date : strtotime($start_date);
 	$end_date = is_int($end_date) ? $end_date : strtotime($end_date);
 	 
@@ -30,10 +31,6 @@ function dates_between_inclusive($start_date, $end_date){
 include('./includes/sessionstart.php');
 $came_from = $_SESSION['came_from'];
 
-if ((!isset($came_from)) || (!isset($_POST['submit']))){
-	header ('Location: timesheet');
-	}
-	
 if (($came_from != 'timesheet') && ($came_from != 'edit_my_timesheet')){
 	header ('Location: timesheet');
 	}
@@ -77,16 +74,19 @@ if (isset($_POST['confirmed'])){
 				}
 			}
 		}
-	$query3 = "SELECT * from timesheet_confirm WHERE employee_number='$this_empno' and pp_id='$pp_id'";
-	$result3 = mysql_query($query3);
-	if (($result3)&&(mysql_num_rows($result3) == 0)){
-		$query4 = "INSERT into timesheet_confirm (employee_number, pp_id, employee_confirm, supervisor_approve) 
-			VALUES ('$this_empno','$pp_id','Y','N')";
+	
+	if(isset($_POST['confirm'])){
+		$query3 = "SELECT * from timesheet_confirm WHERE employee_number='$this_empno' and pp_id='$pp_id'";
+		$result3 = mysql_query($query3);
+		if (($result3)&&(mysql_num_rows($result3) == 0)){
+			$query4 = "INSERT into timesheet_confirm (employee_number, pp_id, employee_confirm, supervisor_approve) 
+				VALUES ('$this_empno','$pp_id','Y','N')";
+			}
+		else{
+			$query4 = "UPDATE timesheet_confirm set employee_confirm='Y' where employee_number='$this_empno' and pp_id='$pp_id'";
+			}
+		$result4 = mysql_query($query4);
 		}
-	else{
-		$query4 = "UPDATE timesheet_confirm set employee_confirm='Y' where employee_number='$this_empno' and pp_id='$pp_id'";
-		}
-	$result4 = mysql_query($query4);
 	
 	$_SESSION['timesheet_confirmed'] = TRUE;
 	header ('Location: timesheet');
@@ -219,15 +219,21 @@ function validateTotals(){
 		}
 	else { return true;}
 	}
-	
-function validator() {
-	if (!validateNumbers()) {return false;}
-	else if (!validateTotals()) {return false;}
-	else {return true;}
+
+var submitName;
+function validator(form) {
+	if (submitName == "Confirm Timesheet"){
+		if (!validateNumbers()) {return false;}
+		else if (!validateTotals()) {return false;}
+		else {return true;}
+		}
+	}
+function setSubmit(button){
+	submitName = button.value;
 	}
 </script>
 <?php
-echo '<form action="edit_my_timesheet" method="post" name="timesheet" onsubmit="return validator();">';
+echo '<form action="edit_my_timesheet" method="post" name="timesheet" onsubmit="return validator(this);">';
 
 //Timesheet Week #1
 dates_between_inclusive("$pp_start_date", "$pp_midweek_end_date");
@@ -937,7 +943,8 @@ echo '<td class="total"></td></tr>';
 echo '<tr><td></td><td></td><td></td><td></td><td></td><td></td><td class="week_style label" colspan="2">Weekly Total</td><td data-week="2" class="week_style weekly_total"></td></tr>';
 echo '</table>';
 
-echo '<input type="submit" name="submit" value="Confirm Timesheet" />
+echo '<input type="submit" name="save" value="Save" onclick="setSubmit(this)" />
+	<input type="submit" name="confirm" value="Confirm Timesheet" onclick="setSubmit(this)" />
 	<input type="hidden" name="confirmed" value="TRUE" />
 	<input type="hidden" name="pp_start_date" value="'.$pp_start_date.'" />
 	<input type="hidden" name="pp_id" value="'.$pp_id.'" />';

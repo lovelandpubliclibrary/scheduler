@@ -38,12 +38,12 @@ if (isset($this_empno)){
 		
 		echo '<tr><td class="scheddate">'.$pp_start_date.'</td><td class="scheddate">'.$pp_end_date.'</td>';
 		
-		$query1 = "SELECT * from time_entry WHERE pp_id = '$pp_id' and employee_number = '$this_empno'";
+		$query1 = "SELECT * from timesheet_confirm WHERE pp_id = '$pp_id' and employee_number = '$this_empno'";
 		$result1 = mysql_query($query1);
 		if (($result1) && (mysql_num_rows($result1)!=0)){
 			echo '<td class="scheddate confirmed">Timesheet confirmed</td>';
 			$row = mysql_fetch_array($result1, MYSQL_ASSOC);
-			if ($row['locked'] == 'Yes'){
+			if ($row['supervisor_approve'] == 'Yes'){
 				echo '<td class="locked">Locked</td><td><form action="view_my_timesheet" method="post">
 				<input type="hidden" name="pp_id" value="'.$pp_id.'"/>
 				<input type="hidden" name="pp_start_date" value="'.$pp_start_date.'"/>
