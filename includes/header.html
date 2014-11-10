@@ -291,7 +291,17 @@ elseif ($_SESSION['role'] == 'Subs'){
 				<ul class="nav" style="display:none;">
 					<li class="home">
 						<a href="/scheduler2">Home</a>
-					</li> 
+					</li>
+					<li>
+						<a href="#">Choose Date</a>
+						<ul>
+							<li>
+								<a><form action="/scheduler2/" method="post">
+									<input id="datepicker" onChange="this.form.submit()" name="date" placeholder="Click to choose" />
+								</form></a>
+							</li>
+						</ul>
+					</li>
 					<li class="divs">
 						<a href="#">Divisions</a>
 						<ul>
