@@ -64,27 +64,27 @@ if (isset($_POST['pp_start_date'])){
 if (isset($_POST['confirmed'])){
 	$time_entry = $_POST['time_entry'];
 	//Check for duplicates
-	$query = "DELETE from time_entry WHERE employee_number='$this_empno' and pp_id='$pp_id'";
+	$query = "DELETE from time_entry WHERE employee_number='$this_empno' and pp_id='$pp_id' and assignment_id = '$this_assignment_id'";
 	$result = mysql_query($query);
 	foreach ($time_entry as $date=>$codes){
 		foreach ($codes as $code=>$hours){
 			if((!empty($hours))&&($hours != 0)&&(is_numeric($hours))){
-				$query2 = "INSERT into time_entry (pp_id, employee_number, entry_date, hour_code, hours)
-					VALUES ('$pp_id', '$this_empno','$date','$code','$hours')";
+				$query2 = "INSERT into time_entry (pp_id, employee_number, assignment_id, entry_date, hour_code, hours)
+					VALUES ('$pp_id', '$this_empno','$this_assignment_id','$date','$code','$hours')";
 				$result2 = mysql_query($query2) or die(mysql_error());
 				}
 			}
 		}
 	
 	if(isset($_POST['confirm'])){
-		$query3 = "SELECT * from timesheet_confirm WHERE employee_number='$this_empno' and pp_id='$pp_id'";
+		$query3 = "SELECT * from timesheet_confirm WHERE employee_number='$this_empno' and pp_id='$pp_id' and assignment_id = '$this_assignment_id'";
 		$result3 = mysql_query($query3);
 		if (($result3)&&(mysql_num_rows($result3) == 0)){
-			$query4 = "INSERT into timesheet_confirm (employee_number, pp_id, employee_confirm, supervisor_approve) 
-				VALUES ('$this_empno','$pp_id','Y','N')";
+			$query4 = "INSERT into timesheet_confirm (employee_number, assignment_id, pp_id, employee_confirm, supervisor_approve) 
+				VALUES ('$this_empno','$this_assignment_id','$pp_id','Y','N')";
 			}
 		else{
-			$query4 = "UPDATE timesheet_confirm set employee_confirm='Y' where employee_number='$this_empno' and pp_id='$pp_id'";
+			$query4 = "UPDATE timesheet_confirm set employee_confirm='Y' where employee_number='$this_empno' and pp_id='$pp_id' and assignment_id = '$this_assignment_id'";
 			}
 		$result4 = mysql_query($query4);
 		}
@@ -104,7 +104,7 @@ while ($row = mysql_fetch_assoc($result)) {
 //Get previous entries
 $previous = array();
 $query = "SELECT * from time_entry WHERE employee_number='$this_empno' and entry_date>='$pp_start_date'
-	and entry_date<='$pp_end_date'";
+	and entry_date<='$pp_end_date' and assignment_id = '$this_assignment_id'";
 $result = mysql_query($query);
 if (($result) && (mysql_num_rows($result)!=0)){
 	while($row = mysql_fetch_array($result, MYSQL_ASSOC)){

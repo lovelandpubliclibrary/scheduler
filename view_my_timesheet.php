@@ -81,7 +81,7 @@ while ($row = mysql_fetch_assoc($result)) {
 //Get previous entries
 $previous = array();
 $query = "SELECT * from time_entry WHERE employee_number='$this_empno' and entry_date>='$pp_start_date'
-	and entry_date<='$pp_end_date'";
+	and entry_date<='$pp_end_date' and assignment_id = '$this_assignment_id'";
 $result = mysql_query($query);
 if (($result) && (mysql_num_rows($result)!=0)){
 	while($row = mysql_fetch_array($result, MYSQL_ASSOC)){

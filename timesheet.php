@@ -38,7 +38,8 @@ if (isset($this_empno)){
 		
 		echo '<tr><td class="scheddate">'.$pp_start_date.'</td><td class="scheddate">'.$pp_end_date.'</td>';
 		
-		$query1 = "SELECT * from timesheet_confirm WHERE pp_id = '$pp_id' and employee_number = '$this_empno'";
+		$query1 = "SELECT * from timesheet_confirm WHERE pp_id = '$pp_id' and employee_number = '$this_empno' 
+			and assignment_id = '$this_assignment_id'";
 		$result1 = mysql_query($query1);
 		if (($result1) && (mysql_num_rows($result1)!=0)){
 			echo '<td class="scheddate confirmed">Timesheet confirmed</td>';

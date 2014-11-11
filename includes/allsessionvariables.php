@@ -12,6 +12,7 @@ while ($row = mysql_fetch_assoc($result)) {
 	
 if(isset($_SESSION['this_empno'])){
 	$this_empno = $_SESSION['this_empno'];
+	$this_assignment_id = $_SESSION['assignment_id'];
 	$query = "SELECT first_name, last_name, name_dup from employees WHERE employee_number = '$this_empno'";
 	$result = mysql_query($query);
 	while ($row = mysql_fetch_array($result, MYSQL_ASSOC)){

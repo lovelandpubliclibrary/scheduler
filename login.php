@@ -35,7 +35,8 @@ else {
 			$p = escape_data($_POST['password']);
 			}
 		if (empty($errors)){
-			$query = "SELECT login_id, username, role, employee_number FROM logins WHERE username ='$user' AND password=SHA('$p')";
+			$query = "SELECT login_id, username, role, employee_number, assignment_id 
+				FROM logins WHERE username ='$user' AND password=SHA('$p')";
 			$result = @mysql_query($query);
 			$row = mysql_fetch_array($result, MYSQL_NUM);
 			
@@ -43,6 +44,7 @@ else {
 				$_SESSION['role'] = $row[2];
 				$_SESSION['username'] = $row[1];
 				$_SESSION['this_empno'] = $row[3];
+				$_SESSION['assignment_id'] = $row[4];
 				
 				$url = 'http://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF']);
 				if ((substr($url, -1) == '/') OR (substr($url, -1) == '\\')){

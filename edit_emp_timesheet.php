@@ -48,6 +48,7 @@ if (isset($_POST['pp_id'])){
 
 $employee_name = $_POST['employee_name'];
 $empno = $_POST['employee_number'];
+$assignment_id = $_POST['assignment_id'];
 $query = "SELECT weekly_hours, division from employees WHERE employee_number='$empno'";
 $result = mysql_query($query);
 while ($row = mysql_fetch_array($result, MYSQL_ASSOC)){
@@ -69,13 +70,13 @@ if (isset($_POST['pp_start_date'])){
 if (isset($_POST['confirmed'])){
 	$time_entry = $_POST['time_entry'];
 	//Check for duplicates
-	$query = "DELETE from time_entry WHERE employee_number='$empno' and pp_id='$pp_id'";
+	$query = "DELETE from time_entry WHERE employee_number='$empno' and pp_id='$pp_id' and assignment_id='$assignment_id'";
 	$result = mysql_query($query);
 	foreach ($time_entry as $date=>$codes){
 		foreach ($codes as $code=>$hours){
 			if((!empty($hours))&&($hours != 0)&&(is_numeric($hours))){
-				$query2 = "INSERT into time_entry (pp_id, employee_number, entry_date, hour_code, hours)
-					VALUES ('$pp_id', '$empno','$date','$code','$hours')";
+				$query2 = "INSERT into time_entry (pp_id, employee_number, assignment_id, entry_date, hour_code, hours)
+					VALUES ('$pp_id', '$empno','$assignment_id','$date','$code','$hours')";
 				$result2 = mysql_query($query2) or die(mysql_error());
 				}
 			}
@@ -96,7 +97,7 @@ while ($row = mysql_fetch_assoc($result)) {
 //Get previous entries
 $previous = array();
 $query = "SELECT * from time_entry WHERE employee_number='$empno' and entry_date>='$pp_start_date'
-	and entry_date<='$pp_end_date'";
+	and entry_date<='$pp_end_date' and assignment_id='$assignment_id'";
 $result = mysql_query($query);
 if (($result) && (mysql_num_rows($result)!=0)){
 	while($row = mysql_fetch_array($result, MYSQL_ASSOC)){
@@ -934,6 +935,7 @@ echo '<input type="submit" name="submit" value="Save Edited Timesheet" />
 	<input type="hidden" name="pp_start_date" value="'.$pp_start_date.'" />
 	<input type="hidden" name="pp_id" value="'.$pp_id.'" />
 	<input type="hidden" name="employee_number" value="'.$empno.'"/>
+	<input type="hidden" name="assignment_id" value="'.$assignment_id.'"/>
 	<input type="hidden" name="employee_name" value="'.$employee_name.'"/>';
 echo '</form>';
 echo '</div>';

@@ -34,6 +34,7 @@ if (isset($_POST['submitted'])){
 		$fn = $row['first_name'];
 		$ln = $row['last_name'];
 		$empno = $row['employee_number'];
+		$assignment_id = $row['assignment_id'];
 		$cycle = $row['pp_cycle'];
 		$year = $row['pp_year'];
 		$date = $row['entry_date'];
@@ -42,14 +43,14 @@ if (isset($_POST['submitted'])){
 		$hours = $row['hours'];
 		$pp_start_date = $row['pp_start_date'];
 		
-		$entries[] = array($fn, $ln, $empno, $cycle, $year, $date, $hour_code, $hours);
+		$entries[] = array($fn, $ln, $empno, $assignment_id, $cycle, $year, $date, $hour_code, $hours);
 		}
 
 	$file = 'payperiods/payperiod_'.$year.'_'.$cycle.'.csv';	
 	$handle = fopen($file, "w");
 	$csv = "First Name,Last Name,Employee Number,Assignment ID,Cycle Number,Cycle Year*YYYY,Entry Date*MMDDYYYY,Hour Code,Number of Hours##.##,Dollar Amount##.##,Hourly Rate##.##,Regular/SupplementalR|S,Prior FLSA Cycle(Y/N),Project Number,Work Order Number,Job Number,Acct #\r\n";
 	foreach ($entries as $k=>$v){
-		$csv .= $v[0].','.$v[1].','.$v[2].',03201-53-755-001,'.$v[3].','.$v[4].','.$v[5].','.$v[6].','.$v[7].',,,R,,,,'."\r\n";
+		$csv .= $v[0].','.$v[1].','.$v[2].','.$v[3].','.$v[4].','.$v[5].','.$v[6].','.$v[7].','.$v[8].',,,R,,,,'."\r\n";
 		}
 	fwrite($handle, $csv);
 	fclose($handle);

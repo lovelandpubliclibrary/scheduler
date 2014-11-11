@@ -65,8 +65,8 @@ echo '</select>
 if ((isset($division)) && ($division !== 'All')) {
 	$_SESSION['timesheet_view_div'] = $division;
 	
-	$query = "SELECT last_name, first_name, employee_number FROM employees WHERE division='$division' and active='Active'
-		ORDER BY division ASC, last_name asc";
+	$query = "SELECT last_name, first_name, e.employee_number, assignment_id FROM employees e, logins l WHERE active='Active'
+		and e.employee_number = l.employee_number ORDER BY last_name asc";
 	$result = mysql_query($query) or die(mysql_error($dbc));
 	$num = mysql_num_rows ($result);
 
@@ -77,6 +77,7 @@ if ((isset($division)) && ($division !== 'All')) {
 			$ln = $row['last_name'];
 			$fn = $row['first_name'];
 			$empno = $row['employee_number'];
+			$assignment_id = $row['assignment_id'];
 			echo '<tr><td rowspan="2">'.$ln.', '.$fn.'</td>';
 			$counter = 0;
 			foreach ($payperiods as $pp_id=>$dates){
@@ -111,6 +112,7 @@ if ((isset($division)) && ($division !== 'All')) {
 				echo '<td><form action="view_emp_timesheet" method="post">
 					<input type="hidden" name="employee_name" value="'.$fn.' '.$ln.'"/>
 					<input type="hidden" name="employee_number" value="'.$empno.'"/>
+					<input type="hidden" name="assignment_id" value="'.$assignment_id.'"/>
 					<input type="hidden" name="pp_id" value="'.$pp_id.'"/>
 					<input type="hidden" name="pp_start_date" value="'.$dates[0].'"/>
 					<input type="submit" name="submit" value="View" />
@@ -125,8 +127,8 @@ if ((isset($division)) && ($division !== 'All')) {
 		}
 	}
 else{
-	$query = "SELECT last_name, first_name, employee_number FROM employees WHERE active='Active'
-		ORDER BY last_name asc";
+	$query = "SELECT last_name, first_name, e.employee_number, assignment_id FROM employees e, logins l WHERE active='Active'
+		and e.employee_number = l.employee_number ORDER BY last_name asc";
 	$result = mysql_query($query) or die(mysql_error($dbc));
 	$num = mysql_num_rows ($result);
 
@@ -138,10 +140,11 @@ else{
 			$ln = $row['last_name'];
 			$fn = $row['first_name'];
 			$empno = $row['employee_number'];
+			$assignment_id = $row['assignment_id'];
 			echo '<tr><td rowspan="2">'.$ln.', '.$fn.'</td>';
 			$counter = 0;
 			foreach ($payperiods as $pp_id=>$dates){
-				$query1 = "SELECT * from timesheet_confirm WHERE employee_number='$empno' and pp_id='$pp_id'";
+				$query1 = "SELECT * from timesheet_confirm WHERE employee_number='$empno' and pp_id='$pp_id' and assignment_id = '$assignment_id'";
 				$result1 = mysql_query($query1);
 				if (($result1)&&(mysql_num_rows($result1) == 1)){
 					while($row1 = mysql_fetch_array($result1, MYSQL_ASSOC)){
@@ -172,6 +175,7 @@ else{
 				echo '<td><form action="view_emp_timesheet" method="post">
 					<input type="hidden" name="employee_name" value="'.$fn.' '.$ln.'"/>
 					<input type="hidden" name="employee_number" value="'.$empno.'"/>
+					<input type="hidden" name="assignment_id" value="'.$assignment_id.'"/>
 					<input type="hidden" name="pp_id" value="'.$pp_id.'"/>
 					<input type="hidden" name="pp_start_date" value="'.$dates[0].'"/>
 					<input type="submit" name="submit" value="View" />

@@ -58,6 +58,13 @@ if (isset($_POST['employee_number'])){
 if (isset($_SESSION['employee_number'])){
 	$empno = $_SESSION['employee_number'];
 	}
+if (isset($_POST['assignment_id'])){
+	$assignment_id = $_POST['assignment_id'];
+	$_SESSION['assignment_id'] = $assignment_id;
+	}
+if (isset($_SESSION['assignment_id'])){
+	$assignment_id = $_SESSION['assignment_id'];
+	}
 if (isset($_POST['pp_id'])){
 	$pp_id = $_POST['pp_id'];
 	$_SESSION['pp_id'] = $pp_id;
@@ -75,18 +82,18 @@ while ($row = mysql_fetch_array($result, MYSQL_ASSOC)){
 $page_title = "Employee Timesheet | ".$employee_name;
 	
 if (isset($_POST['approved'])){
-	$query2 = "SELECT * from timesheet_confirm WHERE employee_number='$empno' and pp_id='$pp_id'";
+	$query2 = "SELECT * from timesheet_confirm WHERE employee_number='$empno' and pp_id='$pp_id' and assignment_id='$assignment_id'";
 	$result2 = mysql_query($query2);
 	if (($result2)&&(mysql_num_rows($result2) == 0)){
-		$query = "INSERT into timesheet_confirm (employee_number, pp_id, employee_confirm, supervisor_approve) 
-			VALUES ('$empno','$pp_id','N','Y')";
+		$query = "INSERT into timesheet_confirm (employee_number, assignment_id, pp_id, employee_confirm, supervisor_approve) 
+			VALUES ('$empno','$assignment_id','$pp_id','N','Y')";
 		}
 	else{
-		$query = "UPDATE timesheet_confirm set supervisor_approve='Y' WHERE employee_number='$empno' and pp_id='$pp_id'";
+		$query = "UPDATE timesheet_confirm set supervisor_approve='Y' WHERE employee_number='$empno' and pp_id='$pp_id' and assignment_id='$assignment_id'";
 		}
 	$result = mysql_query($query);
 	
-	$query1 = "UPDATE time_entry set locked='Yes' WHERE employee_number='$empno' and pp_id='$pp_id'";
+	$query1 = "UPDATE time_entry set locked='Yes' WHERE employee_number='$empno' and pp_id='$pp_id' and assignment_id='$assignment_id'";
 	$result1 = mysql_query($query1);
 	
 	$_SESSION['timesheet_approved'] = TRUE;
@@ -123,7 +130,7 @@ while ($row = mysql_fetch_assoc($result)) {
 //Get previous entries
 $previous = array();
 $query = "SELECT * from time_entry WHERE employee_number='$empno' and entry_date>='$pp_start_date'
-	and entry_date<='$pp_end_date'";
+	and entry_date<='$pp_end_date' and assignment_id='$assignment_id'";
 $result = mysql_query($query);
 if (($result) && (mysql_num_rows($result)!=0)){
 	while($row = mysql_fetch_array($result, MYSQL_ASSOC)){
@@ -843,12 +850,14 @@ echo '<form action="edit_emp_timesheet" method="post" style="float:left;margin-r
 	<input type="hidden" name="pp_id" value="'.$pp_id.'"/>
 	<input type="hidden" name="pp_start_date" value="'.$pp_start_date.'"/>
 	<input type="hidden" name="employee_number" value="'.$empno.'"/>
+	<input type="hidden" name="assignment_id" value="'.$assignment_id.'"/>
 	<input type="hidden" name="employee_name" value="'.$employee_name.'"/>
 	<input type="submit" name="submit" value="Edit" /></form>';
 echo '<form action="view_emp_timesheet" method="post">
 	<input type="hidden" name="pp_id" value="'.$pp_id.'"/>
 	<input type="hidden" name="pp_start_date" value="'.$pp_start_date.'"/>
 	<input type="hidden" name="employee_number" value="'.$empno.'"/>
+	<input type="hidden" name="assignment_id" value="'.$assignment_id.'"/>
 	<input type="hidden" name="employee_name" value="'.$employee_name.'"/>
 	<input type="hidden" name="approved" value="TRUE"/>
 	<input type="submit" name="submit" value="Approve Timesheet" /></form>';
