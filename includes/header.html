@@ -108,6 +108,7 @@
 	<script type="text/javascript">
 	$(document).ready(function() {
 		$("#datepicker").datepicker();
+		$("#datepicker_mobile").datepicker();
 		$(".datepick").datepicker();
 		});
 	</script>
@@ -297,7 +298,7 @@ elseif ($_SESSION['role'] == 'Subs'){
 						<ul>
 							<li>
 								<a><form action="/scheduler2/" method="post">
-									<input id="datepicker" onChange="this.form.submit()" name="date" placeholder="Tap to choose" readonly="readonly"/>
+									<input id="datepicker_mobile" onChange="this.form.submit()" name="date" placeholder="Tap to choose" readonly="readonly"/>
 								</form></a>
 							</li>
 						</ul>
