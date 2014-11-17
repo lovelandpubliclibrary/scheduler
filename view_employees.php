@@ -7,6 +7,16 @@ if (isset($_SESSION['came_from'])){
 	$came_from = $_SESSION['came_from'];
 	}
 
+if (isset($_POST['division'])) {
+	$_SESSION['emp_division'] = $_POST['division'];
+	header ('Location: view_employees');
+	}
+elseif (isset($_SESSION['emp_division'])){
+	$division = $_SESSION['emp_division'];
+	}
+else{
+	}
+	
 include('./includes/allsessionvariables.php');
 include ('./includes/header.html');
 echo '<div id="mobilehack">';
@@ -20,8 +30,6 @@ if (($came_from == 'edit_employee') && (isset($_SESSION['success']))){
 	$name = $_SESSION['edit_employee_name'];
 	$empn = $_SESSION['edit_employee_number'];
 	echo '<div class="message"><b>'. $name . '</b> has been updated.</div>';
-	unset($_SESSION['edit_employee_name']);
-	unset($_SESSION['edit_employee_number']);
 	unset($_SESSION['success']);
 	}
 ?>
@@ -77,9 +85,6 @@ if (isset($_POST['delete'])){
 	echo '<div class="message"><b>'. $name . '</b> has been deleted.</div>';
 	}
 
-if (isset($_POST['submitted'])) {$division = $_POST['division'];
-	}
-
 echo '<form action="view_employees" method="post">
 	<p class="divform">Division: 
 		<select name="division" onchange="this.form.submit();">
@@ -92,12 +97,11 @@ foreach ($divisions as $key => $d){
 	echo '>' . $d . '</option>';
 	}
 echo '</select>
-		<input type="hidden" name="submitted" value="TRUE" />
 		<br/><i>Click column header to re-sort</i>
 	</p>
 </form>';
 
-if ((isset($_POST['submitted'])) && ($division !== 'All')) {
+if ((isset($division)) && ($division !== 'All')) {
 	
 	$query = "SELECT last_name, first_name, employee_number, exempt_status, weekly_hours, division, 
 		home_phone, mobile_phone FROM employees WHERE division='$division' and active='Active'
@@ -123,7 +127,7 @@ if ((isset($_POST['submitted'])) && ($division !== 'All')) {
 			<input type="hidden" name="employee_number" value="' . $row['employee_number'] . '"/>
 			<input type="hidden" name="employee_name" value="' . $row['first_name'] . ' ' . $row['last_name'] . '"/>
 			<input type="hidden" name="delete" value="TRUE" />
-			<input type="hidden" name="submitted" value="' . $_POST['submitted'] . '" />
+			<input type="hidden" name="submitted" value="TRUE" />
 			<input type="hidden" name="division" value="' . $division . '" />
 			<input type="submit" name="deletesub" value="Delete" /></form>
 			</td></tr>';
@@ -159,6 +163,7 @@ else{
 			<td><form action="edit_employee" method="post">
 			<input type="hidden" name="employee_name" value="' . $row['first_name'] . ' ' . $row['last_name'] . '"/>
 			<input type="hidden" name="employee_number" value="' . $row['employee_number'] . '"/>
+			<input type="hidden" name="from_view_emp" value="TRUE"/>
 			<input type="submit" name="submit" value="Edit" /></form></td>
 			<td><form action="view_employees" method="post" onsubmit="return deleteEmployee(this)">
 			<input type="hidden" name="employee_number" value="' . $row['employee_number'] . '"/>

@@ -34,44 +34,28 @@ include('./includes/supersessionstart.php');
 if (isset($_SESSION['came_from'])){
 	$came_from = $_SESSION['came_from'];
 	}
-
-/*if ((!isset($came_from)) || (!isset($_POST['submit']))){
-	header ('Location: approve_timesheets');
-	}*/
 	
 if (($came_from != 'approve_timesheets') && ($came_from != 'view_emp_timesheet') && ($came_from != 'edit_emp_timesheet')){
 	header ('Location: approve_timesheets');
 	}
 
 include('./includes/allsessionvariables.php');
-if (isset($_POST['employee_name'])){
-	$employee_name = $_POST['employee_name'];
-	$_SESSION['employee_name'] = $employee_name;
+if (isset($_POST['from_approve'])){
+	$_SESSION['pp_id'] = $_POST['pp_id'];
+	$_SESSION['pp_start_date'] = $_POST['pp_start_date'];
+	$_SESSION['employee_name'] = $_POST['employee_name'];
+	$_SESSION['employee_number'] = $_POST['employee_number'];
+	$_SESSION['assignment_id'] = $_POST['assignment_id'];
+	header('Location:view_emp_timesheet');
 	}
-if (isset($_SESSION['employee_name'])){
+else{
+	$pp_id = $_SESSION['pp_id'];
+	$pp_start_date = $_SESSION['pp_start_date'];
 	$employee_name = $_SESSION['employee_name'];
-	}
-if (isset($_POST['employee_number'])){
-	$empno = $_POST['employee_number'];
-	$_SESSION['employee_number'] = $empno;
-	}
-if (isset($_SESSION['employee_number'])){
 	$empno = $_SESSION['employee_number'];
-	}
-if (isset($_POST['assignment_id'])){
-	$assignment_id = $_POST['assignment_id'];
-	$_SESSION['assignment_id'] = $assignment_id;
-	}
-if (isset($_SESSION['assignment_id'])){
 	$assignment_id = $_SESSION['assignment_id'];
 	}
-if (isset($_POST['pp_id'])){
-	$pp_id = $_POST['pp_id'];
-	$_SESSION['pp_id'] = $pp_id;
-	}
-if (isset($_SESSION['pp_id'])){
-	$pp_id = $_SESSION['pp_id'];
-	}
+	
 $query = "SELECT weekly_hours, division from employees WHERE employee_number='$empno'";
 $result = mysql_query($query);
 while ($row = mysql_fetch_array($result, MYSQL_ASSOC)){
@@ -102,14 +86,6 @@ if (isset($_POST['approved'])){
 	
 include ('./includes/header.html');
 include ('./includes/supersidebar.html');
-	
-if (isset($_POST['pp_start_date'])){
-	$pp_start_date = $_POST['pp_start_date'];
-	$_SESSION['pp_start_date'] = $pp_start_date;
-	}
-if (isset($_SESSION['pp_start_date'])){
-	$pp_start_date = $_SESSION['pp_start_date'];
-	}
 	
 $pp_start_friendly = date('j M Y', strtotime($pp_start_date));
 $pp_midweek_end_date = strtotime('+6days', strtotime($pp_start_date));

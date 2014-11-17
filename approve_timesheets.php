@@ -7,6 +7,14 @@ if (isset($_SESSION['came_from'])){
 	$came_from = $_SESSION['came_from'];
 	}
 
+if (isset($_POST['division'])) {
+	$_SESSION['timesheet_view_div'] = $_POST['division'];
+	header('Location:approve_timesheets');
+	}
+elseif (isset($_SESSION['timesheet_view_div'])){
+	$division = $_SESSION['timesheet_view_div'];
+	}	
+	
 include('./includes/allsessionvariables.php');
 include ('./includes/header.html');
 include ('./includes/supersidebar.html');
@@ -27,13 +35,6 @@ while ($row = mysql_fetch_array($result, MYSQL_ASSOC)){
 	}
 ksort($payperiods);
 
-if (isset($_SESSION['timesheet_view_div'])){
-	$division = $_SESSION['timesheet_view_div'];
-	}
-if (isset($_POST['submitted'])) {
-	$division = $_POST['division'];
-	}
-
 echo '<div class="wideview">
 	<span class="date"><h1>'.$page_title.'</h1></span>';
 
@@ -41,9 +42,6 @@ if (($came_from == 'view_emp_timesheet') && (isset($_SESSION['timesheet_approved
 	$pp_start_date = $_SESSION['pp_start_date'];
 	$employee_name = $_SESSION['employee_name'];
 	echo '<div class="message">The timesheet for '.$employee_name.' starting '.$pp_start_date.' has been approved.</div>';
-	unset($_SESSION['pp_id']);
-	unset($_SESSION['pp_start_date']);
-	unset($_SESSION['employee_name']);
 	unset($_SESSION['timesheet_approved']);
 	}
 echo '<form action="approve_timesheets" method="post">
@@ -58,15 +56,13 @@ foreach ($divisions as $k=>$v){
 	echo '>'.$v.'</option>';
 	}
 echo '</select>
-		<input type="hidden" name="submitted" value="TRUE" />
 	</p>
 </form>';
 
 if ((isset($division)) && ($division !== 'All')) {
-	$_SESSION['timesheet_view_div'] = $division;
 	
 	$query = "SELECT last_name, first_name, e.employee_number, assignment_id FROM employees e, logins l WHERE active='Active'
-		and e.employee_number = l.employee_number ORDER BY last_name asc";
+		and e.employee_number = l.employee_number and division='$division' ORDER BY last_name asc";
 	$result = mysql_query($query) or die(mysql_error($dbc));
 	$num = mysql_num_rows ($result);
 
@@ -127,6 +123,7 @@ if ((isset($division)) && ($division !== 'All')) {
 		}
 	}
 else{
+	unset($_SESSION['timesheet_view_div']);
 	$query = "SELECT last_name, first_name, e.employee_number, assignment_id FROM employees e, logins l WHERE active='Active'
 		and e.employee_number = l.employee_number ORDER BY last_name asc";
 	$result = mysql_query($query) or die(mysql_error($dbc));
@@ -178,6 +175,7 @@ else{
 					<input type="hidden" name="assignment_id" value="'.$assignment_id.'"/>
 					<input type="hidden" name="pp_id" value="'.$pp_id.'"/>
 					<input type="hidden" name="pp_start_date" value="'.$dates[0].'"/>
+					<input type="hidden" name="from_approve" value="TRUE"/>
 					<input type="submit" name="submit" value="View" />
 					</form></td></tr>';
 				$counter++;

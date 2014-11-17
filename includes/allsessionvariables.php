@@ -1,6 +1,7 @@
 <?php
 $from = $_SERVER['REQUEST_URI'];
 $_SESSION['came_from'] = substr($from, strrpos($from,'/')+1);
+$_SESSION['came_from'] = trim(strtok($_SESSION['came_from'], '?'));
 
 $divisions = array();
 require_once ('../mysql_connect_sched2.php'); //Connect to the db.

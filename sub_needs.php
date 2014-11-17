@@ -7,13 +7,6 @@ if (isset($_SESSION['came_from'])){
 	}
 
 include('./includes/allsessionvariables.php');
-include ('./includes/header.html');
-if (($_SESSION['role'] == 'Admin')||($_SESSION['role'] == 'Supervisor')){
-	include ('./includes/supersidebar.html');
-	}
-else {
-	include ('./includes/sidebar.html');
-	}
 
 $division = 'All';	
 	
@@ -33,6 +26,18 @@ function subs(){
 $subs = subs();
 
 if (($_SESSION['role'] == 'Admin')||($_SESSION['role'] == 'Supervisor')){
+	if (isset($_POST['sub_div'])) {
+		$_SESSION['sub_needs_division'] = $_POST['division'];
+		header ('Location: sub_needs');
+		}
+	elseif (isset($_SESSION['sub_needs_division'])){
+		$division = $_SESSION['sub_needs_division'];
+		}
+	else{
+		}
+		
+	include ('./includes/header.html');
+	include ('./includes/supersidebar.html');
 ?>
 	<script>
 	function confirmSub(theForm){
@@ -185,14 +190,11 @@ if (($_SESSION['role'] == 'Admin')||($_SESSION['role'] == 'Supervisor')){
 		echo '<div class="message">Sub shift on <b>' . $short_date . '</b> has been deleted.</div>';
 		}
 		
-	if (isset($_POST['sub_div'])) {
-		$division = $_POST['division'];
-		$_SESSION['sub_needs_division'] = $division;
-		}
 	$div = array('All', 'Adult', 'Children', 'Customer Service', 'LTI', 'Teen');
 	echo '<form action="sub_needs" method="post">
 		<p class="divform">Sub Request Division: 
 			<select name="division" onchange="this.form.submit();">';
+			echo $division;
 	foreach ($div as $key => $d){
 		echo '<option value="' . $d . '" ';
 		if (isset($division)){
@@ -385,6 +387,8 @@ if (($_SESSION['role'] == 'Admin')||($_SESSION['role'] == 'Supervisor')){
 	echo '</div>';
 	}
 elseif ($_SESSION['role'] == 'Subs'){
+	include ('./includes/header.html');
+	include ('./includes/sidebar.html');
 ?>
 	<script>
 	$(document).ready(function(){

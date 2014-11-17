@@ -6,16 +6,25 @@ include('./includes/supersessionstart.php');
 if (isset($_SESSION['came_from'])){
 	$came_from = $_SESSION['came_from'];
 	}
+if (isset($_SESSION['view_past'])){
+	unset($_SESSION['view_past']);
+	}
 
+if (isset($_POST['division'])) {
+	$_SESSION['cov_division'] = $_POST['division'];
+	header ('Location: view_coverage');
+	}
+elseif (isset($_SESSION['cov_division'])){
+	$division = $_SESSION['cov_division'];
+	}
+else{
+	}
 include('./includes/allsessionvariables.php');
 include ('./includes/header.html');
 include ('./includes/supersidebar.html');
 
 $today= date('Y-m-d');
 
-if (isset($_POST['submitted'])) {
-	$division = $_POST['division'];
-	}
 ?>
 <script>
 function deletecoverage()
@@ -39,10 +48,6 @@ if (($came_from == 'edit_coverage') && (isset($_SESSION['success']))){
 	$tid = $_SESSION['coverage_id'];
 	$d = $_SESSION['coverage_date'];
 	echo '<div class="message"><b>Coverage by</b> '. $name . ' on ' . $d . ' has been updated.</div>';
-	unset($_SESSION['coverage_employee_name']);
-	unset($_SESSION['coverage_employee_number']);
-	unset($_SESSION['coverage_id']);
-	unset($_SESSION['coverage_date']);
 	unset($_SESSION['success']);
 	}
 	
@@ -198,6 +203,7 @@ if ((isset($division)) && ($division !== 'All')) {
 					<input type="hidden" name="coverage_id" value="' . $coverage_id . '"/>
 					<input type="hidden" name="came_from" value="' . $_SERVER['REQUEST_URI'] . '" />
 					<input type="hidden" name="date" value="' . $cmonth . ' ' . $cday . $cyear . '"/>
+					<input type="hidden" name="from_view" value="TRUE"/>
 					<input type="submit" name="submit" value="Edit" /></form></td>
 					<td><form action="view_coverage" method="post" onsubmit="return deletecoverage()">
 					<input type="hidden" name="employee_number" value="' . $empno . '"/>
@@ -340,6 +346,7 @@ else {
 					<input type="hidden" name="employee_name" value="' . $first_name . ' ' . $last_name . '"/>
 					<input type="hidden" name="coverage_id" value="' . $coverage_id . '"/>
 					<input type="hidden" name="date" value="' . $cmonth . ' ' . $cday . $cyear . '"/>
+					<input type="hidden" name="from_view" value="TRUE"/>
 					<input type="submit" name="submit" value="Edit" /></form></td>
 					<td><form action="view_coverage" method="post" onsubmit="return deletecoverage()">
 					<input type="hidden" name="employee_number" value="' . $empno . '"/>

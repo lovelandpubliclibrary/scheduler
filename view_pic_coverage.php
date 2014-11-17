@@ -32,10 +32,6 @@ if (($came_from == 'edit_pic_coverage') && (isset($_SESSION['success']))){
 	$pid = $_SESSION['pic_coverage_id'];
 	$d = $_SESSION['pic_coverage_date'];
 	echo '<div class="message"><b>PIC coverage</b> on ' . $d . ' has been updated to '. $name . '.</div>';
-	unset($_SESSION['pic_coverage_name']);
-	unset($_SESSION['pic_coverage_id']);
-	unset($_SESSION['pic_coverage_date']);
-	unset($_SESSION['employee_number']);
 	unset($_SESSION['success']);
 	}
 
@@ -81,6 +77,7 @@ if ($result){
 				<input type="hidden" name="first_name" value="' . $first_name  . '"/>
 				<input type="hidden" name="came_from" value="' . $_SERVER['REQUEST_URI'] . '" />
 				<input type="hidden" name="date" value="' . $cmonth . ' ' . $cday . $cyear . '"/>
+				<input type="hidden" name="from_view_pic" value="TRUE"/>
 				<input type="submit" name="submit" value="Edit" /></form></td>
 				<td><form action="view_pic_coverage" method="post" onsubmit="return deletecoverage()">
 				<input type="hidden" name="pic_coverage_id" value="' . $pic_coverage_id . '"/>

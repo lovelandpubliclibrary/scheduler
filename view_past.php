@@ -18,6 +18,48 @@ if (isset($_SESSION['view_past'])){
 	unset($_SESSION['view_past']);
 	}
 
+if ($came_from == 'view_past'){
+	if (isset($_POST['timeoff_division'])){
+		$_SESSION['timeoff_div'] = $_POST['timeoff_division'];
+		header ('Location: view_past');
+		}
+	elseif ($_SESSION['timeoff_div'] !== 'All'){
+		$timeoff_div = $_SESSION['timeoff_div'];
+		}
+	else{
+		$timeoff_div = 'All';
+		}
+	}
+else{
+	if ($_SESSION['timeoff_div'] !== 'All'){
+		$timeoff_div = $_SESSION['timeoff_div'];
+		}
+	else{
+		$timeoff_div = 'All';
+		}
+	}
+
+if ($came_from == 'view_past'){
+	if (isset($_POST['coverage_division'])){
+		$_SESSION['coverage_div'] = $_POST['coverage_division'];
+		header ('Location: view_past');
+		}
+	elseif ($_SESSION['coverage_div'] !== 'All'){
+		$coverage_div = $_SESSION['coverage_div'];
+		}
+	else{
+		$coverage_div = 'All';
+		}
+	}
+else{
+	if ($_SESSION['coverage_div'] !== 'All'){
+		$coverage_div = $_SESSION['coverage_div'];
+		}
+	else{
+		$coverage_div = 'All';
+		}
+	}
+	
 include('./includes/allsessionvariables.php');
 include ('./includes/header.html');
 include ('./includes/supersidebar.html');
@@ -56,31 +98,7 @@ if (($came_from == 'edit_timeoff') && (isset($_SESSION['success']))){
 	$tid = $_SESSION['timeoff_id'];
 	$d = $_SESSION['timeoff_date'];
 	echo '<div class="message"><b>Timeoff for</b> '. $name . ' starting ' . $d . ' has been updated.</div>';
-	unset($_SESSION['timeoff_employee_name']);
-	unset($_SESSION['timeoff_employee_number']);
-	unset($_SESSION['timeoff_id']);
-	unset($_SESSION['timeoff_date']);
 	unset($_SESSION['success']);
-	}
-	
-if ($came_from == 'view_past'){
-	if (isset($_POST['timeoff_division'])){
-		$timeoff_div = $_POST['timeoff_division'];
-		}
-	elseif ($_SESSION['timeoff_div'] !== 'All'){
-		$timeoff_div = $_SESSION['timeoff_div'];
-		}
-	else{
-		$timeoff_div = 'All';
-		}
-	}
-else{
-	if ($_SESSION['timeoff_div'] !== 'All'){
-		$timeoff_div = $_SESSION['timeoff_div'];
-		}
-	else{
-		$timeoff_div = 'All';
-		}
 	}
 	
 if (isset($_POST['timeoff_delete'])){
@@ -300,6 +318,7 @@ if (((isset($_POST['submitted'])) && (isset($_POST['timeoff'])) && ($_POST['time
 					<input type="hidden" name="timeoff_id" value="' . $timeoff_id . '"/>
 					<input type="hidden" name="came_from" value="' . $_SERVER['REQUEST_URI'] . '" />
 					<input type="hidden" name="date" value="' . $tosmonth . ' ' . $tosday . $tosyear . '"/>
+					<input type="hidden" name="from_view" value="TRUE"/>
 					<input type="submit" name="submit" value="Edit" /></form></td>
 					<td><form action="view_past" method="post" onsubmit="return deleteTimeoff()">
 					<input type="hidden" name="employee_number" value="' . $empno . '"/>
@@ -497,6 +516,7 @@ else {
 					<input type="hidden" name="timeoff_id" value="' . $timeoff_id . '"/>
 					<input type="hidden" name="came_from" value="' . $_SERVER['REQUEST_URI'] . '" />
 					<input type="hidden" name="date" value="' . $tosmonth . ' ' . $tosday . $tosyear . '"/>
+					<input type="hidden" name="from_view" value="TRUE"/>
 					<input type="submit" name="submit" value="Edit" /></form></td>
 					<td><form action="view_past" method="post" onsubmit="return deleteTimeoff()">
 					<input type="hidden" name="employee_number" value="' . $empno . '"/>
@@ -524,31 +544,7 @@ if (($came_from == 'edit_coverage') && (isset($_SESSION['success']))){
 	$tid = $_SESSION['coverage_id'];
 	$d = $_SESSION['coverage_date'];
 	echo '<div class="message"><b>Coverage by</b> '. $name . ' on ' . $d . ' has been updated.</div>';
-	unset($_SESSION['coverage_employee_name']);
-	unset($_SESSION['coverage_employee_number']);
-	unset($_SESSION['coverage_id']);
-	unset($_SESSION['coverage_date']);
 	unset($_SESSION['success']);
-	}
-
-if ($came_from == 'view_past'){
-	if (isset($_POST['coverage_division'])){
-		$coverage_div = $_POST['coverage_division'];
-		}
-	elseif ($_SESSION['coverage_div'] !== 'All'){
-		$coverage_div = $_SESSION['coverage_div'];
-		}
-	else{
-		$coverage_div = 'All';
-		}
-	}
-else{
-	if ($_SESSION['coverage_div'] !== 'All'){
-		$coverage_div = $_SESSION['coverage_div'];
-		}
-	else{
-		$coverage_div = 'All';
-		}
 	}
 	
 if (isset($_POST['coverage_delete'])){
@@ -712,6 +708,7 @@ if ((isset($_POST['submitted'])) && (isset($_POST['coverage'])) && ($_POST['cove
 					<input type="hidden" name="coverage_id" value="' . $coverage_id . '"/>
 					<input type="hidden" name="came_from" value="' . $_SERVER['REQUEST_URI'] . '" />
 					<input type="hidden" name="date" value="' . $cmonth . ' ' . $cday . $cyear . '"/>
+					<input type="hidden" name="from_view" value="TRUE"/>
 					<input type="submit" name="submit" value="Edit" /></form></td>
 					<td><form action="view_past" method="post" onsubmit="return deletecoverage()">
 					<input type="hidden" name="employee_number" value="' . $empno . '"/>
@@ -856,6 +853,7 @@ else {
 					<input type="hidden" name="employee_name" value="' . $first_name . ' ' . $last_name . '"/>
 					<input type="hidden" name="coverage_id" value="' . $coverage_id . '"/>
 					<input type="hidden" name="date" value="' . $cmonth . ' ' . $cday . $cyear . '"/>
+					<input type="hidden" name="from_view" value="TRUE"/>
 					<input type="submit" name="submit" value="Edit" /></form></td>
 					<td><form action="view_past" method="post" onsubmit="return deletecoverage()">
 					<input type="hidden" name="employee_number" value="' . $empno . '"/>

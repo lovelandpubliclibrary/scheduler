@@ -7,34 +7,24 @@ if ($came_from == 'view_past'){
 	$_SESSION['view_past'] = TRUE;
 	}
 
-if ((!isset($came_from)) || (!isset($_POST['submit']))){
-	header ('Location: view_timeoff');
-	}
-
 if (($came_from != 'view_timeoff') && ($came_from != 'edit_timeoff') && ($came_from != 'view_past')){
 	header ('Location: view_timeoff');
 	}
 
 include('./includes/allsessionvariables.php');
 
-if (isset($_POST['employee_name'])){
-	$employee=$_POST['employee_name'];
-	$_SESSION['timeoff_employee_name'] = $employee;
+if (isset($_POST['from_view'])){
+	$_SESSION['timeoff_employee_name'] = $_POST['employee_name'];
+	$_SESSION['timeoff_employee_number'] = $_POST['employee_number'];
+	$_SESSION['timeoff_date'] = $_POST['date'];
+	$_SESSION['timeoff_id'] = $_POST['timeoff_id'];
+	header('Location:edit_timeoff');
 	}
-
-if (isset($_POST['employee_number'])){
-	$empno=$_POST['employee_number'];
-	$_SESSION['timeoff_employee_number'] = $empno;
-	}
-	
-if (isset($_POST['date'])){
-	$date = $_POST['date'];
-	$_SESSION['timeoff_date'] = $date;
-	}
-	
-if (isset($_POST['timeoff_id'])){
-	$timeoff_id = $_POST['timeoff_id'];
-	$_SESSION['timeoff_id'] = $timeoff_id;
+else{
+	$employee = $_SESSION['timeoff_employee_name'];
+	$empno = $_SESSION['timeoff_employee_number'];
+	$date = $_SESSION['timeoff_date'];
+	$timeoff_id = $_SESSION['timeoff_id'] ;
 	}
 
 $query = "SELECT first_name, last_name, e.employee_number, timeoff_id,

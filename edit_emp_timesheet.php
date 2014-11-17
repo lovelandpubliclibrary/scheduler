@@ -31,10 +31,6 @@ function dates_between_inclusive($start_date, $end_date){
 
 include('./includes/sessionstart.php');
 $came_from = $_SESSION['came_from'];
-
-if ((!isset($came_from)) || (!isset($_POST['submit']))){
-	header ('Location: approve_timesheets');
-	}
 	
 if (($came_from != 'approve_timesheets') && ($came_from != 'view_emp_timesheet') && ($came_from != 'edit_emp_timesheet')){
 	header ('Location: approve_timesheets');
@@ -43,12 +39,21 @@ if (($came_from != 'approve_timesheets') && ($came_from != 'view_emp_timesheet')
 include('./includes/allsessionvariables.php');
 
 if (isset($_POST['pp_id'])){
-	$pp_id=$_POST['pp_id'];
+	$_SESSION['pp_id'] = $_POST['pp_id'];
+	$_SESSION['pp_start_date'] = $_POST['pp_start_date'];
+	$_SESSION['employee_name'] = $_POST['employee_name'];
+	$_SESSION['employee_number'] = $_POST['employee_number'];
+	$_SESSION['assignment_id'] = $_POST['assignment_id'];
+	header('Location:edit_emp_timesheet');
+	}
+else{
+	$pp_id = $_SESSION['pp_id'];
+	$pp_start_date = $_SESSION['pp_start_date'];
+	$employee_name = $_SESSION['employee_name'];
+	$empno = $_SESSION['employee_number'];
+	$assignment_id = $_SESSION['assignment_id'];
 	}
 
-$employee_name = $_POST['employee_name'];
-$empno = $_POST['employee_number'];
-$assignment_id = $_POST['assignment_id'];
 $query = "SELECT weekly_hours, division from employees WHERE employee_number='$empno'";
 $result = mysql_query($query);
 while ($row = mysql_fetch_array($result, MYSQL_ASSOC)){
@@ -56,16 +61,13 @@ while ($row = mysql_fetch_array($result, MYSQL_ASSOC)){
 	$emp_division = $row['division'];
 	}
 	
-if (isset($_POST['pp_start_date'])){
-	$pp_start_date = $_POST['pp_start_date'];
-	$pp_start_friendly = date('j M Y', strtotime($pp_start_date));
-	$pp_midweek_end_date = strtotime('+6days', strtotime($pp_start_date));
-	$pp_midweek_end_date = date('Y-m-d' , $pp_midweek_end_date );
-	$pp_midweek_start_date = strtotime('+7days', strtotime($pp_start_date));
-	$pp_midweek_start_date = date('Y-m-d' , $pp_midweek_start_date );
-	$pp_end_date = strtotime('+13days', strtotime($pp_start_date));
-	$pp_end_date = date('Y-m-d' , $pp_end_date );
-	}
+$pp_start_friendly = date('j M Y', strtotime($pp_start_date));
+$pp_midweek_end_date = strtotime('+6days', strtotime($pp_start_date));
+$pp_midweek_end_date = date('Y-m-d' , $pp_midweek_end_date );
+$pp_midweek_start_date = strtotime('+7days', strtotime($pp_start_date));
+$pp_midweek_start_date = date('Y-m-d' , $pp_midweek_start_date );
+$pp_end_date = strtotime('+13days', strtotime($pp_start_date));
+$pp_end_date = date('Y-m-d' , $pp_end_date );
 	
 if (isset($_POST['confirmed'])){
 	$time_entry = $_POST['time_entry'];

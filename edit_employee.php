@@ -1,26 +1,22 @@
 <?php # edit_employee.php
 include('./includes/supersessionstart.php');
 $came_from = $_SESSION['came_from'];
-
-if ((!isset($came_from)) || (!isset($_POST['submit']))){
-	header ('Location: view_employees');
-	}
 	
 if (($came_from != 'view_employees') && ($came_from != 'edit_employee')){
 	header ('Location: view_employees');
 	}
 
-if (isset($_POST['employee_name'])){
-	$employee=$_POST['employee_name'];
+if (isset($_POST['from_view_emp'])){
+	$_SESSION['edit_employee_name'] = $_POST['employee_name'];
+	$_SESSION['edit_employee_number'] = $_POST['employee_number'];
+	header('Location:edit_employee');
 	}
-
-if (isset($_POST['employee_number'])){
-	$empno=$_POST['employee_number'];
+else{
+	$employee = $_SESSION['edit_employee_name'];
+	$empno = $_SESSION['edit_employee_number'];
 	}
 	
 include('./includes/allsessionvariables.php');
-$_SESSION['edit_employee_name'] = $employee;
-$_SESSION['edit_employee_number'] = $empno; 
 
 require_once ('../mysql_connect_sched2.php'); //Connect to the db.
 

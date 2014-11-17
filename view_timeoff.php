@@ -6,16 +6,24 @@ include('./includes/supersessionstart.php');
 if (isset($_SESSION['came_from'])){
 	$came_from = $_SESSION['came_from'];
 	}
-
+if (isset($_SESSION['view_past'])){
+	unset($_SESSION['view_past']);
+	}
+	
+if (isset($_POST['division'])) {
+	$_SESSION['timeoff_division'] = $_POST['division'];
+	header ('Location: view_timeoff');
+	}
+elseif (isset($_SESSION['timeoff_division'])){
+	$division = $_SESSION['timeoff_division'];
+	}
+else{
+	}
 include('./includes/allsessionvariables.php');
 include ('./includes/header.html');
 include ('./includes/supersidebar.html');
 
 $today= date('Y-m-d');
-
-if (isset($_POST['submitted'])) {
-	$division = $_POST['division'];
-	}
 
 ?>
 <script>
@@ -40,10 +48,6 @@ if (($came_from == 'edit_timeoff') && (isset($_SESSION['success']))){
 	$tid = $_SESSION['timeoff_id'];
 	$d = $_SESSION['timeoff_date'];
 	echo '<div class="message"><b>Timeoff for</b> '. $name . ' starting ' . $d . ' has been updated.</div>';
-	unset($_SESSION['timeoff_employee_name']);
-	unset($_SESSION['timeoff_employee_number']);
-	unset($_SESSION['timeoff_id']);
-	unset($_SESSION['timeoff_date']);
 	unset($_SESSION['success']);
 	}
 	
@@ -251,6 +255,7 @@ if ((isset($division)) && ($division !== 'All')) {
 					<input type="hidden" name="timeoff_id" value="' . $timeoff_id . '"/>
 					<input type="hidden" name="came_from" value="' . $_SERVER['REQUEST_URI'] . '" />
 					<input type="hidden" name="date" value="' . $tosmonth . ' ' . $tosday . $tosyear . '"/>
+					<input type="hidden" name="from_view" value="TRUE"/>
 					<input type="submit" name="submit" value="Edit" /></form></td>
 					<td><form action="view_timeoff" method="post" onsubmit="return deleteTimeoff()">
 					<input type="hidden" name="employee_number" value="' . $empno . '"/>
@@ -447,6 +452,7 @@ else {
 					<input type="hidden" name="timeoff_id" value="' . $timeoff_id . '"/>
 					<input type="hidden" name="came_from" value="' . $_SERVER['REQUEST_URI'] . '" />
 					<input type="hidden" name="date" value="' . $tosmonth . ' ' . $tosday . $tosyear . '"/>
+					<input type="hidden" name="from_view" value="TRUE"/>
 					<input type="submit" name="submit" value="Edit" /></form></td>
 					<td><form action="view_timeoff" method="post" onsubmit="return deleteTimeoff()">
 					<input type="hidden" name="employee_number" value="' . $empno . '"/>

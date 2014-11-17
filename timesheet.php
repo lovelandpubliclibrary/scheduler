@@ -15,8 +15,6 @@ if (isset($this_empno)){
 	if (($came_from == 'edit_my_timesheet') && (isset($_SESSION['timesheet_confirmed']))){
 		$pp_start_date = $_SESSION['pp_start_date'];
 		echo '<div class="message">Your timesheet starting '.$pp_start_date.' has been edited.</div>';
-		unset($_SESSION['pp_id']);
-		unset($_SESSION['pp_start_date']);
 		unset($_SESSION['timesheet_confirmed']);
 		}
 	echo '<p class="divform" style="margin-bottom:-10px;font-size:14px;color:#013953;font-weight:bold;">Current Timesheets</p>';
@@ -44,7 +42,7 @@ if (isset($this_empno)){
 		if (($result1) && (mysql_num_rows($result1)!=0)){
 			echo '<td class="scheddate confirmed">Timesheet confirmed</td>';
 			$row = mysql_fetch_array($result1, MYSQL_ASSOC);
-			if ($row['supervisor_approve'] == 'Yes'){
+			if ($row['supervisor_approve'] == 'Y'){
 				echo '<td class="locked">Locked</td><td><form action="view_my_timesheet" method="post">
 				<input type="hidden" name="pp_id" value="'.$pp_id.'"/>
 				<input type="hidden" name="pp_start_date" value="'.$pp_start_date.'"/>

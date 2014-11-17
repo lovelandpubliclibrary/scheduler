@@ -2,34 +2,24 @@
 include('./includes/supersessionstart.php');
 $came_from = $_SESSION['came_from'];
 
-if ((!isset($came_from)) || (!isset($_POST['submit']))){
-	header ('Location: view_pic_coverage');
-	}
-	
 if (($came_from != 'view_pic_coverage') && ($came_from != 'edit_pic_coverage')){
 	header ('Location: view_pic_coverage');
 	}
 
 include('./includes/allsessionvariables.php');
 
-if (isset($_POST['first_name'])){
-	$first_name=$_POST['first_name'];
-	$_SESSION['pic_coverage_name'] = $first_name;
+if (isset($_POST['from_view_pic'])){
+	$_SESSION['pic_coverage_name'] = $_POST['first_name'];
+	$_SESSION['pic_employee_number'] = $_POST['employee_number'];
+	$_SESSION['pic_coverage_date'] = $_POST['date'];
+	$_SESSION['pic_coverage_id'] = $_POST['pic_coverage_id'];
+	header('Location:edit_pic_coverage');
 	}
-
-if (isset($_POST['employee_number'])){
-	$employee_number=$_POST['employee_number'];
-	$_SESSION['employee_number'] = $employee_number;
-	}
-	
-if (isset($_POST['date'])){
-	$date = $_POST['date'];
-	$_SESSION['pic_coverage_date'] = $date;
-	}
-	
-if (isset($_POST['pic_coverage_id'])){
-	$pic_coverage_id = $_POST['pic_coverage_id'];
-	$_SESSION['pic_coverage_id'] = $pic_coverage_id;
+else{
+	$first_name = $_SESSION['pic_coverage_name'];
+	$employee_number = $_SESSION['pic_employee_number'];
+	$date = $_SESSION['pic_coverage_date'];
+	$pic_coverage_id = $_SESSION['pic_coverage_id'];
 	}
 
 $pic_poss = array();
@@ -63,10 +53,6 @@ if (isset($_POST['edited'])) {
 	if ($result) {//If it ran okay.
 		$_SESSION['success'] = TRUE;
 		header ('Location: view_pic_coverage');
-		
-		//Include the footer and then quit the script.
-		include ('./includes/footer.html');
-		exit();
 		}
 	}
 

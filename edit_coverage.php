@@ -6,10 +6,6 @@ $came_from = $_SESSION['came_from'];
 if ($came_from == 'view_past'){
 	$_SESSION['view_past'] = TRUE;
 	}
-
-if ((!isset($came_from)) || (!isset($_POST['submit']))){
-	header ('Location: view_coverage');
-	}
 	
 if (($came_from != 'view_coverage') && ($came_from != 'edit_coverage') && ($came_from != 'view_past')){
 	header ('Location: view_coverage');
@@ -17,24 +13,18 @@ if (($came_from != 'view_coverage') && ($came_from != 'edit_coverage') && ($came
 
 include('./includes/allsessionvariables.php');
 
-if (isset($_POST['employee_name'])){
-	$employee=$_POST['employee_name'];
-	$_SESSION['coverage_employee_name'] = $employee;
+if (isset($_POST['from_view'])){
+	$_SESSION['coverage_employee_name'] = $_POST['employee_name'];
+	$_SESSION['coverage_employee_number'] = $_POST['employee_number'];
+	$_SESSION['coverage_date'] = $_POST['date'];
+	$_SESSION['coverage_id'] = $_POST['coverage_id'];
+	header('Location:edit_coverage');
 	}
-
-if (isset($_POST['employee_number'])){
-	$empno=$_POST['employee_number'];
-	$_SESSION['coverage_employee_number'] = $empno;
-	}
-	
-if (isset($_POST['date'])){
-	$date = $_POST['date'];
-	$_SESSION['coverage_date'] = $date;
-	}
-	
-if (isset($_POST['coverage_id'])){
-	$coverage_id = $_POST['coverage_id'];
-	$_SESSION['coverage_id'] = $coverage_id;
+else{
+	$employee = $_SESSION['coverage_employee_name'];
+	$empno = $_SESSION['coverage_employee_number'];
+	$date = $_SESSION['coverage_date'];
+	$coverage_id = $_SESSION['coverage_id'];
 	}
 
 $query = "SELECT first_name, last_name, e.employee_number, coverage_id,

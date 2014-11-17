@@ -5,18 +5,16 @@ $came_from = $_SESSION['came_from'];
 if (($came_from != 'edit_schedule')&&($came_from != 'edit_schedule_dates')&&($came_from != 'schedule_days')){
 	unset($_SESSION['schedules_division']);
 	}
-if (isset($_SESSION['schedules_division'])) {
+
+if (isset($_POST['submitted'])) {
+	$_SESSION['schedules_division'] = $_POST['division'];
+	header('Location: edit_schedule');
+	}
+elseif (isset($_SESSION['schedules_division'])) {
 	$division = $_SESSION['schedules_division'];
 	}
-if (isset($_POST['submitted'])) {
-	$division = $_POST['division'];
-	}
+
 include('./includes/allsessionvariables.php');
-include ('./includes/header.html');
-echo '<div id="mobilehack">';
-$mobilehack = 1;
-include ('./includes/supersidebar.html');
-$today= date('Y-m-d');
 
 if (isset($_POST['edit_dates'])){
 	$division = $_POST['division'];
@@ -74,6 +72,8 @@ if (isset($_POST['edit_dates'])){
 		$query1 = "UPDATE schedules set schedule_end_date='$newend' WHERE schedule_id='$schedule_id'";
 		$result1 = mysql_query($query1);
 		}
+	$_SESSION['schedules_division'] = $division;
+	header ('Location: edit_schedule');
 	}
 	
 if(isset($_POST['init'])){
@@ -161,7 +161,17 @@ if(isset($_POST['init'])){
 	$query = "INSERT into deficiencies (def_schedule, def_week, def_day, def_division, def_start, def_end, def_create)
 		SELECT '$max', def_week, def_day, def_division, def_start, def_end, null from deficiencies where def_schedule='$specific_schedule'";
 	$result = mysql_query($query);
+	
+	$_SESSION['schedules_division'] = $division;
+	header ('Location: edit_schedule');
 	}
+
+include ('./includes/header.html');
+echo '<div id="mobilehack">';
+$mobilehack = 1;
+include ('./includes/supersidebar.html');
+$today= date('Y-m-d');
+
 ?>
 <script>
 function deleteSchedule(){
@@ -264,7 +274,7 @@ if (isset($_POST['delete'])){
 </form>
 
 <?php
-if ((isset($_POST['submitted']))||(isset($division))){
+if (isset($division)){
 	$_SESSION['schedules_division'] = $division;
 	$query = "SELECT * from schedules as s, (SELECT specific_schedule, count(*) as count from schedules 
 		WHERE schedule_end_date >= '$today' group by specific_schedule) as t

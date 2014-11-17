@@ -45,21 +45,22 @@ while ($row = mysql_fetch_array($result, MYSQL_ASSOC)){
 	}
 
 if (isset($_POST['pp_id'])){
-	$pp_id=$_POST['pp_id'];
-	$_SESSION['pp_id'] = $pp_id;
+	$_SESSION['pp_id'] = $_POST['pp_id'];
+	$_SESSION['pp_start_date'] = $_POST['pp_start_date'];
+	header('Location:edit_my_timesheet');
+	}
+else{
+	$pp_id = $_SESSION['pp_id'];
+	$pp_start_date = $_SESSION['pp_start_date'];
 	}
 
-if (isset($_POST['pp_start_date'])){
-	$pp_start_date = $_POST['pp_start_date'];
-	$_SESSION['pp_start_date'] = $pp_start_date;
-	$pp_start_friendly = date('j M Y', strtotime($pp_start_date));
-	$pp_midweek_end_date = strtotime('+6days', strtotime($pp_start_date));
-	$pp_midweek_end_date = date('Y-m-d' , $pp_midweek_end_date );
-	$pp_midweek_start_date = strtotime('+7days', strtotime($pp_start_date));
-	$pp_midweek_start_date = date('Y-m-d' , $pp_midweek_start_date );
-	$pp_end_date = strtotime('+13days', strtotime($pp_start_date));
-	$pp_end_date = date('Y-m-d' , $pp_end_date );
-	}
+$pp_start_friendly = date('j M Y', strtotime($pp_start_date));
+$pp_midweek_end_date = strtotime('+6days', strtotime($pp_start_date));
+$pp_midweek_end_date = date('Y-m-d' , $pp_midweek_end_date );
+$pp_midweek_start_date = strtotime('+7days', strtotime($pp_start_date));
+$pp_midweek_start_date = date('Y-m-d' , $pp_midweek_start_date );
+$pp_end_date = strtotime('+13days', strtotime($pp_start_date));
+$pp_end_date = date('Y-m-d' , $pp_end_date );
 	
 if (isset($_POST['confirmed'])){
 	$time_entry = $_POST['time_entry'];

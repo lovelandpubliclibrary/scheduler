@@ -46,7 +46,6 @@ $(document).ready(function() {
 		var date = new Date(value);
 		$( ".schedend_datepick" ).datepicker("option", "minDate", new Date(date));
 		});	
-	
 	});
 function validateForm() {
 	var x=document.copy_schedule.division.value;

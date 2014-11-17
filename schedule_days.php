@@ -769,6 +769,7 @@ $(document).ready(function() {
 		week = $('.weekfocus').data("week");
 		$('.editform').hide();
 		$('div.'+day+'.'+week).show();
+		$('div.'+day+'.'+week).find('input:first').focus();
 		$('input[name="week_type"]').val(week);
 		$('input[name="day"]').val(day);
 		}
@@ -795,6 +796,7 @@ $(document).ready(function() {
 		week = $('.weekfocus').data("week");
 		$('.editform').hide();
 		$('div.'+day+'.'+week).show();
+		$('div.'+day+'.'+week).find('input:first').focus();
 		$('input[name="week_type"]').val(week);
 		$('input[name="day"]').val(day);
 		}
@@ -838,6 +840,9 @@ $(document).ready(function() {
 			}
 		else if (e.which == 37){
 			changeDay('back')
+			}
+		if (e.which == 8 && !$(e.target).is('input','textarea')){
+			e.preventDefault();
 			}
 		});
 	});
