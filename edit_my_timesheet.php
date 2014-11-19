@@ -947,9 +947,7 @@ echo '</table>';
 
 echo '<input type="submit" name="save" value="Save" onclick="setSubmit(this)" />
 	<input type="submit" name="confirm" value="Confirm Timesheet" onclick="setSubmit(this)" />
-	<input type="hidden" name="confirmed" value="TRUE" />
-	<input type="hidden" name="pp_start_date" value="'.$pp_start_date.'" />
-	<input type="hidden" name="pp_id" value="'.$pp_id.'" />';
+	<input type="hidden" name="confirmed" value="TRUE" />';
 echo '</form>';
 echo '</div>';
 

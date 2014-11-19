@@ -933,12 +933,7 @@ echo '<tr><td></td><td></td><td></td><td></td><td></td><td></td><td class="week_
 echo '</table>';
 
 echo '<input type="submit" name="submit" value="Save Edited Timesheet" />
-	<input type="hidden" name="confirmed" value="TRUE" />
-	<input type="hidden" name="pp_start_date" value="'.$pp_start_date.'" />
-	<input type="hidden" name="pp_id" value="'.$pp_id.'" />
-	<input type="hidden" name="employee_number" value="'.$empno.'"/>
-	<input type="hidden" name="assignment_id" value="'.$assignment_id.'"/>
-	<input type="hidden" name="employee_name" value="'.$employee_name.'"/>';
+	<input type="hidden" name="confirmed" value="TRUE" />';
 echo '</form>';
 echo '</div>';
 
