@@ -59,7 +59,8 @@ tr.emps td.off,
 tr.emps td.busy,
 tr.emps td.here,
 tr.emps td.alert,
-tr.emps td.def{
+tr.emps td.def,
+tr.emps td.closed{
 border-left:1px solid black;
 }
 
@@ -70,7 +71,9 @@ border-left:1px dashed gray;
 tr.emps td.on.decimal,
 tr.emps td.here.decimal,
 tr.emps td.busy.decimal,
-tr.emps td.alert.decimal{
+tr.emps td.alert.decimal,
+tr.emps td.closed.decimal
+{
 border-left:hidden !important;
 }
 
@@ -139,6 +142,10 @@ background:#D90D15;
 
 td.def{
 background:#F2CF0A;
+}
+
+td.closed{
+background:#AAAAAA;
 }
 
 .hr{

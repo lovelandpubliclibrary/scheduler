@@ -103,7 +103,7 @@ function daily_schedule($now, $divisions) {
 	echo '<div class="week_type">'.ucwords($week_type).' Schedule</div>'."\n";
 
 	//See if library closed.
-	$query_closure = "SELECT * from closures WHERE closure_date='$today'";
+	$query_closure = "SELECT * from closures WHERE closure_date='$today' limit 1";
 	$result_closure = mysql_query($query_closure);
 	if ($result_closure){
 		$num_rows = mysql_num_rows($result_closure);
@@ -115,15 +115,111 @@ function daily_schedule($now, $divisions) {
 				$cd_reason = $row['closure_reason'];
 				}
 			if (($cd_start == '00:01:00')&&($cd_end == '23:59:00')){
-				echo "<div class=\"error\"><div class=\"message\"><h4>Library Closed</h4>
+				$allday_closure_message = "<div class=\"error\"><div class=\"message\"><h4>Library Closed</h4>
 					<p>The library is closed all day for $cd_reason</p></div></div></div>";
 				}
+			else{
+				if (($cd_start != '00:01:00')&&($cd_end != '23:59:00')){
+					$close_start = explode(':',$cd_start);
+					$close_start_hr = $close_start[0];
+					$close_start_mn = $close_start[1];
+					$close_end = explode(':',$cd_end);
+					$close_end_hr = $close_end[0];
+					$close_end_mn = $close_end[1];
+					if ($close_start_hr > 12){
+						$ss12 = $close_start_hr - 12;
+						}
+					elseif($close_start_hr == 0){
+						$ss12 = NULL;
+						}
+					else{
+						$ss12 = $close_start_hr;
+						}
+					if ($close_start_mn != '00') {
+						$ss12 .= ':'.$close_start_mn;
+						}
+					
+					if ($close_end_hr > 12){
+						$se12 = $close_end_hr - 12;
+						}
+					elseif($close_end_hr == 0){
+						$se12 = NULL;
+						}
+					else{
+						$se12 = $close_end_hr;
+						}
+					if ($close_end_mn != '00') {
+						$se12 .= ':'.$close_end_mn;
+						}
+					$closure_times = $ss12.' - '.$se12;
+					//Decimalize times
+					if ($close_start_mn != '00') {
+						$close_start_hr += dec_minutes($close_start_mn);
+						}
+					if ($close_end_mn != '00') {
+						$close_end_hr += dec_minutes($close_end_mn);
+						}
+					}
+				elseif ($cd_start != '00:01:00'){
+					$close_start = explode(':',$cd_start);
+					$close_start_hr = $close_start[0];
+					$close_start_mn = $close_start[1];
+					if ($close_start_hr > 12){
+						$ss12 = $close_start_hr - 12;
+						}
+					elseif($close_start_hr == 0){
+						$ss12 = NULL;
+						}
+					else{
+						$ss12 = $close_start_hr;
+						}
+					if ($close_start_mn != '00') {
+						$ss12 .= ':'.$close_start_mn;
+						}
+					$closure_times = 'After '.$ss12;
+					//Decimalize times
+					if ($close_start_mn != '00') {
+						$close_start_hr += dec_minutes($close_start_mn);
+						}
+					$close_end_hr = 23;
+					}
+				elseif ($cd_end != '23:59:00'){
+					$close_end = explode(':',$cd_end);
+					$close_end_hr = $close_end[0];
+					$close_end_mn = $close_end[1];
+					if ($close_end_hr > 12){
+						$se12 = $close_end_hr - 12;
+						}
+					elseif($close_end_hr == 0){
+						$se12 = NULL;
+						}
+					else{
+						$se12 = $close_end_hr;
+						}
+					if ($close_end_mn != '00') {
+						$se12 .= ':'.$close_end_mn;
+						}
+					$closure_times = 'Until '.$se12;
+					if ($close_end_mn != '00') {
+						$close_end_hr += dec_minutes($close_end_mn);
+						}
+					$close_start_hr = 0;
+					}
+				$closure_message = "<div class=\"closure_message\"><h4>Library Closed</h4>
+					The library is closed $closure_times for $cd_reason</div>";
+				}
+			}
+		if(isset($allday_closure_message)){
+			echo $allday_closure_message;
 			}
 		elseif ($season == 'summer' && $day_short == 'Sun'){
 			echo "<div class=\"error\"><div class=\"message\"><h4>Library Closed</h4>
 				<p>The library is closed Sundays during the summer.</p></div></div></div>";
 			}
 		else{
+			if(isset($closure_message)){
+				echo $closure_message;
+				}
 			if ($pic_name != ''){
 				echo '<div class="pic"><b>Person In Charge:</b> ';
 				if (in_array($day_short,array('Mon','Tue','Wed','Thu'))){
@@ -470,6 +566,10 @@ function daily_schedule($now, $divisions) {
 												}
 											}
 										}
+									if ((isset($close_start_hr))&&(($hr >= $close_start_hr) && ($hr < $close_end_hr))){
+										$class='closed';
+										$multi_alert[$empno][$key] = 1;
+										}
 									
 									echo '<td class="' . $class;
 									if (isset($css)){ echo ' ' . $css;}
@@ -591,6 +691,10 @@ function daily_schedule($now, $divisions) {
 												--$deficiencies[$key];
 												}
 											}
+										}
+									if ((isset($close_start_hr))&&(($hr >= $close_start_hr) && ($hr < $close_end_hr))){
+										$class='closed';
+										$multi_alert[$empno][$key] = 1;
 										}
 									echo '<td class="' . $class;
 									if (isset($css)){ echo ' ' . $css;}
@@ -938,6 +1042,9 @@ function daily_schedule($now, $divisions) {
 														}
 													}
 												}
+											if ((isset($close_start_hr))&&(($hr >= $close_start_hr) && ($hr < $close_end_hr))){
+												$class='closed';
+												}
 											
 											echo '<td class="' . $class;
 											if (isset($css)){ echo ' ' . $css;}
@@ -1109,7 +1216,7 @@ function division_daily($division, $now) {
 	
 	
 	//See if library closed.
-	$query_closure = "SELECT * from closures WHERE closure_date='$today'";
+	$query_closure = "SELECT * from closures WHERE closure_date='$today' limit 1";
 	$result_closure = mysql_query($query_closure);
 	if ($result_closure){
 		$num_rows = mysql_num_rows($result_closure);
@@ -1121,15 +1228,111 @@ function division_daily($division, $now) {
 				$cd_reason = $row['closure_reason'];
 				}
 			if (($cd_start == '00:01:00')&&($cd_end == '23:59:00')){
-				echo "<div class=\"error\"><div class=\"message\"><h4>Library Closed</h4>
+				$allday_closure_message = "<div class=\"error\"><div class=\"message\"><h4>Library Closed</h4>
 					<p>The library is closed all day for $cd_reason</p></div></div></div>";
 				}
+			else{
+				if (($cd_start != '00:01:00')&&($cd_end != '23:59:00')){
+					$close_start = explode(':',$cd_start);
+					$close_start_hr = $close_start[0];
+					$close_start_mn = $close_start[1];
+					$close_end = explode(':',$cd_end);
+					$close_end_hr = $close_end[0];
+					$close_end_mn = $close_end[1];
+					if ($close_start_hr > 12){
+						$ss12 = $close_start_hr - 12;
+						}
+					elseif($close_start_hr == 0){
+						$ss12 = NULL;
+						}
+					else{
+						$ss12 = $close_start_hr;
+						}
+					if ($close_start_mn != '00') {
+						$ss12 .= ':'.$close_start_mn;
+						}
+					
+					if ($close_end_hr > 12){
+						$se12 = $close_end_hr - 12;
+						}
+					elseif($close_end_hr == 0){
+						$se12 = NULL;
+						}
+					else{
+						$se12 = $close_end_hr;
+						}
+					if ($close_end_mn != '00') {
+						$se12 .= ':'.$close_end_mn;
+						}
+					$closure_times = $ss12.' - '.$se12;
+					//Decimalize times
+					if ($close_start_mn != '00') {
+						$close_start_hr += dec_minutes($close_start_mn);
+						}
+					if ($close_end_mn != '00') {
+						$close_end_hr += dec_minutes($close_end_mn);
+						}
+					}
+				elseif ($cd_start != '00:01:00'){
+					$close_start = explode(':',$cd_start);
+					$close_start_hr = $close_start[0];
+					$close_start_mn = $close_start[1];
+					if ($close_start_hr > 12){
+						$ss12 = $close_start_hr - 12;
+						}
+					elseif($close_start_hr == 0){
+						$ss12 = NULL;
+						}
+					else{
+						$ss12 = $close_start_hr;
+						}
+					if ($close_start_mn != '00') {
+						$ss12 .= ':'.$close_start_mn;
+						}
+					$closure_times = 'After '.$ss12;
+					//Decimalize times
+					if ($close_start_mn != '00') {
+						$close_start_hr += dec_minutes($close_start_mn);
+						}
+					$close_end_hr = 23;
+					}
+				elseif ($cd_end != '23:59:00'){
+					$close_end = explode(':',$cd_end);
+					$close_end_hr = $close_end[0];
+					$close_end_mn = $close_end[1];
+					if ($close_end_hr > 12){
+						$se12 = $close_end_hr - 12;
+						}
+					elseif($close_end_hr == 0){
+						$se12 = NULL;
+						}
+					else{
+						$se12 = $close_end_hr;
+						}
+					if ($close_end_mn != '00') {
+						$se12 .= ':'.$close_end_mn;
+						}
+					$closure_times = 'Until '.$se12;
+					if ($close_end_mn != '00') {
+						$close_end_hr += dec_minutes($close_end_mn);
+						}
+					$close_start_hr = 0;
+					}
+				$closure_message = "<div class=\"closure_message\"><h4>Library Closed</h4>
+					The library is closed $closure_times for $cd_reason</div>";
+				}
+			}
+		if(isset($allday_closure_message)){
+			echo $allday_closure_message;
 			}
 		elseif ($season == 'summer' && $day_short == 'Sun'){
-			echo "</div><div class=\"error\"><div class=\"message\"><h4>Library Closed</h4>
+			echo "<div class=\"error\"><div class=\"message\"><h4>Library Closed</h4>
 				<p>The library is closed Sundays during the summer.</p></div></div></div>";
 			}
 		else{
+			if(isset($closure_message)){
+				echo $closure_message;
+				}
 			if ($pic_name != ''){
 				echo '<div class="pic"><b>Person In Charge:</b> ';
 				if (in_array($day_short,array('Mon','Tue','Wed','Thu'))){
@@ -1467,6 +1670,11 @@ function division_daily($division, $now) {
 										}
 									}
 								}
+								
+							if ((isset($close_start_hr))&&(($hr >= $close_start_hr) && ($hr < $close_end_hr))){
+								$class='closed';
+								$multi_alert[$empno][$key] = 1;
+								}
 							
 							echo '<td class="' . $class;
 							if (isset($css)){ echo ' ' . $css;}
@@ -1589,6 +1797,11 @@ function division_daily($division, $now) {
 										}
 									}
 								}
+							if ((isset($close_start_hr))&&(($hr >= $close_start_hr) && ($hr < $close_end_hr))){
+								$class='closed';
+								$multi_alert[$empno][$key] = 1;
+								}
+								
 							echo '<td class="' . $class;
 							if (isset($css)){ echo ' ' . $css;}
 							echo '"></td>';
@@ -1917,7 +2130,7 @@ function subs_specific($division, $now) {
 	echo '<div class="week_type">'. ucwords($week_type) . ' Schedule</div>'."\n";
 
 	//See if library closed.
-	$query_closure = "SELECT * from closures WHERE closure_date='$today'";
+	$query_closure = "SELECT * from closures WHERE closure_date='$today' limit 1";
 	$result_closure = mysql_query($query_closure);
 	if ($result_closure){
 		$num_rows = mysql_num_rows($result_closure);
@@ -1929,15 +2142,111 @@ function subs_specific($division, $now) {
 				$cd_reason = $row['closure_reason'];
 				}
 			if (($cd_start == '00:01:00')&&($cd_end == '23:59:00')){
-				echo "<div class=\"error\"><div class=\"message\"><h4>Library Closed</h4>
+				$allday_closure_message = "<div class=\"error\"><div class=\"message\"><h4>Library Closed</h4>
 					<p>The library is closed all day for $cd_reason</p></div></div></div>";
 				}
+			else{
+				if (($cd_start != '00:01:00')&&($cd_end != '23:59:00')){
+					$close_start = explode(':',$cd_start);
+					$close_start_hr = $close_start[0];
+					$close_start_mn = $close_start[1];
+					$close_end = explode(':',$cd_end);
+					$close_end_hr = $close_end[0];
+					$close_end_mn = $close_end[1];
+					if ($close_start_hr > 12){
+						$ss12 = $close_start_hr - 12;
+						}
+					elseif($close_start_hr == 0){
+						$ss12 = NULL;
+						}
+					else{
+						$ss12 = $close_start_hr;
+						}
+					if ($close_start_mn != '00') {
+						$ss12 .= ':'.$close_start_mn;
+						}
+					
+					if ($close_end_hr > 12){
+						$se12 = $close_end_hr - 12;
+						}
+					elseif($close_end_hr == 0){
+						$se12 = NULL;
+						}
+					else{
+						$se12 = $close_end_hr;
+						}
+					if ($close_end_mn != '00') {
+						$se12 .= ':'.$close_end_mn;
+						}
+					$closure_times = $ss12.' - '.$se12;
+					//Decimalize times
+					if ($close_start_mn != '00') {
+						$close_start_hr += dec_minutes($close_start_mn);
+						}
+					if ($close_end_mn != '00') {
+						$close_end_hr += dec_minutes($close_end_mn);
+						}
+					}
+				elseif ($cd_start != '00:01:00'){
+					$close_start = explode(':',$cd_start);
+					$close_start_hr = $close_start[0];
+					$close_start_mn = $close_start[1];
+					if ($close_start_hr > 12){
+						$ss12 = $close_start_hr - 12;
+						}
+					elseif($close_start_hr == 0){
+						$ss12 = NULL;
+						}
+					else{
+						$ss12 = $close_start_hr;
+						}
+					if ($close_start_mn != '00') {
+						$ss12 .= ':'.$close_start_mn;
+						}
+					$closure_times = 'After '.$ss12;
+					//Decimalize times
+					if ($close_start_mn != '00') {
+						$close_start_hr += dec_minutes($close_start_mn);
+						}
+					$close_end_hr = 23;
+					}
+				elseif ($cd_end != '23:59:00'){
+					$close_end = explode(':',$cd_end);
+					$close_end_hr = $close_end[0];
+					$close_end_mn = $close_end[1];
+					if ($close_end_hr > 12){
+						$se12 = $close_end_hr - 12;
+						}
+					elseif($close_end_hr == 0){
+						$se12 = NULL;
+						}
+					else{
+						$se12 = $close_end_hr;
+						}
+					if ($close_end_mn != '00') {
+						$se12 .= ':'.$close_end_mn;
+						}
+					$closure_times = 'Until '.$se12;
+					if ($close_end_mn != '00') {
+						$close_end_hr += dec_minutes($close_end_mn);
+						}
+					$close_start_hr = 0;
+					}
+				$closure_message = "<div class=\"closure_message\"><h4>Library Closed</h4>
+					The library is closed $closure_times for $cd_reason</div>";
+				}
+			}
+		if(isset($allday_closure_message)){
+			echo $allday_closure_message;
 			}
 		elseif ($season == 'summer' && $day_short == 'Sun'){
-			echo "</div><div class=\"error\"><div class=\"message\"><h4>Library Closed</h4>
+			echo "<div class=\"error\"><div class=\"message\"><h4>Library Closed</h4>
 				<p>The library is closed Sundays during the summer.</p></div></div></div>";
 			}
 		else{
+			if(isset($closure_message)){
+				echo $closure_message;
+				}
 			if ($pic_name != ''){
 				echo '<div class="pic"><b>Person In Charge:</b> ';
 				if (in_array($day_short,array('Mon','Tue','Wed','Thu'))){
@@ -2063,6 +2372,9 @@ function subs_specific($division, $now) {
 										$class='on';
 										}
 									}
+								}
+							if ((isset($close_start_hr))&&(($hr >= $close_start_hr) && ($hr < $close_end_hr))){
+								$class='closed';
 								}
 							
 							echo '<td class="' . $class;

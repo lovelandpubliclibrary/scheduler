@@ -767,6 +767,15 @@ padding:10px 20px;
 width:inherit;
 }
 
+.closure_message{
+margin:10px auto;
+border:1px solid #BFBFBF;
+background:#FFFDA6;
+padding:4px 20px;
+width:530px;
+text-align:center;
+}
+
 .errormessage{
 margin:30px auto 0px auto;
 border:1px solid #BFBFBF;
