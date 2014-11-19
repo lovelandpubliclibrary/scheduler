@@ -84,10 +84,10 @@ else {
 		}
 ?>
 			<form action="login" method="post">
-				<p><div class="label">Username:</div><input type="text" name="username" size="20" maxlength="40" 
+				<p><div class="label">Username:</div><input type="text" name="username" size="20" maxlength="40" tabindex="1" autofocus 
 					value="<?php if (isset($_POST['username'])){echo $_POST['username'];} ?>" /></p>
-				<p><div class="label">Password:</div><input type="password" name="password" size="20" maxlength="20" /></p>
-				<p><div class="submit"><input type="submit" name="submit" value="Login" /></div></p>
+				<p><div class="label">Password:</div><input type="password" name="password" size="20" maxlength="20" tabindex="2" /></p>
+				<p><div class="submit"><input type="submit" name="submit" value="Login" tabindex="3" /></div></p>
 				<input type="hidden" name="submitted" value="TRUE" />
 			</form>
 		</div>
