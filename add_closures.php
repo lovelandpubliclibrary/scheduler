@@ -123,7 +123,7 @@ if (isset($_POST['submitted'])){
 			if (empty($ce_mn)){
 				$ce_mn = '00';
 				}
-			if (($ce_hr < $te_hr)||(($te_hr == $ce_hr)&&($ce_mn <= $te_mn))) {
+			if (($ce_hr < $ce_hr)||(($ce_hr == $ce_hr)&&($ce_mn <= $ce_mn))) {
 				$ce_hr = $ce_hr+12;
 				}
 			if ($ce_hr < 7){
