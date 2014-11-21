@@ -92,7 +92,16 @@ if (($result) && (mysql_num_rows($result)!=0)){
 		$previous[$entry_date][$hour_code] = $hours;
 		}
 	}
-
+$confirmed = '';
+$query = "SELECT * from timesheet_confirm WHERE employee_number='$this_empno' and pp_id = '$pp_id' and employee_confirm='Y'";
+$result = mysql_query($query);
+if (($result) && (mysql_num_rows($result)!=0)){
+	while($row = mysql_fetch_array($result, MYSQL_ASSOC)){
+		$confirmed = TRUE;
+		}
+	}
+	
+	
 echo '<div class="wideview">
 	<span class="date"><h1>View My Timesheet for '.$pp_start_friendly.'</h1></span>';
 	?>
@@ -274,9 +283,12 @@ foreach ($array as $k=>$v){
 	echo '<td class="disp_hours">';
 	$reg_hours = 0;
 	
-	if(isset($previous[$v])){
-		if(isset($previous[$v]['02'])){
+	if((count($previous)>0)||($confirmed==TRUE)){
+		if((isset($previous[$v]))&&(isset($previous[$v]['02']))){
 			$reg_hours = $previous[$v]['02'];
+			}
+		else{
+			$reg_hours = 0;
 			}
 		}
 	else{
@@ -607,9 +619,12 @@ foreach ($array as $k=>$v){
 	echo '<td class="disp_hours">';
 	$reg_hours = 0;
 	
-	if(isset($previous[$v])){
-		if(isset($previous[$v]['02'])){
+	if((count($previous)>0)||($confirmed==TRUE)){
+		if((isset($previous[$v]))&&(isset($previous[$v]['02']))){
 			$reg_hours = $previous[$v]['02'];
+			}
+		else{
+			$reg_hours = 0;
 			}
 		}
 	else{
