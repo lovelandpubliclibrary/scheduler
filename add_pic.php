@@ -39,10 +39,10 @@ if (isset($_POST['submitted'])){
 				if ($dup_result){
 					$dup_num_rows = mysql_num_rows($dup_result);
 					if ($dup_num_rows != 0) {
-						$query = "UPDATE pic SET employee_number='$value' WHERE pic_schedule_id='$pic_id' and pic_day='$day' and week_type='$week_type'";
+						$query = "UPDATE pic SET emp_id='$value' WHERE pic_schedule_id='$pic_id' and pic_day='$day' and week_type='$week_type'";
 						}
 					else{
-						$query = "INSERT into pic (week_type, pic_day, employee_number, pic_schedule_id) VALUES 
+						$query = "INSERT into pic (week_type, pic_day, emp_id, pic_schedule_id) VALUES 
 								('$week_type', '$day','$value','$pic_id')";
 						}
 					$result = mysql_query($query);
@@ -69,7 +69,7 @@ if (isset($_POST['submitted'])){
 				foreach ($pics as $week_type=>$day_array){
 					foreach($day_array as $day=>$value){
 						if ($value != 'select'){
-							$query = "INSERT into pic (week_type, pic_day, employee_number, pic_schedule_id) VALUES 
+							$query = "INSERT into pic (week_type, pic_day, emp_id, pic_schedule_id) VALUES 
 								('$week_type', '$day','$value','$pic_id')";
 							$result = mysql_query($query);
 							}
@@ -99,7 +99,7 @@ if (isset($_POST['submitted'])){
 				foreach ($pics as $week_type=>$day_array){
 					foreach($day_array as $day=>$value){
 						if ($value != 'select'){
-							$query = "INSERT into pic (week_type, pic_day, employee_number, pic_schedule_id) VALUES 
+							$query = "INSERT into pic (week_type, pic_day, emp_id, pic_schedule_id) VALUES 
 								('$week_type', '$day','$value','$pic_id')";
 							$result = mysql_query($query);
 							}
@@ -116,17 +116,17 @@ if (isset($_POST['submitted'])){
 
 $pic_poss = array();
 
-$query = "SELECT employee_number, first_name, last_name FROM employees WHERE active='Active' and pic_status='Y'
+$query = "SELECT emp_id, first_name, last_name FROM employees WHERE active='Active' and pic_status='Y'
 	ORDER BY last_name";
 $result = mysql_query($query);
 if ($result){
 	$num_rows = mysql_num_rows($result);
 	if ($num_rows != 0) {
 		while($row = mysql_fetch_array($result, MYSQL_ASSOC)){
-			$empno = $row['employee_number'];
+			$emp_id = $row['emp_id'];
 			$fn = $row['first_name'];
 			$ln = $row['last_name'];
-			$pic_poss[$empno] = array($fn,$ln);
+			$pic_poss[$emp_id] = array($fn,$ln);
 			}
 		}
 	}
@@ -153,7 +153,7 @@ if ($result){
 				while($row = mysql_fetch_array($result1, MYSQL_ASSOC)){
 					$week_type = $row['week_type'];
 					$day = $row['pic_day'];
-					$pic_details[$week_type][$day] = $row['employee_number'];
+					$pic_details[$week_type][$day] = $row['emp_id'];
 					}
 				}
 				

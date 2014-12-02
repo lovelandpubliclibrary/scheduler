@@ -29,12 +29,12 @@ $week_types = array('a','b','c','d');
 $daysofweek = array('sat','sun','mon','tue','wed','thu','fri');
 
 $employees = array();
-$employee_query = "SELECT employee_number, first_name, last_name FROM employees where (division='$division') and active = 'Active' 
+$employee_query = "SELECT emp_id, first_name, last_name FROM employees where (division='$division') and active = 'Active' 
 	order by exempt_status asc, weekly_hours desc, first_name asc";
 $employee_result = mysql_query($employee_query);
 
 while ($row = mysql_fetch_array ($employee_result, MYSQL_ASSOC)) {
-	$employees[] = array('employee_number'=>$row['employee_number'],'first_name'=>$row['first_name'],'last_name'=>$row['last_name']);
+	$employees[] = array('emp_id'=>$row['emp_id'],'first_name'=>$row['first_name'],'last_name'=>$row['last_name']);
 	}
 	
 if(isset($_POST['init'])){
@@ -127,9 +127,9 @@ if(isset($_POST['separate'])){
 	$query = "UPDATE schedules SET specific_schedule='$max' WHERE schedule_id='$schedule_id'";
 	$result = mysql_query($query);
 	
-	$separate_query2 = "INSERT into shifts (week_type, shift_day, employee_number, shift_start, shift_end, 
+	$separate_query2 = "INSERT into shifts (week_type, shift_day, emp_id, shift_start, shift_end, 
 		desk_start, desk_end, desk_start2, desk_end2, lunch_start, lunch_end, specific_schedule, schedule_create) 
-		SELECT week_type, shift_day, employee_number, shift_start, shift_end, desk_start, desk_end, 
+		SELECT week_type, shift_day, emp_id, shift_start, shift_end, desk_start, desk_end, 
 		desk_start2, desk_end2, lunch_start, lunch_end, '$max', null from shifts WHERE specific_schedule='$specific_schedule'";
 	$separate_result2 = mysql_query($separate_query2);
 	$specific_schedule = $max;
@@ -157,15 +157,15 @@ if ($date_result){
 //Check for previous schedules
 $prev_schedules = array();
 foreach ($employees as $key=>$employeearray){
-	$employee_number = $employeearray['employee_number'];
-	$prev_schedules[$employee_number] = array();
+	$emp_id = $employeearray['emp_id'];
+	$prev_schedules[$emp_id] = array();
 	foreach ($week_types as $key=>$value){
 		foreach ($daysofweek as $key2=>$value2){
-			$prev_schedules[$employee_number][$value] = array();
+			$prev_schedules[$emp_id][$value] = array();
 			}
 		}
 		
-	$query = "SELECT * from shifts where specific_schedule='$specific_schedule'and employee_number='$employee_number'";
+	$query = "SELECT * from shifts where specific_schedule='$specific_schedule'and emp_id='$emp_id'";
 	$result = mysql_query($query);
 	if ($result){
 		while ($row = mysql_fetch_array ($result, MYSQL_ASSOC)) {
@@ -185,56 +185,56 @@ foreach ($employees as $key=>$employeearray){
 					$ss_hr = $ss_hr-12;
 					}
 			$ss_mn = $ss[1];
-			$prev_schedules[$employee_number][$wt][$d]['shift_start'] = array('hours'=>$ss_hr, 'minutes'=>$ss_mn);
+			$prev_schedules[$emp_id][$wt][$d]['shift_start'] = array('hours'=>$ss_hr, 'minutes'=>$ss_mn);
 			
 			$se_hr = (integer)$se[0];
 				if ($se_hr > 12){
 					$se_hr = $se_hr-12;
 					}
 			$se_mn = $se[1];
-			$prev_schedules[$employee_number][$wt][$d]['shift_end'] = array('hours'=>$se_hr, 'minutes'=>$se_mn);
+			$prev_schedules[$emp_id][$wt][$d]['shift_end'] = array('hours'=>$se_hr, 'minutes'=>$se_mn);
 			
 			$ds_hr = (integer)$ds[0];
 				if ($ds_hr > 12){
 					$ds_hr = $ds_hr-12;
 					}
 			$ds_mn = $ds[1];
-			$prev_schedules[$employee_number][$wt][$d]['desk_start'] = array('hours'=>$ds_hr, 'minutes'=>$ds_mn);
+			$prev_schedules[$emp_id][$wt][$d]['desk_start'] = array('hours'=>$ds_hr, 'minutes'=>$ds_mn);
 			
 			$de_hr = (integer)$de[0];
 				if ($de_hr > 12){
 					$de_hr = $de_hr-12;
 					}
 			$de_mn = $de[1];
-			$prev_schedules[$employee_number][$wt][$d]['desk_end'] = array('hours'=>$de_hr, 'minutes'=>$de_mn);
+			$prev_schedules[$emp_id][$wt][$d]['desk_end'] = array('hours'=>$de_hr, 'minutes'=>$de_mn);
 			
 			$ds2_hr = (integer)$ds2[0];
 				if ($ds2_hr > 12){
 					$ds2_hr = $ds2_hr-12;
 					}
 			$ds2_mn = $ds2[1];
-			$prev_schedules[$employee_number][$wt][$d]['desk_start2'] = array('hours'=>$ds2_hr, 'minutes'=>$ds2_mn);
+			$prev_schedules[$emp_id][$wt][$d]['desk_start2'] = array('hours'=>$ds2_hr, 'minutes'=>$ds2_mn);
 			
 			$de2_hr = (integer)$de2[0];
 				if ($de2_hr > 12){
 					$de2_hr = $de2_hr-12;
 					}
 			$de2_mn = $de2[1];
-			$prev_schedules[$employee_number][$wt][$d]['desk_end2'] = array('hours'=>$de2_hr, 'minutes'=>$de2_mn);
+			$prev_schedules[$emp_id][$wt][$d]['desk_end2'] = array('hours'=>$de2_hr, 'minutes'=>$de2_mn);
 
 			$ls_hr = (integer)$ls[0];
 				if ($ls_hr > 12){
 					$ls_hr = $ls_hr-12;
 					}
 			$ls_mn = $ls[1];
-			$prev_schedules[$employee_number][$wt][$d]['lunch_start'] = array('hours'=>$ls_hr, 'minutes'=>$ls_mn);
+			$prev_schedules[$emp_id][$wt][$d]['lunch_start'] = array('hours'=>$ls_hr, 'minutes'=>$ls_mn);
 			
 			$le_hr = (integer)$le[0];
 				if ($le_hr > 12){
 					$le_hr = $le_hr-12;
 					}
 			$le_mn = $le[1];
-			$prev_schedules[$employee_number][$wt][$d]['lunch_end'] = array('hours'=>$le_hr, 'minutes'=>$le_mn);
+			$prev_schedules[$emp_id][$wt][$d]['lunch_end'] = array('hours'=>$le_hr, 'minutes'=>$le_mn);
 			}
 		}
 	}
@@ -271,7 +271,7 @@ if(isset($_POST['day_submit'])){
 	$schedule_array = $_POST['schedule'];
 	$def_array = $_POST['def'];
 	
-	foreach ($schedule_array as $empno=>$weekarray){
+	foreach ($schedule_array as $emp_id=>$weekarray){
 		foreach ($weekarray as $week_type=>$dayarray){
 			foreach ($dayarray as $day=>$sched){
 				$ss_hr = $sched['shift_start']['hours'];
@@ -281,7 +281,7 @@ if(isset($_POST['day_submit'])){
 					if (empty($ss_mn)){$ss_mn = "00";}
 				$ss = "$ss_hr:$ss_mn:00";
 				if (!empty($ss_hr)){
-					$schedule_array[$empno][$week_type][$day]['shift_start']['minutes'] = $ss_mn;
+					$schedule_array[$emp_id][$week_type][$day]['shift_start']['minutes'] = $ss_mn;
 					}
 				
 				$se_hr = $sched['shift_end']['hours'];
@@ -292,7 +292,7 @@ if(isset($_POST['day_submit'])){
 					if (empty($se_mn)){$se_mn = "00";}
 				$se = "$se_hr:$se_mn:00";
 				if (!empty($se_hr)){
-					$schedule_array[$empno][$week_type][$day]['shift_end']['minutes'] = $se_mn;
+					$schedule_array[$emp_id][$week_type][$day]['shift_end']['minutes'] = $se_mn;
 					}
 				
 				$ds_hr = $sched['desk_start']['hours'];
@@ -302,7 +302,7 @@ if(isset($_POST['day_submit'])){
 					if (empty($ds_mn)){$ds_mn = "00";}
 				$ds = "$ds_hr:$ds_mn:00";
 				if (!empty($ds_hr)){
-					$schedule_array[$empno][$week_type][$day]['desk_start']['minutes'] = $ds_mn;
+					$schedule_array[$emp_id][$week_type][$day]['desk_start']['minutes'] = $ds_mn;
 					}
 				
 				$de_hr = $sched['desk_end']['hours'];
@@ -312,7 +312,7 @@ if(isset($_POST['day_submit'])){
 					if (empty($de_mn)){$de_mn = "00";}
 				$de = "$de_hr:$de_mn:00";
 				if (!empty($de_hr)){
-					$schedule_array[$empno][$week_type][$day]['desk_end']['minutes'] = $de_mn;
+					$schedule_array[$emp_id][$week_type][$day]['desk_end']['minutes'] = $de_mn;
 					}
 				
 				$ds2_hr = $sched['desk_start2']['hours'];
@@ -322,7 +322,7 @@ if(isset($_POST['day_submit'])){
 					if (empty($ds2_mn)){$ds2_mn = "00";}
 				$ds2 = "$ds2_hr:$ds2_mn:00";
 				if (!empty($ds2_hr)){
-					$schedule_array[$empno][$week_type][$day]['desk_start2']['minutes'] = $ds2_mn;
+					$schedule_array[$emp_id][$week_type][$day]['desk_start2']['minutes'] = $ds2_mn;
 					}
 				
 				$de2_hr = $sched['desk_end2']['hours'];
@@ -332,7 +332,7 @@ if(isset($_POST['day_submit'])){
 					if (empty($de2_mn)){$de2_mn = "00";}
 				$de2 = "$de2_hr:$de2_mn:00";
 				if (!empty($de2_hr)){
-					$schedule_array[$empno][$week_type][$day]['desk_end2']['minutes'] = $de2_mn;
+					$schedule_array[$emp_id][$week_type][$day]['desk_end2']['minutes'] = $de2_mn;
 					}
 				
 				$ls_hr = $sched['lunch_start']['hours'];
@@ -342,7 +342,7 @@ if(isset($_POST['day_submit'])){
 					if (empty($ls_mn)){$ls_mn = "00";}
 				$ls = "$ls_hr:$ls_mn:00";
 				if (!empty($ls_hr)){
-					$schedule_array[$empno][$week_type][$day]['lunch_start']['minutes'] = $ls_mn;
+					$schedule_array[$emp_id][$week_type][$day]['lunch_start']['minutes'] = $ls_mn;
 					}
 				
 				$le_hr = $sched['lunch_end']['hours'];
@@ -352,23 +352,23 @@ if(isset($_POST['day_submit'])){
 					if (empty($le_mn)){$le_mn = "00";}
 				$le = "$le_hr:$le_mn:00";
 				if (!empty($le_hr)){
-					$schedule_array[$empno][$week_type][$day]['lunch_end']['minutes'] = $le_mn;
+					$schedule_array[$emp_id][$week_type][$day]['lunch_end']['minutes'] = $le_mn;
 					}
 			
-				if(array_key_exists($day, $prev_schedules[$empno][$week_type])){
+				if(array_key_exists($day, $prev_schedules[$emp_id][$week_type])){
 					$update_query = "UPDATE shifts SET shift_start='$ss', shift_end='$se', desk_start='$ds', desk_end='$de', 
 						desk_start2='$ds2', desk_end2='$de2',lunch_start='$ls', lunch_end='$le'
-						WHERE week_type='$week_type' and shift_day='$day' and specific_schedule='$specific_schedule' and employee_number='$empno'";
+						WHERE week_type='$week_type' and shift_day='$day' and specific_schedule='$specific_schedule' and emp_id='$emp_id'";
 					$update_result = mysql_query($update_query) or die(mysql_error());
 					}
 				else{
-					$insert_query = "INSERT into shifts (week_type, shift_day, employee_number, shift_start, shift_end, desk_start, desk_end, 
+					$insert_query = "INSERT into shifts (week_type, shift_day, emp_id, shift_start, shift_end, desk_start, desk_end, 
 						desk_start2, desk_end2, lunch_start, lunch_end, specific_schedule, schedule_create) 
-						values ('$week_type','$day','$empno','$ss', '$se', '$ds', '$de', '$ds2', '$de2', '$ls', '$le', '$specific_schedule', null)";
+						values ('$week_type','$day','$emp_id','$ss', '$se', '$ds', '$de', '$ds2', '$de2', '$ls', '$le', '$specific_schedule', null)";
 					$insert_result = mysql_query($insert_query) or die(mysql_error());
 					}
 					
-				$prev_schedules[$empno][$week_type][$day] = $schedule_array[$empno][$week_type][$day];
+				$prev_schedules[$emp_id][$week_type][$day] = $schedule_array[$emp_id][$week_type][$day];
 				}
 			}
 		}
@@ -518,33 +518,33 @@ function schedule_form($day, $week_type, $employees, $prev_schedules, $prev_def)
 	$dow = date('l', strtotime($day));
 	$schedule_form = '';
 	foreach ($employees as $key=>$employeearray){
-		$empn = $employeearray['employee_number'];
-		if (isset($prev_schedules[$empn][$week_type][$day])){
-			$data = $prev_schedules[$empn][$week_type][$day];
+		$empid = $employeearray['emp_id'];
+		if (isset($prev_schedules[$empid][$week_type][$day])){
+			$data = $prev_schedules[$empid][$week_type][$day];
 			}
 		$schedule_form .= '<tr><td>
 			<div class="editemp"><b>' . $employeearray['first_name'] . ' ' . $employeearray['last_name'] . '</b><br/>
 				<div class="editwrapper"><div class="editinput">
-					<div class="label">Shift Start:</div><input type="text" name="schedule[' . $employeearray['employee_number'] . ']['.$week_type.']['.$day.'][shift_start][hours]" 
+					<div class="label">Shift Start:</div><input type="text" name="schedule[' . $employeearray['emp_id'] . ']['.$week_type.']['.$day.'][shift_start][hours]" 
 						maxlength="2" size="1" class="hrs"';
 		if ((isset($data))&&($data['shift_start']['hours'] != 0)){
 			$schedule_form .= ' value="'.$data['shift_start']['hours'].'"';
 			}
 		$schedule_form .= '/> <b>:</b> 
-					<input type="text" name="schedule[' . $employeearray['employee_number'] . ']['.$week_type.']['.$day.'][shift_start][minutes]" 
+					<input type="text" name="schedule[' . $employeearray['emp_id'] . ']['.$week_type.']['.$day.'][shift_start][minutes]" 
 						maxlength="2" size="3"';
 		if ((isset($data))&&($data['shift_start']['hours'] != 0)){
 			$schedule_form .= ' value="'.$data['shift_start']['minutes'].'"';
 			}
 		$schedule_form .= '/></div>
 					<div class="editinput end">
-					<div class="label">Shift End:</div><input type="text" name="schedule[' . $employeearray['employee_number'] . ']['.$week_type.']['.$day.'][shift_end][hours]" 
+					<div class="label">Shift End:</div><input type="text" name="schedule[' . $employeearray['emp_id'] . ']['.$week_type.']['.$day.'][shift_end][hours]" 
 						maxlength="2" size="1" class="hrs"';
 		if ((isset($data))&&($data['shift_end']['hours'] != 0)){
 			$schedule_form .= ' value="'.$data['shift_end']['hours'].'"';
 			}
 		$schedule_form .= '/> <b>:</b> 
-					<input type="text" name="schedule[' . $employeearray['employee_number'] . ']['.$week_type.']['.$day.'][shift_end][minutes]" 
+					<input type="text" name="schedule[' . $employeearray['emp_id'] . ']['.$week_type.']['.$day.'][shift_end][minutes]" 
 						maxlength="2" size="3"';
 		if ((isset($data))&&($data['shift_end']['hours'] != 0)){
 			$schedule_form .= ' value="'.$data['shift_end']['minutes'].'"';
@@ -562,13 +562,13 @@ function schedule_form($day, $week_type, $employees, $prev_schedules, $prev_def)
 			}
 		$schedule_form .= '<div class="editwrapper">
 						<div class="editinput">
-							<div class="label">Desk Start:</div><input type="text" name="schedule[' . $employeearray['employee_number'] . ']['.$week_type.']['.$day.'][desk_start][hours]" 
+							<div class="label">Desk Start:</div><input type="text" name="schedule[' . $employeearray['emp_id'] . ']['.$week_type.']['.$day.'][desk_start][hours]" 
 								maxlength="2" size="1" class="hrs"';
 		if ((isset($data))&&($data['desk_start']['hours'] != 0)){
 			$schedule_form .= ' value="'.$data['desk_start']['hours'].'"';
 			}
 		$schedule_form .= '/> <b>:</b> 
-							<input type="text" name="schedule[' . $employeearray['employee_number'] . ']['.$week_type.']['.$day.'][desk_start][minutes]" 
+							<input type="text" name="schedule[' . $employeearray['emp_id'] . ']['.$week_type.']['.$day.'][desk_start][minutes]" 
 								maxlength="2" size="3"';
 		if ((isset($data))&&($data['desk_start']['hours'] != 0)){
 			$schedule_form .= ' value="'.$data['desk_start']['minutes'].'"';
@@ -576,13 +576,13 @@ function schedule_form($day, $week_type, $employees, $prev_schedules, $prev_def)
 		$schedule_form .= '/>
 						</div>
 						<div class="editinput end">
-							<div class="label">Desk End:</div><input type="text" name="schedule[' . $employeearray['employee_number'] . ']['.$week_type.']['.$day.'][desk_end][hours]" 
+							<div class="label">Desk End:</div><input type="text" name="schedule[' . $employeearray['emp_id'] . ']['.$week_type.']['.$day.'][desk_end][hours]" 
 								maxlength="2" size="1" class="hrs"';
 		if ((isset($data))&&($data['desk_end']['hours'] != 0)){
 			$schedule_form .= ' value="'.$data['desk_end']['hours'].'"';
 			}
 		$schedule_form .= '/> <b>:</b> 
-							<input type="text" name="schedule[' . $employeearray['employee_number'] . ']['.$week_type.']['.$day.'][desk_end][minutes]" 
+							<input type="text" name="schedule[' . $employeearray['emp_id'] . ']['.$week_type.']['.$day.'][desk_end][minutes]" 
 								maxlength="2" size="3"';
 		if ((isset($data))&&($data['desk_end']['hours'] != 0)){
 			$schedule_form .= ' value="'.$data['desk_end']['minutes'].'"';
@@ -592,13 +592,13 @@ function schedule_form($day, $week_type, $employees, $prev_schedules, $prev_def)
 					</div><br/>
 					<div class="editwrapper">
 						<div class="editinput">
-							<div class="label">Desk Start:</div><input type="text" name="schedule[' . $employeearray['employee_number'] . ']['.$week_type.']['.$day.'][desk_start2][hours]" 
+							<div class="label">Desk Start:</div><input type="text" name="schedule[' . $employeearray['emp_id'] . ']['.$week_type.']['.$day.'][desk_start2][hours]" 
 								maxlength="2" size="1" class="hrs"';
 		if ((isset($data))&&($data['desk_start2']['hours'] != 0)){
 			$schedule_form .= ' value="'.$data['desk_start2']['hours'].'"';
 			}
 		$schedule_form .= '/> <b>:</b> 
-							<input type="text" name="schedule[' . $employeearray['employee_number'] . ']['.$week_type.']['.$day.'][desk_start2][minutes]" 
+							<input type="text" name="schedule[' . $employeearray['emp_id'] . ']['.$week_type.']['.$day.'][desk_start2][minutes]" 
 								maxlength="2" size="3"';
 		if ((isset($data))&&($data['desk_start2']['hours'] != 0)){
 			$schedule_form .= ' value="'.$data['desk_start2']['minutes'].'"';
@@ -606,13 +606,13 @@ function schedule_form($day, $week_type, $employees, $prev_schedules, $prev_def)
 		$schedule_form .= '/>
 						</div>
 						<div class="editinput end">
-							<div class="label">Desk End:</div><input type="text" name="schedule[' . $employeearray['employee_number'] . ']['.$week_type.']['.$day.'][desk_end2][hours]" 
+							<div class="label">Desk End:</div><input type="text" name="schedule[' . $employeearray['emp_id'] . ']['.$week_type.']['.$day.'][desk_end2][hours]" 
 								maxlength="2" size="1" class="hrs"';
 		if ((isset($data))&&($data['desk_end2']['hours'] != 0)){
 			$schedule_form .= ' value="'.$data['desk_end2']['hours'].'"';
 			}
 		$schedule_form .= '/> <b>:</b> 
-							<input type="text" name="schedule[' . $employeearray['employee_number'] . ']['.$week_type.']['.$day.'][desk_end2][minutes]" 
+							<input type="text" name="schedule[' . $employeearray['emp_id'] . ']['.$week_type.']['.$day.'][desk_end2][minutes]" 
 								maxlength="2" size="3"';
 		if ((isset($data))&&($data['desk_end2']['hours'] != 0)){
 			$schedule_form .= ' value="'.$data['desk_end2']['minutes'].'"';
@@ -632,13 +632,13 @@ function schedule_form($day, $week_type, $employees, $prev_schedules, $prev_def)
 			}
 		$schedule_form .= '<div class="editwrapper">
 						<div class="editinput">
-							<div class="label">Lunch Start:</div><input type="text" name="schedule[' . $employeearray['employee_number'] . ']['.$week_type.']['.$day.'][lunch_start][hours]" 
+							<div class="label">Lunch Start:</div><input type="text" name="schedule[' . $employeearray['emp_id'] . ']['.$week_type.']['.$day.'][lunch_start][hours]" 
 								maxlength="2" size="1" class="hrs"';
 		if ((isset($data))&&($data['lunch_start']['hours'] != 0)){
 			$schedule_form .= ' value="'.$data['lunch_start']['hours'].'"';
 			}
 		$schedule_form .= '/> <b>:</b> 
-							<input type="text" name="schedule[' . $employeearray['employee_number'] . ']['.$week_type.']['.$day.'][lunch_start][minutes]" 
+							<input type="text" name="schedule[' . $employeearray['emp_id'] . ']['.$week_type.']['.$day.'][lunch_start][minutes]" 
 								maxlength="2" size="3"';
 		if ((isset($data))&&($data['lunch_start']['hours'] != 0)){
 			$schedule_form .= ' value="'.$data['lunch_start']['minutes'].'"';
@@ -646,13 +646,13 @@ function schedule_form($day, $week_type, $employees, $prev_schedules, $prev_def)
 		$schedule_form .= '/>
 						</div>
 						<div class="editinput end">
-							<div class="label">Lunch End:</div><input type="text" name="schedule[' . $employeearray['employee_number'] . ']['.$week_type.']['.$day.'][lunch_end][hours]" 
+							<div class="label">Lunch End:</div><input type="text" name="schedule[' . $employeearray['emp_id'] . ']['.$week_type.']['.$day.'][lunch_end][hours]" 
 								maxlength="2" size="1" class="hrs"';
 		if ((isset($data))&&($data['lunch_end']['hours'] != 0)){
 			$schedule_form .= ' value="'.$data['lunch_end']['hours'].'"';
 			}
 		$schedule_form .= '/> <b>:</b> 
-							<input type="text" name="schedule[' . $employeearray['employee_number'] . ']['.$week_type.']['.$day.'][lunch_end][minutes]" 
+							<input type="text" name="schedule[' . $employeearray['emp_id'] . ']['.$week_type.']['.$day.'][lunch_end][minutes]" 
 								maxlength="2" size="3"';
 		if ((isset($data))&&($data['lunch_end']['hours'] != 0)){
 			$schedule_form .= ' value="'.$data['lunch_end']['minutes'].'"';

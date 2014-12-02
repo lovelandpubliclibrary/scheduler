@@ -17,7 +17,7 @@ include ('./includes/supersidebar.html');
 <?php
 	
 	//Get employee info for dynamic selects
-	$query = "SELECT division, employee_number, first_name, last_name FROM employees WHERE active = 'Active' 
+	$query = "SELECT division, emp_id, first_name, last_name FROM employees WHERE active = 'Active' 
 		ORDER BY division asc, last_name asc";
 	$result = mysql_query($query) or die(mysql_error($dbc));
 	
@@ -30,7 +30,7 @@ $message_add = '';
 
 if (isset($_POST['submitted'])){
 	$empdiv = $_POST['division'];
-	$empno = $_POST['employee'];
+	$emp_id = $_POST['employee'];
 
 	$cd_div = $_POST['coverage_division'];
 	list($cd_mon, $cd_day, $cd_yr) = explode('/',$_POST['coverage_date']);
@@ -89,9 +89,9 @@ if (isset($_POST['submitted'])){
 		}
 	
 	//Check for overlaps
-	$query = "SELECT e.employee_number, division, concat(first_name, ' ', last_name) as employee_name, coverage_division,
+	$query = "SELECT e.emp_id, division, concat(first_name, ' ', last_name) as employee_name, coverage_division,
 		coverage_date, coverage_start_time, coverage_end_time FROM coverage as t, employees as e 
-		WHERE e.employee_number = t.employee_number and e.employee_number = '$empno' 
+		WHERE e.emp_id = t.emp_id and e.emp_id = '$emp_id' 
 		and coverage_date = '$cd_date' and (('$cs_time' >= coverage_start_time and '$cs_time' < coverage_end_time) 
 		or ('$ce_time' > coverage_start_time and '$ce_time' <= coverage_end_time)
 		or ('$cs_time' <= coverage_start_time and '$ce_time' >= coverage_end_time))"; 
@@ -100,7 +100,7 @@ if (isset($_POST['submitted'])){
 	if ($num_rows != 0) {
 		while ($row = mysql_fetch_array ($result, MYSQL_ASSOC)){
 			$full_name = $row['employee_name'];
-			$old_empno = $row['employee_number'];
+			$old_emp_id = $row['emp_id'];
 			$division = $row['division'];
 			$cov_date = $row['coverage_date'];
 			$covs_time = $row['coverage_start_time'];
@@ -367,7 +367,7 @@ if (isset($_POST['submitted'])){
 				echo '<br/><input type="checkbox" name="maintain" value="maintain"/> OR keep current sub request(s)';
 				echo '<input type="hidden" name="submitted" value="TRUE"/>';
 				echo '<input type="hidden" name="confirmed" value="TRUE"/>';
-				echo '<input type="hidden" name="employee" value="'.$empno.'"/>';
+				echo '<input type="hidden" name="employee" value="'.$emp_id.'"/>';
 				echo '<input type="hidden" name="coverage_division" value="'.$cd_div.'"/>';
 				echo '<input type="hidden" name="coverage_date" value="'.$cd_mon.'/'.$cd_day.'/'.$cd_yr.'"/>';
 				echo '<input type="hidden" name="onoff" value="'.$cd_onoff.'"/>';
@@ -377,7 +377,7 @@ if (isset($_POST['submitted'])){
 				echo '<input type="hidden" name="coverage_end[hours]" value="'.$ce_hr.'"/>';
 				echo '<input type="hidden" name="coverage_end[minutes]" value="'.$ce_mn.'"/>';
 				$errors[] = 'Coverage not yet entered.';
-				$old_empno = $empno;
+				$old_emp_id = $emp_id;
 				}
 			}
 		
@@ -385,13 +385,13 @@ if (isset($_POST['submitted'])){
 		}
 	
 	if (empty($errors)) {
-	$query = "INSERT into coverage(employee_number, coverage_date, coverage_start_time, coverage_end_time,
+	$query = "INSERT into coverage(emp_id, coverage_date, coverage_start_time, coverage_end_time,
 		coverage_division, coverage_offdesk, coverage_reason, coverage_create) 
-		values('$empno', '$cd_date', '$cs_time', '$ce_time', '$cd_div', '$cd_onoff', '$cd_reason', null)";
+		values('$emp_id', '$cd_date', '$cs_time', '$ce_time', '$cd_div', '$cd_onoff', '$cd_reason', null)";
 	$result = mysql_query($query) or die(mysql_error($dbc));
 	if ($result) {		
 		$query2 = "SELECT concat(first_name, ' ', last_name) as employee_name 
-			FROM employees where employee_number='$empno'";
+			FROM employees where emp_id='$emp_id'";
 		$result2 = mysql_query($query2) or die(mysql_error($dbc));
 		$full_name = mysql_result($result2, 0);
 	
@@ -450,7 +450,7 @@ if (isset($_POST['submitted'])){
 	}
 	DynamicSelect.prototype.update = function() {
 		//Variable
-		var old_empno  = '<?php if(isset($old_empno)){echo $old_empno;} ?>';
+		var old_emp_id  = '<?php if(isset($old_emp_id)){echo $old_emp_id;} ?>';
 
 		// Recreate the select box from the object
 		var s2New = document.createElement("select");
@@ -464,7 +464,7 @@ if (isset($_POST['submitted'])){
 				var oNode = document.createElement("option");
 				oNode.setAttribute("data-parent-value", options[i].dataParentVal);
 				oNode.setAttribute("value", options[i].val);
-				if (options[i].val === old_empno){	
+				if (options[i].val === old_emp_id){	
 					oNode.setAttribute("selected", "selected");
 					}
 				var txtNode = document.createTextNode(options[i].label);
@@ -586,10 +586,10 @@ function validator() {
 <?php 
 				foreach ($array as $row){
 					$employee = $row['first_name'] . ' ' . $row['last_name'];
-					$empno = $row['employee_number'];
+					$emp_id = $row['emp_id'];
 					$division = $row['division'];
-					echo '<option data-parent-value="' . $division . '" value="' . $empno . '" name="test"';
-					if (isset($old_empno) && ($old_empno == $empno)) {echo ' selected="selected"';}
+					echo '<option data-parent-value="' . $division . '" value="' . $emp_id . '" name="test"';
+					if (isset($old_emp_id) && ($old_emp_id == $emp_id)) {echo ' selected="selected"';}
 					echo '>'
 						. $employee . '</option>';
 					}
@@ -599,7 +599,7 @@ function validator() {
 			<select name="coverage_division">
 				<option value="select" disabled="disabled" selected="selected">- Select -</option>
 				<?php foreach ($divisions as $k=>$v){echo '<option value="'.$v.'"';
-				if(isset($old_empno) && isset($cd_div) && ($cd_div == $v)){
+				if(isset($old_emp_id) && isset($cd_div) && ($cd_div == $v)){
 					echo 'selected="selected"';
 					}
 				echo '>'.$v.'</option>';} ?>
@@ -607,20 +607,20 @@ function validator() {
 		<div class="label">Coverage Date:</div>
 		<div class="cal">
 			<input class="datepick" id="datepicker1" name="coverage_date" placeholder="Click to choose" 
-			<?php if (isset($_POST['coverage_date']) && isset($old_empno)){echo 'value="'.$_POST['coverage_date'].'"';}?>/>
+			<?php if (isset($_POST['coverage_date']) && isset($old_emp_id)){echo 'value="'.$_POST['coverage_date'].'"';}?>/>
 		</div>
 		<p><div class="label time">Start Time:	</div>
 			<input type="text" name="coverage_start[hours]" maxlength="2" size="1" class="hrs"
-				<?php if (isset($old_empno) && isset($cs_hr)){
+				<?php if (isset($old_emp_id) && isset($cs_hr)){
 					if ($cs_hr > 12){$cs_hr -= 12;} echo 'value="'.$cs_hr.'"';}?>/><b> : </b>
 			<input type="text" name="coverage_start[minutes]" maxlength="2" size="3"
-				<?php if (isset($old_empno) && isset($cs_mn)){echo 'value="'.$cs_mn.'"';}?>/></p>
+				<?php if (isset($old_emp_id) && isset($cs_mn)){echo 'value="'.$cs_mn.'"';}?>/></p>
 		<p><div class="label time">End Time:</div>
 			<input type="text" name="coverage_end[hours]" maxlength="2" size="1" class="hrs"
-				<?php if (isset($old_empno) && isset($ce_hr)){
+				<?php if (isset($old_emp_id) && isset($ce_hr)){
 					if ($ce_hr > 12){$ce_hr -= 12;} echo 'value="'.$ce_hr.'"';}?>/><b> : </b>
 			<input type="text" name="coverage_end[minutes]" maxlength="2" size="3"
-				<?php if (isset($old_empno) && isset($ce_mn)){echo 'value="'.$ce_mn.'"';}?>/></p>
+				<?php if (isset($old_emp_id) && isset($ce_mn)){echo 'value="'.$ce_mn.'"';}?>/></p>
 		<p><div class="radio">
 			<input type="radio" name="onoff" value="On" onclick="document.getElementById('coverage_note').style.display='none'" checked>On Desk
 			<input type="radio" name="onoff" value="Off" onclick="document.getElementById('coverage_note').style.display='block'">Off Desk

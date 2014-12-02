@@ -8,24 +8,25 @@ if (($came_from != 'view_employees') && ($came_from != 'edit_employee')){
 
 if (isset($_POST['from_view_emp'])){
 	$_SESSION['edit_employee_name'] = $_POST['employee_name'];
-	$_SESSION['edit_employee_number'] = $_POST['employee_number'];
+	$_SESSION['edit_emp_id'] = $_POST['emp_id'];
 	header('Location:edit_employee');
 	}
 else{
 	$employee = $_SESSION['edit_employee_name'];
-	$empno = $_SESSION['edit_employee_number'];
+	$emp_id = $_SESSION['edit_emp_id'];
 	}
 	
 include('./includes/allsessionvariables.php');
 
 require_once ('../mysql_connect_sched2.php'); //Connect to the db.
 
-$query = "SELECT employee_number, first_name, last_name, division, exempt_status, weekly_hours, home_phone, mobile_phone, employee_lastday
-	FROM employees WHERE employee_number='$empno'";
+$query = "SELECT emp_id, employee_number, first_name, last_name, division, exempt_status, weekly_hours, home_phone, mobile_phone, employee_lastday
+	FROM employees WHERE emp_id='$emp_id'";
 $result = mysql_query($query) or die(mysql_error($dbc));
 
 
 while ($row = mysql_fetch_array ($result, MYSQL_ASSOC)) {
+	$empno = $row['employee_number'];
 	$first_name = $row['first_name'];
 	$last_name = $row['last_name'];
 	$division = $row['division'];
@@ -123,7 +124,7 @@ if (isset($_POST['edited'])) {
 	if (empty($errors)) {//If everything's okay.
 	
 		//Update the user record in the database
-		$query = "UPDATE employees SET first_name='$fn', last_name='$ln', division='$div', exempt_status='$exs',
+		$query = "UPDATE employees SET employee_number='$empno', first_name='$fn', last_name='$ln', division='$div', exempt_status='$exs',
 			weekly_hours='$hrs', home_phone='$safe_home_phone', mobile_phone='$safe_mobile_phone',employee_lastday=";
 		if ($emp_lastday == null){
 			$query .= "null";
@@ -131,7 +132,7 @@ if (isset($_POST['edited'])) {
 		else {
 			$query .= "'$emp_lastday'";
 			}
-		$query .= " WHERE employee_number = '$empno'";
+		$query .= " WHERE emp_id = '$emp_id'";
 		$result = mysql_query($query) or die(mysql_error($dbc)); //Run the query.
 		if ($result) {//If it ran okay.
 			$_SESSION['success'] = TRUE;
@@ -229,7 +230,7 @@ function showMe (it, box) {
 <div class="emph"><?php echo $employee; ?></div>
 <form action="edit_employee" method="post" name="Employee" onsubmit="return validateForm();">
 	<p><div class="label">Employee Number:</div> <input type="number" name="employee_number" size="20" maxlength="7"
-	value="<?php if (isset($_POST['employee_number'])) echo $_POST['employee_number'];?>" readonly="readonly"/></p>
+	value="<?php if (isset($empno)) echo $empno;?>" readonly="readonly"/></p>
 	<p><div class="label">First Name:</div> <input type="text" name="first_name" size="15" maxlength="15"
 	value="<?php if (isset($first_name)) echo $first_name;?>" /></p>
 	<p><div class="label">Last Name:</div> <input type="text" name="last_name" size="15" maxlength="30"

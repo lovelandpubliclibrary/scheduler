@@ -10,31 +10,31 @@ include('./includes/allsessionvariables.php');
 
 if (isset($_POST['from_view_pic'])){
 	$_SESSION['pic_coverage_name'] = $_POST['first_name'];
-	$_SESSION['pic_employee_number'] = $_POST['employee_number'];
+	$_SESSION['pic_emp_id'] = $_POST['emp_id'];
 	$_SESSION['pic_coverage_date'] = $_POST['date'];
 	$_SESSION['pic_coverage_id'] = $_POST['pic_coverage_id'];
 	header('Location:edit_pic_coverage');
 	}
 else{
 	$first_name = $_SESSION['pic_coverage_name'];
-	$employee_number = $_SESSION['pic_employee_number'];
+	$emp_id = $_SESSION['pic_emp_id'];
 	$date = $_SESSION['pic_coverage_date'];
 	$pic_coverage_id = $_SESSION['pic_coverage_id'];
 	}
 
 $pic_poss = array();
 
-$query = "SELECT employee_number, first_name, last_name FROM employees WHERE active='Active' and pic_status='Y'
+$query = "SELECT emp_id, first_name, last_name FROM employees WHERE active='Active' and pic_status='Y'
 	ORDER BY last_name";
 $result = mysql_query($query);
 if ($result){
 	$num_rows = mysql_num_rows($result);
 	if ($num_rows != 0) {
 		while($row = mysql_fetch_array($result, MYSQL_ASSOC)){
-			$empno = $row['employee_number'];
+			$emp_id = $row['emp_id'];
 			$fn = $row['first_name'];
 			$ln = $row['last_name'];
-			$pic_poss[$empno] = array($fn,$ln);
+			$pic_poss[$emp_id] = array($fn,$ln);
 			}
 		}
 	}
@@ -48,7 +48,7 @@ if (isset($_POST['edited'])) {
 	$pid = $_POST['pic_coverage_id'];
 	$_SESSION['pic_coverage_name'] = $pic_poss[$new_pic][0];
 		
-	$query = "UPDATE pic_coverage SET employee_number='$new_pic' WHERE pic_coverage_id = '$pid'";
+	$query = "UPDATE pic_coverage SET emp_id='$new_pic' WHERE pic_coverage_id = '$pid'";
 	$result = mysql_query($query) or die(mysql_error($dbc));
 	if ($result) {//If it ran okay.
 		$_SESSION['success'] = TRUE;
@@ -73,7 +73,7 @@ include ('./includes/supersidebar.html');
 <?php
 			foreach ($pic_poss as $pk=>$pv){
 				echo '<option value="' . $pk . '" ';
-				if ($employee_number == $pk){
+				if ($emp_id == $pk){
 					echo 'selected="selected"';
 					}
 				echo '>'.$pv[0].'</option>';

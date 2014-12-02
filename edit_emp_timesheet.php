@@ -42,7 +42,7 @@ if (isset($_POST['pp_id'])){
 	$_SESSION['pp_id'] = $_POST['pp_id'];
 	$_SESSION['pp_start_date'] = $_POST['pp_start_date'];
 	$_SESSION['employee_name'] = $_POST['employee_name'];
-	$_SESSION['employee_number'] = $_POST['employee_number'];
+	$_SESSION['emp_id'] = $_POST['emp_id'];
 	$_SESSION['assignment_id'] = $_POST['assignment_id'];
 	header('Location:edit_emp_timesheet');
 	}
@@ -50,11 +50,11 @@ else{
 	$pp_id = $_SESSION['pp_id'];
 	$pp_start_date = $_SESSION['pp_start_date'];
 	$employee_name = $_SESSION['employee_name'];
-	$empno = $_SESSION['employee_number'];
+	$emp_id = $_SESSION['emp_id'];
 	$assignment_id = $_SESSION['assignment_id'];
 	}
 
-$query = "SELECT weekly_hours, division from employees WHERE employee_number='$empno'";
+$query = "SELECT weekly_hours, division from employees WHERE emp_id='$emp_id'";
 $result = mysql_query($query);
 while ($row = mysql_fetch_array($result, MYSQL_ASSOC)){
 	$weekly_hours = $row['weekly_hours'];
@@ -72,13 +72,13 @@ $pp_end_date = date('Y-m-d' , $pp_end_date );
 if (isset($_POST['confirmed'])){
 	$time_entry = $_POST['time_entry'];
 	//Check for duplicates
-	$query = "DELETE from time_entry WHERE employee_number='$empno' and pp_id='$pp_id' and assignment_id='$assignment_id'";
+	$query = "DELETE from time_entry WHERE emp_id='$emp_id' and pp_id='$pp_id' and assignment_id='$assignment_id'";
 	$result = mysql_query($query);
 	foreach ($time_entry as $date=>$codes){
 		foreach ($codes as $code=>$hours){
 			if((!empty($hours))&&($hours != 0)&&(is_numeric($hours))){
-				$query2 = "INSERT into time_entry (pp_id, employee_number, assignment_id, entry_date, hour_code, hours)
-					VALUES ('$pp_id', '$empno','$assignment_id','$date','$code','$hours')";
+				$query2 = "INSERT into time_entry (pp_id, emp_id, assignment_id, entry_date, hour_code, hours)
+					VALUES ('$pp_id', '$emp_id','$assignment_id','$date','$code','$hours')";
 				$result2 = mysql_query($query2) or die(mysql_error());
 				}
 			}
@@ -98,7 +98,7 @@ while ($row = mysql_fetch_assoc($result)) {
 
 //Get previous entries
 $previous = array();
-$query = "SELECT * from time_entry WHERE employee_number='$empno' and entry_date>='$pp_start_date'
+$query = "SELECT * from time_entry WHERE emp_id='$emp_id' and entry_date>='$pp_start_date'
 	and entry_date<='$pp_end_date' and assignment_id='$assignment_id'";
 $result = mysql_query($query);
 if (($result) && (mysql_num_rows($result)!=0)){
@@ -110,7 +110,7 @@ if (($result) && (mysql_num_rows($result)!=0)){
 		}
 	}
 $confirmed = '';
-$query = "SELECT * from timesheet_confirm WHERE employee_number='$this_empno' and pp_id = '$pp_id' and employee_confirm='Y'";
+$query = "SELECT * from timesheet_confirm WHERE emp_id='$emp_id' and pp_id = '$pp_id' and employee_confirm='Y'";
 $result = mysql_query($query);
 if (($result) && (mysql_num_rows($result)!=0)){
 	while($row = mysql_fetch_array($result, MYSQL_ASSOC)){
@@ -259,7 +259,7 @@ foreach ($array as $k=>$v){
 	$query2 = "SELECT time_format(shift_start,'%k') as shift_start, 
 		time_format(shift_start,'%i') as shift_start_minutes, time_format(shift_end,'%k') as shift_end, 
 		time_format(shift_end,'%i') as shift_end_minutes from employees as e, shifts as a, schedules as s 
-		WHERE e.employee_number = '$empno' and e.employee_number = a.employee_number and 
+		WHERE e.emp_id = '$emp_id' and e.emp_id = a.emp_id and 
 		schedule_start_date <= '$v' and schedule_end_date >= '$v' 
 		and week_type='$week_type' and shift_day='$day' and a.specific_schedule=s.specific_schedule 
 		and e.active = 'Active' and (e.employee_lastday >= '$v' or e.employee_lastday is null)";
@@ -309,7 +309,7 @@ foreach ($array as $k=>$v){
 		$sub_query = "SELECT time_format(coverage_start_time,'%k') as cov_start, 
 			time_format(coverage_start_time,'%i') as cov_start_minutes, time_format(coverage_end_time,'%k') as cov_end, 
 			time_format(coverage_end_time,'%i') as cov_end_minutes from coverage c, employees e
-			WHERE coverage_date = '$v' and c.employee_number = '$empno' and c.employee_number=e.employee_number 
+			WHERE coverage_date = '$v' and c.emp_id = '$emp_id' and c.emp_id=e.emp_id 
 			ORDER BY coverage_start_time asc";
 		$sub_result = mysql_query($sub_query);
 		if ($sub_result){
@@ -402,7 +402,7 @@ foreach ($array as $k=>$v){
 		$query2 = "SELECT time_format(shift_start,'%k') as shift_start, 
 			time_format(shift_start,'%i') as shift_start_minutes, time_format(shift_end,'%k') as shift_end, 
 			time_format(shift_end,'%i') as shift_end_minutes from employees as e, shifts as a, schedules as s 
-			WHERE e.employee_number = '$empno' and e.employee_number = a.employee_number and 
+			WHERE e.emp_id = '$emp_id' and e.emp_id = a.emp_id and 
 			schedule_start_date <= '$v' and schedule_end_date >= '$v' 
 			and week_type='$week_type' and shift_day='$day' and a.specific_schedule=s.specific_schedule 
 			and e.active = 'Active' and (e.employee_lastday >= '$v' or e.employee_lastday is null)";
@@ -473,7 +473,7 @@ foreach ($array as $k=>$v){
 			$sub_query = "SELECT time_format(coverage_start_time,'%k') as cov_start, 
 				time_format(coverage_start_time,'%i') as cov_start_minutes, time_format(coverage_end_time,'%k') as cov_end, 
 				time_format(coverage_end_time,'%i') as cov_end_minutes from coverage 
-				WHERE coverage_date = '$v' and employee_number = '$empno' ORDER BY coverage_start_time asc";
+				WHERE coverage_date = '$v' and emp_id = '$emp_id' ORDER BY coverage_start_time asc";
 			$sub_result = mysql_query($sub_query);
 			if ($sub_result){
 				$num = mysql_num_rows($sub_result);
@@ -615,7 +615,7 @@ foreach ($array as $k=>$v){
 	$query2 = "SELECT time_format(shift_start,'%k') as shift_start, 
 		time_format(shift_start,'%i') as shift_start_minutes, time_format(shift_end,'%k') as shift_end, 
 		time_format(shift_end,'%i') as shift_end_minutes from employees as e, shifts as a, schedules as s 
-		WHERE e.employee_number = '$empno' and e.employee_number = a.employee_number and 
+		WHERE e.emp_id = '$emp_id' and e.emp_id = a.emp_id and 
 		schedule_start_date <= '$v' and schedule_end_date >= '$v' 
 		and week_type='$week_type' and shift_day='$day' and a.specific_schedule=s.specific_schedule 
 		and e.active = 'Active' and (e.employee_lastday >= '$v' or e.employee_lastday is null)";
@@ -665,7 +665,7 @@ foreach ($array as $k=>$v){
 		$sub_query = "SELECT time_format(coverage_start_time,'%k') as cov_start, 
 			time_format(coverage_start_time,'%i') as cov_start_minutes, time_format(coverage_end_time,'%k') as cov_end, 
 			time_format(coverage_end_time,'%i') as cov_end_minutes from coverage c, employees e
-			WHERE coverage_date = '$v' and c.employee_number = '$empno' and c.employee_number=e.employee_number 
+			WHERE coverage_date = '$v' and c.emp_id = '$emp_id' and c.emp_id=e.emp_id 
 			ORDER BY coverage_start_time asc";
 		$sub_result = mysql_query($sub_query);
 		if ($sub_result){
@@ -758,7 +758,7 @@ foreach ($array as $k=>$v){
 		$query2 = "SELECT time_format(shift_start,'%k') as shift_start, 
 			time_format(shift_start,'%i') as shift_start_minutes, time_format(shift_end,'%k') as shift_end, 
 			time_format(shift_end,'%i') as shift_end_minutes from employees as e, shifts as a, schedules as s 
-			WHERE e.employee_number = '$empno' and e.employee_number = a.employee_number and 
+			WHERE e.emp_id = '$emp_id' and e.emp_id = a.emp_id and 
 			schedule_start_date <= '$v' and schedule_end_date >= '$v' 
 			and week_type='$week_type' and shift_day='$day' and a.specific_schedule=s.specific_schedule 
 			and e.active = 'Active' and (e.employee_lastday >= '$v' or e.employee_lastday is null)";
@@ -829,7 +829,7 @@ foreach ($array as $k=>$v){
 			$sub_query = "SELECT time_format(coverage_start_time,'%k') as cov_start, 
 				time_format(coverage_start_time,'%i') as cov_start_minutes, time_format(coverage_end_time,'%k') as cov_end, 
 				time_format(coverage_end_time,'%i') as cov_end_minutes from coverage 
-				WHERE coverage_date = '$v' and employee_number = '$empno' ORDER BY coverage_start_time asc";
+				WHERE coverage_date = '$v' and emp_id = '$emp_id' ORDER BY coverage_start_time asc";
 			$sub_result = mysql_query($sub_query);
 			if ($sub_result){
 				$num = mysql_num_rows($sub_result);

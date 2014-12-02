@@ -28,7 +28,7 @@ echo '<span class="date"><h1>Library Employees</h1></span>';
 
 if (($came_from == 'edit_employee') && (isset($_SESSION['success']))){
 	$name = $_SESSION['edit_employee_name'];
-	$empn = $_SESSION['edit_employee_number'];
+	$emp_id = $_SESSION['edit_emp_id'];
 	echo '<div class="message"><b>'. $name . '</b> has been updated.</div>';
 	unset($_SESSION['success']);
 	}
@@ -78,9 +78,9 @@ else {
 require_once ('../mysql_connect_sched2.php');
 
 if (isset($_POST['delete'])){
-	$empno = $_POST['employee_number'];
+	$emp_id = $_POST['emp_id'];
 	$name = $_POST['employee_name'];
-	$query1 = "UPDATE employees set active='Inactive' WHERE employee_number='$empno'";
+	$query1 = "UPDATE employees set active='Inactive' WHERE emp_id='$emp_id'";
 	$result1 = mysql_query($query1);
 	echo '<div class="message"><b>'. $name . '</b> has been deleted.</div>';
 	}
@@ -103,7 +103,7 @@ echo '</select>
 
 if ((isset($division)) && ($division !== 'All')) {
 	
-	$query = "SELECT last_name, first_name, employee_number, exempt_status, weekly_hours, division, 
+	$query = "SELECT emp_id, last_name, first_name, employee_number, exempt_status, weekly_hours, division, 
 		home_phone, mobile_phone FROM employees WHERE division='$division' and active='Active'
 	ORDER BY division ASC, last_name asc";
 	$result = mysql_query($query) or die(mysql_error($dbc));
@@ -124,7 +124,7 @@ if ((isset($division)) && ($division !== 'All')) {
 			<input type="submit" name="submit" value="Edit" />
 			</form></td>
 			<td><form action="view_employees" method="post" onsubmit="return deleteEmployee(this)">
-			<input type="hidden" name="employee_number" value="' . $row['employee_number'] . '"/>
+			<input type="hidden" name="emp_id" value="' . $row['emp_id'] . '"/>
 			<input type="hidden" name="employee_name" value="' . $row['first_name'] . ' ' . $row['last_name'] . '"/>
 			<input type="hidden" name="delete" value="TRUE" />
 			<input type="hidden" name="submitted" value="TRUE" />
@@ -145,7 +145,7 @@ if ((isset($division)) && ($division !== 'All')) {
 	}
 
 else{
-	$query = "SELECT last_name, first_name, employee_number, exempt_status, weekly_hours, division, 
+	$query = "SELECT emp_id, last_name, first_name, employee_number, exempt_status, weekly_hours, division, 
 		home_phone, mobile_phone FROM employees WHERE active='Active'
 		ORDER BY division ASC, last_name asc";
 	$result = mysql_query($query) or die(mysql_error($dbc));
@@ -162,11 +162,11 @@ else{
 			$row['weekly_hours'].'</td><td>'.$row['division'].'</td>
 			<td><form action="edit_employee" method="post">
 			<input type="hidden" name="employee_name" value="' . $row['first_name'] . ' ' . $row['last_name'] . '"/>
-			<input type="hidden" name="employee_number" value="' . $row['employee_number'] . '"/>
+			<input type="hidden" name="emp_id" value="' . $row['emp_id'] . '"/>
 			<input type="hidden" name="from_view_emp" value="TRUE"/>
 			<input type="submit" name="submit" value="Edit" /></form></td>
 			<td><form action="view_employees" method="post" onsubmit="return deleteEmployee(this)">
-			<input type="hidden" name="employee_number" value="' . $row['employee_number'] . '"/>
+			<input type="hidden" name="emp_id" value="' . $row['emp_id'] . '"/>
 			<input type="hidden" name="employee_name" value="' . $row['first_name'] . ' ' . $row['last_name'] . '"/>
 			<input type="hidden" name="delete" value="TRUE" />
 			<input type="submit" name="delete" value="Delete" /></form>

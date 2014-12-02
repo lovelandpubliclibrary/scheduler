@@ -16,17 +16,17 @@ include ('./includes/supersidebar.html');
 <?php
 $pic_poss = array();
 
-$query = "SELECT employee_number, first_name, last_name FROM employees WHERE active='Active' and pic_status='Y'
+$query = "SELECT emp_id, first_name, last_name FROM employees WHERE active='Active' and pic_status='Y'
 	ORDER BY first_name";
 $result = mysql_query($query);
 if ($result){
 	$num_rows = mysql_num_rows($result);
 	if ($num_rows != 0) {
 		while($row = mysql_fetch_array($result, MYSQL_ASSOC)){
-			$empno = $row['employee_number'];
+			$emp_id = $row['emp_id'];
 			$fn = $row['first_name'];
 			$ln = $row['last_name'];
-			$pic_poss[$empno] = array($fn,$ln);
+			$pic_poss[$emp_id] = array($fn,$ln);
 			}
 		}
 	}
@@ -40,8 +40,8 @@ if (isset($_POST['submitted'])){
 	$pic = $_POST['pic_poss'];
 	
 	//Check for overlaps
-	$query = "SELECT e.employee_number, first_name FROM employees e, pic_coverage c WHERE 
-		e.employee_number = c.employee_number and pic_coverage_date='$pic_date'";
+	$query = "SELECT e.emp_id, first_name FROM employees e, pic_coverage c WHERE 
+		e.emp_id = c.emp_id and pic_coverage_date='$pic_date'";
 	$result = mysql_query($query);
 	if ($result){
 	$num_rows = mysql_num_rows($result);
@@ -51,7 +51,7 @@ if (isset($_POST['submitted'])){
 		}
 	
 	if(!isset($error)){
-		$query = "INSERT into pic_coverage (pic_coverage_date, employee_number) values ('$pic_date', '$pic')";
+		$query = "INSERT into pic_coverage (pic_coverage_date, emp_id) values ('$pic_date', '$pic')";
 		$result = mysql_query($query);
 		
 		//Echo change success message

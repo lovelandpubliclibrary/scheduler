@@ -44,7 +44,7 @@ if (($came_from == 'edit_coverage') && (isset($_SESSION['success']))){
 		$division = $_SESSION['coverage_view_div'];
 		}
 	$name = $_SESSION['coverage_employee_name'];
-	$empn = $_SESSION['coverage_employee_number'];
+	$emp_id = $_SESSION['coverage_emp_id'];
 	$tid = $_SESSION['coverage_id'];
 	$d = $_SESSION['coverage_date'];
 	echo '<div class="message"><b>Coverage by</b> '. $name . ' on ' . $d . ' has been updated.</div>';
@@ -52,7 +52,7 @@ if (($came_from == 'edit_coverage') && (isset($_SESSION['success']))){
 	}
 	
 if (isset($_POST['delete'])){
-	$empno = $_POST['employee_number'];
+	$emp_id = $_POST['emp_id'];
 	$name = $_POST['employee_name'];
 	$coverage_id = $_POST['coverage_id'];
 	$date = $_POST['date'];
@@ -79,12 +79,12 @@ echo '</select>
 
 if ((isset($division)) && ($division !== 'All')) {
 	$_SESSION['coverage_view_div'] = $division;
-	$query = "SELECT first_name, last_name, e.employee_number, coverage_division, coverage_id,
+	$query = "SELECT first_name, last_name, e.emp_id, coverage_division, coverage_id,
 		time_format(coverage_start_time,'%k') as coverage_start, time_format(coverage_start_time,'%i') as coverage_start_minutes, 
 		time_format(coverage_end_time,'%k') as coverage_end, time_format(coverage_end_time,'%i') as coverage_end_minutes, 
 		coverage_date, coverage_offdesk, coverage_reason
 		FROM employees as e, coverage as t
-		WHERE coverage_division = '$division' and e.employee_number = t.employee_number and e.active = 'Active' 
+		WHERE coverage_division = '$division' and e.emp_id = t.emp_id and e.active = 'Active' 
 		and coverage_date >= '$today'
 		ORDER by coverage_date asc, first_name asc";
 	$result = mysql_query($query);
@@ -95,7 +95,7 @@ if ((isset($division)) && ($division !== 'All')) {
 			while ($row = mysql_fetch_array($result, MYSQL_ASSOC)){
 				$first_name = $row['first_name'];
 				$last_name = $row['last_name'];
-				$empno = $row['employee_number'];
+				$emp_id = $row['emp_id'];
 				$coverage_division = $row['coverage_division'];
 				$coverage_id = $row['coverage_id'];
 				$coverage_start_hours = $row['coverage_start'];
@@ -198,7 +198,7 @@ if ((isset($division)) && ($division !== 'All')) {
 				
 				
 				echo '<td><form action="edit_coverage" method="post">
-					<input type="hidden" name="employee_number" value="' . $empno . '"/>
+					<input type="hidden" name="emp_id" value="' . $emp_id . '"/>
 					<input type="hidden" name="employee_name" value="' . $first_name . ' ' . $last_name . '"/>
 					<input type="hidden" name="coverage_id" value="' . $coverage_id . '"/>
 					<input type="hidden" name="came_from" value="' . $_SERVER['REQUEST_URI'] . '" />
@@ -206,7 +206,7 @@ if ((isset($division)) && ($division !== 'All')) {
 					<input type="hidden" name="from_view" value="TRUE"/>
 					<input type="submit" name="submit" value="Edit" /></form></td>
 					<td><form action="view_coverage" method="post" onsubmit="return deletecoverage()">
-					<input type="hidden" name="employee_number" value="' . $empno . '"/>
+					<input type="hidden" name="emp_id" value="' . $emp_id . '"/>
 					<input type="hidden" name="employee_name" value="' . $first_name . ' ' . $last_name . '"/>
 					<input type="hidden" name="coverage_id" value="' . $coverage_id . '"/>
 					<input type="hidden" name="date" value="' . $cmonth . ' ' . $cday . $cyear . '"/>
@@ -224,12 +224,12 @@ if ((isset($division)) && ($division !== 'All')) {
 	}
 else {
 	unset($_SESSION['coverage_view_div']);
-	$query = "SELECT first_name, last_name, e.employee_number, coverage_division, coverage_id, 
+	$query = "SELECT first_name, last_name, e.emp_id, coverage_division, coverage_id, 
 		time_format(coverage_start_time,'%k') as coverage_start, time_format(coverage_start_time,'%i') as coverage_start_minutes, 
 		time_format(coverage_end_time,'%k') as coverage_end, time_format(coverage_end_time,'%i') as coverage_end_minutes, 
 		coverage_date, coverage_offdesk, coverage_reason
 		FROM employees as e, coverage as t
-		WHERE e.employee_number = t.employee_number and e.active = 'Active' 
+		WHERE e.emp_id = t.emp_id and e.active = 'Active' 
 		and coverage_date >= '$today'
 		ORDER by coverage_date asc, first_name asc";
 	$result = mysql_query($query);
@@ -240,7 +240,7 @@ else {
 			while ($row = mysql_fetch_array($result, MYSQL_ASSOC)){
 				$first_name = $row['first_name'];
 				$last_name = $row['last_name'];
-				$empno = $row['employee_number'];
+				$emp_id = $row['emp_id'];
 				$coverage_division = $row['coverage_division'];
 				$coverage_id = $row['coverage_id'];
 				$coverage_start_hours = $row['coverage_start'];
@@ -342,14 +342,14 @@ else {
 				echo "</td>";
 
 				echo '<td><form action="edit_coverage" method="post">
-					<input type="hidden" name="employee_number" value="' . $empno . '"/>
+					<input type="hidden" name="emp_id" value="' . $emp_id . '"/>
 					<input type="hidden" name="employee_name" value="' . $first_name . ' ' . $last_name . '"/>
 					<input type="hidden" name="coverage_id" value="' . $coverage_id . '"/>
 					<input type="hidden" name="date" value="' . $cmonth . ' ' . $cday . $cyear . '"/>
 					<input type="hidden" name="from_view" value="TRUE"/>
 					<input type="submit" name="submit" value="Edit" /></form></td>
 					<td><form action="view_coverage" method="post" onsubmit="return deletecoverage()">
-					<input type="hidden" name="employee_number" value="' . $empno . '"/>
+					<input type="hidden" name="emp_id" value="' . $emp_id . '"/>
 					<input type="hidden" name="employee_name" value="' . $first_name . ' ' . $last_name . '"/>
 					<input type="hidden" name="coverage_id" value="' . $coverage_id . '"/>
 					<input type="hidden" name="date" value="' . $cmonth . ' ' . $cday . $cyear . '"/>

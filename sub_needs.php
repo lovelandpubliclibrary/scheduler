@@ -13,13 +13,13 @@ $division = 'All';
 $today = date('Y-m-d');
 
 function subs(){
-	$query = "SELECT employee_number, concat(first_name, ' ', last_name) as employee_name FROM employees 
+	$query = "SELECT emp_id, concat(first_name, ' ', last_name) as employee_name FROM employees 
 		WHERE division = 'Subs' and active = 'Active' ORDER BY last_name asc";
 	$result = mysql_query($query);
 	while ($row = mysql_fetch_array ($result, MYSQL_ASSOC)){
-		$empno = $row['employee_number'];
+		$emp_id = $row['emp_id'];
 		$name = $row['employee_name'];
-		$subs[$empno] = $name;
+		$subs[$emp_id] = $name;
 		}
 	return $subs;
 	}
@@ -127,7 +127,7 @@ if (($_SESSION['role'] == 'Admin')||($_SESSION['role'] == 'Supervisor')){
 	if (isset($_POST['confirm'])){
 		$division = $_SESSION['sub_needs_division'];
 	
-		$empno = $_POST['employee_number'];
+		$emp_id = $_POST['emp_id'];
 		$name = $_POST['employee_name'];
 		$sub_needs_id = $_POST['sub_needs_id'];
 		$sub_needs_division = $_POST['sub_needs_division'];
@@ -137,9 +137,9 @@ if (($_SESSION['role'] == 'Admin')||($_SESSION['role'] == 'Supervisor')){
 		$sub_needs_end_time = $_POST['sub_needs_end_time'];
 		
 		//Check for overlaps
-		$query = "SELECT e.employee_number, division, concat(first_name, ' ', last_name) as employee_name, coverage_division,
+		$query = "SELECT e.emp_id, division, concat(first_name, ' ', last_name) as employee_name, coverage_division,
 			coverage_date, coverage_start_time, coverage_end_time FROM coverage as t, employees as e 
-			WHERE e.employee_number = t.employee_number and e.employee_number = '$empno' 
+			WHERE e.emp_id = t.emp_id and e.emp_id = '$emp_id' 
 			and coverage_date = '$sub_needs_date' and (('$sub_needs_start_time' >= coverage_start_time and 
 			'$sub_needs_start_time' < coverage_end_time) 
 			or ('$sub_needs_end_time' > coverage_start_time and '$sub_needs_end_time' <= coverage_end_time) 
@@ -149,7 +149,7 @@ if (($_SESSION['role'] == 'Admin')||($_SESSION['role'] == 'Supervisor')){
 		if ($num_rows != 0) {
 			while ($row = mysql_fetch_array ($result, MYSQL_ASSOC)){
 				$full_name = $row['employee_name'];
-				$old_empno = $row['employee_number'];
+				$old_emp_id = $row['emp_id'];
 				$division = $row['division'];
 				$cov_date = $row['coverage_date'];
 				$covs_time = $row['coverage_start_time'];
@@ -164,8 +164,8 @@ if (($_SESSION['role'] == 'Admin')||($_SESSION['role'] == 'Supervisor')){
 		if (empty($errors)) {
 			$query1 = "UPDATE sub_needs set sub_needs_covered='Y' WHERE sub_needs_id='$sub_needs_id'";
 			$result1 = mysql_query($query1);
-			$query2 = "INSERT into coverage (employee_number, coverage_date, coverage_start_time, coverage_end_time, coverage_division,
-				coverage_offdesk, coverage_reason, coverage_create) VALUES ('$empno','$sub_needs_date', '$sub_needs_start_time', 
+			$query2 = "INSERT into coverage (emp_id, coverage_date, coverage_start_time, coverage_end_time, coverage_division,
+				coverage_offdesk, coverage_reason, coverage_create) VALUES ('$emp_id','$sub_needs_date', '$sub_needs_start_time', 
 				'$sub_needs_end_time', '$sub_needs_division', 'On', '', null)";
 			$result2 = mysql_query($query2);
 			echo '<div class="message"><b>'. $name . ' on ' . $short_date . '</b> has been confirmed.</div>';
@@ -212,7 +212,7 @@ if (($_SESSION['role'] == 'Admin')||($_SESSION['role'] == 'Supervisor')){
 			time_format(sub_needs_start_time,'%k') as sub_needs_start, 
 			time_format(sub_needs_start_time,'%i') as sub_needs_start_minutes, sub_needs_end_time,
 			time_format(sub_needs_end_time,'%k') as sub_needs_end, 
-			time_format(sub_needs_end_time,'%i') as sub_needs_end_minutes, sub_needs_empno
+			time_format(sub_needs_end_time,'%i') as sub_needs_end_minutes, sub_needs_emp_id
 			FROM sub_needs
 			WHERE sub_needs_date >= '$today' and sub_needs_covered = 'N' and sub_needs_division = '$division'
 			ORDER by sub_needs_date asc, sub_needs_start_time asc, sub_needs_division asc";
@@ -222,7 +222,7 @@ if (($_SESSION['role'] == 'Admin')||($_SESSION['role'] == 'Supervisor')){
 			time_format(sub_needs_start_time,'%k') as sub_needs_start, 
 			time_format(sub_needs_start_time,'%i') as sub_needs_start_minutes, sub_needs_end_time,
 			time_format(sub_needs_end_time,'%k') as sub_needs_end, 
-			time_format(sub_needs_end_time,'%i') as sub_needs_end_minutes, sub_needs_empno
+			time_format(sub_needs_end_time,'%i') as sub_needs_end_minutes, sub_needs_emp_id
 			FROM sub_needs
 			WHERE sub_needs_date >= '$today' and sub_needs_covered = 'N'
 			ORDER by sub_needs_date asc, sub_needs_start_time asc, sub_needs_division asc";
@@ -244,7 +244,7 @@ if (($_SESSION['role'] == 'Admin')||($_SESSION['role'] == 'Supervisor')){
 				$sub_needs_end_time = $row['sub_needs_end_time'];
 				$sub_needs_end_hours = $row['sub_needs_end'];
 				$sub_needs_end_minutes = $row['sub_needs_end_minutes'];
-				$sub_needs_empno = $row['sub_needs_empno'];
+				$sub_needs_emp_id = $row['sub_needs_emp_id'];
 				$sns12 = NULL;
 				$sne12 = NULL;
 				
@@ -315,15 +315,15 @@ if (($_SESSION['role'] == 'Admin')||($_SESSION['role'] == 'Supervisor')){
 				//Find Declines
 				$declined = array();
 				$declined_ordered = array();
-				$query2 = "SELECT employee_number from sub_needs_declined WHERE sub_needs_id='$sub_needs_id'";
+				$query2 = "SELECT emp_id from sub_needs_declined WHERE sub_needs_id='$sub_needs_id'";
 				$result2 = mysql_query($query2);
 				while ($row2 = mysql_fetch_array($result2, MYSQL_ASSOC)){
-					$empno = $row2['employee_number'];
-					$declined[] = $empno;
+					$emp_id = $row2['emp_id'];
+					$declined[] = $emp_id;
 					}
-				foreach ($subs as $empno=>$name){
-					if (in_array($empno, $declined)){
-						$declined_ordered[] = $empno;
+				foreach ($subs as $emp_id=>$name){
+					if (in_array($emp_id, $declined)){
+						$declined_ordered[] = $emp_id;
 						}
 					}
 				
@@ -332,29 +332,29 @@ if (($_SESSION['role'] == 'Admin')||($_SESSION['role'] == 'Supervisor')){
 				echo ", $sns12 - $sne12";
 				echo "</td>";
 				echo "<td class=\"assign\">";
-				if ($sub_needs_empno != NULL){
-					$sub = $subs[$sub_needs_empno];
+				if ($sub_needs_emp_id != NULL){
+					$sub = $subs[$sub_needs_emp_id];
 					echo "Shift assigned to <span class=\"assign_style\">$sub</span>";
 					}
 				else {
 					echo "Shift not yet assigned...";
 					if (!empty($declined)){
 						echo '<br/><b>Declined by:</b> <span class="decline">';
-						foreach ($declined_ordered as $key=>$empno){
+						foreach ($declined_ordered as $key=>$emp_id){
 							if ($key != 0){
 								echo ', ';
 								}
-							echo $subs[$empno];
+							echo $subs[$emp_id];
 							}
 						echo '</span>';
 						}
 					}
 				echo "</td>";
 				echo "<td class=\"confirm\">";
-				if ($sub_needs_empno != NULL){
+				if ($sub_needs_emp_id != NULL){
 					echo '<form action="sub_needs" method="post" onsubmit="return confirmSub(this)">
 						<input type="hidden" name="sub_needs_id" value="' . $sub_needs_id . '"/>
-						<input type="hidden" name="employee_number" value="' . $sub_needs_empno . '"/>
+						<input type="hidden" name="emp_id" value="' . $sub_needs_emp_id . '"/>
 						<input type="hidden" name="employee_name" value="' . $sub . '"/>
 						<input type="hidden" name="sub_needs_division" value="' . $sub_needs_division . '"/>
 						<input type="hidden" name="sub_needs_date" value="' . $sub_needs_date . '"/>
@@ -366,7 +366,7 @@ if (($_SESSION['role'] == 'Admin')||($_SESSION['role'] == 'Supervisor')){
 					}
 				echo '</td>';
 				echo '<td class="delete">';
-				if ($sub_needs_empno == NULL){
+				if ($sub_needs_emp_id == NULL){
 					echo '<form action="sub_needs" method="post" onsubmit="return deleteSubNeeds(this)">
 						<input type="hidden" name="sub_needs_id" value="' . $sub_needs_id . '"/>
 						<input type="hidden" name="sub_needs_division" value="' . $sub_needs_division . '"/>
@@ -395,9 +395,9 @@ elseif ($_SESSION['role'] == 'Subs'){
 		$("select[name*='subs']").change(function(){
 			getScrollXY();
 			var sub = $("option:selected", this).text();
-			var empno = $(this).val();
+			var emp_id = $(this).val();
 			var form = $(this).closest("form").attr("id");
-			if (empno != 'cancel'){
+			if (emp_id != 'cancel'){
 				if(confirm('Switch sub to '+sub+'?')){
 					$('#'+form).submit();
 					}
@@ -428,21 +428,21 @@ elseif ($_SESSION['role'] == 'Subs'){
 	echo '<span class="date"><h1>Sub Needs</h1></span>'."\n";
 	if (isset($_POST['confirm'])){
 		$sub_needs_id = $_POST['sub_needs_id'];
-		$sub_needs_empno = $_POST['subs_'.$sub_needs_id];
+		$sub_needs_emp_id = $_POST['subs_'.$sub_needs_id];
 		
-		if ($sub_needs_empno == 'cancel'){
-			$query = "UPDATE sub_needs set sub_needs_empno=NULL WHERE sub_needs_id='$sub_needs_id'";
+		if ($sub_needs_emp_id == 'cancel'){
+			$query = "UPDATE sub_needs set sub_needs_emp_id=NULL WHERE sub_needs_id='$sub_needs_id'";
 			$result = mysql_query($query);
 			}
 		else {
-			$query1 = "UPDATE sub_needs set sub_needs_empno='$sub_needs_empno' WHERE sub_needs_id='$sub_needs_id'";
+			$query1 = "UPDATE sub_needs set sub_needs_emp_id='$sub_needs_emp_id' WHERE sub_needs_id='$sub_needs_id'";
 			$result1 = mysql_query($query1);
 			}
 		}
 	if (isset($_POST['decline'])){
 		$sub_needs_id = $_POST['sub_needs_id'];
-		$empno = $_POST['declined'];
-		$query2 = "INSERT into sub_needs_declined (sub_needs_id, employee_number) VALUES ('$sub_needs_id', '$empno')";
+		$emp_id = $_POST['declined'];
+		$query2 = "INSERT into sub_needs_declined (sub_needs_id, emp_id) VALUES ('$sub_needs_id', '$emp_id')";
 		$result2 = mysql_query($query2);
 		}
 	if (isset($_POST['decline_comment'])){
@@ -458,8 +458,8 @@ elseif ($_SESSION['role'] == 'Subs'){
 		}
 	if (isset($_POST['available'])){
 		$sub_needs_id = $_POST['sub_needs_id'];
-		$empno = $_POST['availability'];
-		$query4 = "INSERT into sub_needs_available (sub_needs_id, employee_number) VALUES ('$sub_needs_id', '$empno')";
+		$emp_id = $_POST['availability'];
+		$query4 = "INSERT into sub_needs_available (sub_needs_id, emp_id) VALUES ('$sub_needs_id', '$emp_id')";
 		$result4 = mysql_query($query4);
 		}
 	if (isset($_POST['unavailable'])){
@@ -470,7 +470,7 @@ elseif ($_SESSION['role'] == 'Subs'){
 		
 	$query = "SELECT sub_needs_id, sub_needs_division, sub_needs_date, time_format(sub_needs_start_time,'%k') as sub_needs_start, 
 		time_format(sub_needs_start_time,'%i') as sub_needs_start_minutes, time_format(sub_needs_end_time,'%k') as sub_needs_end, 
-		time_format(sub_needs_end_time,'%i') as sub_needs_end_minutes, sub_needs_empno
+		time_format(sub_needs_end_time,'%i') as sub_needs_end_minutes, sub_needs_emp_id
 		FROM sub_needs
 		WHERE sub_needs_date >= '$today' and sub_needs_covered = 'N'
 		ORDER by sub_needs_date asc, sub_needs_start_time asc, sub_needs_division asc";
@@ -487,7 +487,7 @@ elseif ($_SESSION['role'] == 'Subs'){
 				$sub_needs_start_minutes = $row['sub_needs_start_minutes'];
 				$sub_needs_end_hours = $row['sub_needs_end'];
 				$sub_needs_end_minutes = $row['sub_needs_end_minutes'];
-				$sub_needs_empno = $row['sub_needs_empno'];
+				$sub_needs_emp_id = $row['sub_needs_emp_id'];
 				$sns12 = NULL;
 				$sne12 = NULL;
 				
@@ -554,9 +554,9 @@ elseif ($_SESSION['role'] == 'Subs'){
 				$result2 = mysql_query($query2);
 				while ($row2 = mysql_fetch_array($result2, MYSQL_ASSOC)){
 					$sub_needs_declined_id = $row2['sub_needs_declined_id'];
-					$empno = $row2['employee_number'];
+					$emp_id = $row2['emp_id'];
 					$comment = $row2['comment'];
-					$declined[$empno] = array($sub_needs_declined_id=>$comment);
+					$declined[$emp_id] = array($sub_needs_declined_id=>$comment);
 					}
 
 				//Find Availables
@@ -565,8 +565,8 @@ elseif ($_SESSION['role'] == 'Subs'){
 				$result3 = mysql_query($query3);
 				while ($row3 = mysql_fetch_array($result3, MYSQL_ASSOC)){
 					$sub_needs_available_id = $row3['sub_needs_available_id'];
-					$empno = $row3['employee_number'];
-					$available[$sub_needs_available_id] = $empno;
+					$emp_id = $row3['emp_id'];
+					$available[$sub_needs_available_id] = $emp_id;
 					}
 				
 				echo "<tr><td class=\"division\">$sub_needs_division</td>";
@@ -574,23 +574,23 @@ elseif ($_SESSION['role'] == 'Subs'){
 				echo ", $sns12 - $sne12";
 				echo "</td>";
 
-				if ($sub_needs_empno != NULL){
+				if ($sub_needs_emp_id != NULL){
 					echo "<td class=\"assign\" colspan=\"2\">";
-					$sub = $subs[$sub_needs_empno];
+					$sub = $subs[$sub_needs_emp_id];
 					echo "Shift assigned to <span class=\"assign_style\">$sub</span>";
 					echo "</td>";
 					}
 				else {
 					echo "<td class=\"assign\">";
 					echo '<b>Decline:</b><br/>';
-					foreach($subs as $empno=>$name){
-						if (array_key_exists($empno, $declined)){
-							$decarray = $declined[$empno];
+					foreach($subs as $emp_id=>$name){
+						if (array_key_exists($emp_id, $declined)){
+							$decarray = $declined[$emp_id];
 							foreach ($decarray as $k=>$v){
 								$sub_needs_declined_id = $k;
 								$comment = $v;
 								echo '<form id="undecline" action="sub_needs" method="post" class="undecline" style="float:left;margin-right:5px;">
-									<input class="declined_check" type="checkbox" onchange="getScrollXY();this.form.submit();" name="declined" value="'.$empno.'"';
+									<input class="declined_check" type="checkbox" onchange="getScrollXY();this.form.submit();" name="declined" value="'.$emp_id.'"';
 								echo ' checked="checked"';
 								echo '><span class="decline">'.$name.'</span>';
 								echo '<input type="hidden" name="undecline" value="TRUE" />
@@ -608,7 +608,7 @@ elseif ($_SESSION['role'] == 'Subs'){
 							}
 						else {
 							echo '<form id="decline" action="sub_needs" method="post">
-								<input class="declined_check" type="checkbox" onchange="getScrollXY();this.form.submit();" name="declined" value="'.$empno.'"';
+								<input class="declined_check" type="checkbox" onchange="getScrollXY();this.form.submit();" name="declined" value="'.$emp_id.'"';
 							echo '><span class="decline">'.$name.'</span>';
 							echo '<input type="hidden" name="decline" value="TRUE" />
 								<input type="hidden" name="sub_needs_id" value="'.$sub_needs_id.'"/>
@@ -618,11 +618,11 @@ elseif ($_SESSION['role'] == 'Subs'){
 					echo "</td>";
 					echo "<td class=\"assign\">";
 					echo '<b>Available:</b><br/>';
-					foreach($subs as $empno=>$name){
-						if (in_array($empno, $available)){
-							$sub_needs_available_id = array_search($empno, $available);
+					foreach($subs as $emp_id=>$name){
+						if (in_array($emp_id, $available)){
+							$sub_needs_available_id = array_search($emp_id, $available);
 							echo '<form id="unavailable" action="sub_needs" method="post">
-								<input type="checkbox" onchange="getScrollXY();this.form.submit();" name="availability" value="'.$empno.'"';
+								<input type="checkbox" onchange="getScrollXY();this.form.submit();" name="availability" value="'.$emp_id.'"';
 							echo ' checked="checked"';
 							echo '><span class="decline">'.$name.'</span><br/>';
 							echo '<input type="hidden" name="unavailable" value="TRUE" />
@@ -631,7 +631,7 @@ elseif ($_SESSION['role'] == 'Subs'){
 							}
 						else {
 							echo '<form id="available" action="sub_needs" method="post">
-								<input type="checkbox" onchange="getScrollXY();this.form.submit();" name="availability" value="'.$empno.'"';
+								<input type="checkbox" onchange="getScrollXY();this.form.submit();" name="availability" value="'.$emp_id.'"';
 							echo '><span class="decline">'.$name.'</span><br/>';
 							echo '<input type="hidden" name="available" value="TRUE" />
 								<input type="hidden" name="sub_needs_id" value="' . $sub_needs_id . '"/>
@@ -642,7 +642,7 @@ elseif ($_SESSION['role'] == 'Subs'){
 					}
 
 				echo "<td class=\"assign\" style=\"vertical-align:top;\">";
-				if ($sub_needs_empno == NULL){
+				if ($sub_needs_emp_id == NULL){
 					echo "<b>Accept:</b><br/>";
 					}
 				echo '<form id="switch_sub_'.$sub_needs_id.'" class="subassign" action="sub_needs" method="post">
@@ -651,7 +651,7 @@ elseif ($_SESSION['role'] == 'Subs'){
 				foreach ($subs as $key => $value) {
 					echo "<option value=\"$key\">$value</option>\n";
 					}
-				if ($sub_needs_empno != NULL){
+				if ($sub_needs_emp_id != NULL){
 					echo "<option value=\"cancel\">...cancel assignment</option>\n";
 					}
 				echo '</select>

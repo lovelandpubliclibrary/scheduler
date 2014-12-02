@@ -11,7 +11,7 @@ include ('./includes/sidebar.html');
 echo '<div class="mobilewrapper_outer"><div class="mobilewrapper_inner">
 	<span class="date"><h1>'.$page_title.'</h1></span>';
 	
-if (isset($this_empno)){
+if (isset($this_emp_id)){
 	if (($came_from == 'edit_my_timesheet') && (isset($_SESSION['timesheet_confirmed']))){
 		$pp_start_date = $_SESSION['pp_start_date'];
 		echo '<div class="message">Your timesheet starting '.$pp_start_date.' has been edited.</div>';
@@ -36,7 +36,7 @@ if (isset($this_empno)){
 		
 		echo '<tr><td class="scheddate">'.$pp_start_date.'</td><td class="scheddate">'.$pp_end_date.'</td>';
 		
-		$query1 = "SELECT * from timesheet_confirm WHERE pp_id = '$pp_id' and employee_number = '$this_empno' 
+		$query1 = "SELECT * from timesheet_confirm WHERE pp_id = '$pp_id' and emp_id = '$this_emp_id' 
 			and assignment_id = '$this_assignment_id'";
 		$result1 = mysql_query($query1);
 		if (($result1) && (mysql_num_rows($result1)!=0)){

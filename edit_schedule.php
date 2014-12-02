@@ -152,9 +152,9 @@ if(isset($_POST['init'])){
 		values ('$division', '$schedstart', '$schedend', '$max')";
 	$result = mysql_query($query);
 	
-	$query = "INSERT into shifts (week_type, shift_day, employee_number, shift_start, shift_end, desk_start, desk_end, 
+	$query = "INSERT into shifts (week_type, shift_day, emp_id, shift_start, shift_end, desk_start, desk_end, 
 				desk_start2, desk_end2, lunch_start, lunch_end, specific_schedule, schedule_create) 
-				SELECT week_type, shift_day, employee_number, shift_start, shift_end, desk_start, desk_end, 
+				SELECT week_type, shift_day, emp_id, shift_start, shift_end, desk_start, desk_end, 
 				desk_start2, desk_end2, lunch_start, lunch_end, '$max', null from shifts where specific_schedule='$specific_schedule'";
 	$result = mysql_query($query);
 	

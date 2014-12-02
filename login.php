@@ -35,7 +35,7 @@ else {
 			$p = escape_data($_POST['password']);
 			}
 		if (empty($errors)){
-			$query = "SELECT login_id, username, role, employee_number, assignment_id 
+			$query = "SELECT login_id, username, role, emp_id, assignment_id 
 				FROM logins WHERE username ='$user' AND password=SHA('$p')";
 			$result = @mysql_query($query);
 			$row = mysql_fetch_array($result, MYSQL_NUM);
@@ -43,7 +43,7 @@ else {
 			if ($row){
 				$_SESSION['role'] = $row[2];
 				$_SESSION['username'] = $row[1];
-				$_SESSION['this_empno'] = $row[3];
+				$_SESSION['this_emp_id'] = $row[3];
 				$_SESSION['assignment_id'] = $row[4];
 				
 				$url = 'http://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF']);

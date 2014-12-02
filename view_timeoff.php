@@ -44,7 +44,7 @@ if (($came_from == 'edit_timeoff') && (isset($_SESSION['success']))){
 		$division = $_SESSION['timeoff_view_div'];
 		}
 	$name = $_SESSION['timeoff_employee_name'];
-	$empn = $_SESSION['timeoff_employee_number'];
+	$emp_id = $_SESSION['timeoff_emp_id'];
 	$tid = $_SESSION['timeoff_id'];
 	$d = $_SESSION['timeoff_date'];
 	echo '<div class="message"><b>Timeoff for</b> '. $name . ' starting ' . $d . ' has been updated.</div>';
@@ -52,7 +52,7 @@ if (($came_from == 'edit_timeoff') && (isset($_SESSION['success']))){
 	}
 	
 if (isset($_POST['delete'])){
-	$empno = $_POST['employee_number'];
+	$emp_id = $_POST['emp_id'];
 	$name = $_POST['employee_name'];
 	$timeoff_id = $_POST['timeoff_id'];
 	$date = $_POST['date'];
@@ -79,12 +79,12 @@ echo '</select>
 
 if ((isset($division)) && ($division !== 'All')) {
 	$_SESSION['timeoff_view_div'] = $division;
-	$query = "SELECT first_name, last_name, e.employee_number, division, t.timeoff_id,
+	$query = "SELECT first_name, last_name, e.emp_id, division, t.timeoff_id,
 		time_format(timeoff_start_time,'%k') as timeoff_start, 	time_format(timeoff_start_time,'%i') as timeoff_start_minutes, 
 		time_format(timeoff_end_time,'%k') as timeoff_end, time_format(timeoff_end_time,'%i') as timeoff_end_minutes, 
 		timeoff_start_date, timeoff_end_date
 		FROM employees as e, timeoff as t
-		WHERE e.division = '$division' and e.employee_number = t.employee_number and e.active = 'Active' and 
+		WHERE e.division = '$division' and e.emp_id = t.emp_id and e.active = 'Active' and 
 		(timeoff_start_date >= '$today' OR (timeoff_start_date < '$today' AND timeoff_end_date >= '$today'))
 		ORDER by timeoff_start_date asc, first_name asc";
 	$result = mysql_query($query);
@@ -95,7 +95,7 @@ if ((isset($division)) && ($division !== 'All')) {
 			while ($row = mysql_fetch_array($result, MYSQL_ASSOC)){
 				$first_name = $row['first_name'];
 				$last_name = $row['last_name'];
-				$empno = $row['employee_number'];
+				$emp_id = $row['emp_id'];
 				$division = $row['division'];
 				$timeoff_id = $row['timeoff_id'];
 				$timeoff_start_hours = $row['timeoff_start'];
@@ -250,7 +250,7 @@ if ((isset($division)) && ($division !== 'All')) {
 						}
 					}
 				echo '<td><form action="edit_timeoff" method="post">
-					<input type="hidden" name="employee_number" value="' . $empno . '"/>
+					<input type="hidden" name="emp_id" value="' . $emp_id . '"/>
 					<input type="hidden" name="employee_name" value="' . $first_name . ' ' . $last_name . '"/>
 					<input type="hidden" name="timeoff_id" value="' . $timeoff_id . '"/>
 					<input type="hidden" name="came_from" value="' . $_SERVER['REQUEST_URI'] . '" />
@@ -258,7 +258,7 @@ if ((isset($division)) && ($division !== 'All')) {
 					<input type="hidden" name="from_view" value="TRUE"/>
 					<input type="submit" name="submit" value="Edit" /></form></td>
 					<td><form action="view_timeoff" method="post" onsubmit="return deleteTimeoff()">
-					<input type="hidden" name="employee_number" value="' . $empno . '"/>
+					<input type="hidden" name="emp_id" value="' . $emp_id . '"/>
 					<input type="hidden" name="employee_name" value="' . $first_name . ' ' . $last_name . '"/>
 					<input type="hidden" name="timeoff_id" value="' . $timeoff_id . '"/>
 					<input type="hidden" name="date" value="' . $tosmonth . ' ' . $tosday . $tosyear . '"/>
@@ -276,12 +276,12 @@ if ((isset($division)) && ($division !== 'All')) {
 	}
 else {
 	unset($_SESSION['timeoff_view_div']);
-	$query = "SELECT first_name, last_name, e.employee_number, division, t.timeoff_id, 
+	$query = "SELECT first_name, last_name, e.emp_id, division, t.timeoff_id, 
 		time_format(timeoff_start_time,'%k') as timeoff_start, time_format(timeoff_start_time,'%i') as timeoff_start_minutes, 
 		time_format(timeoff_end_time,'%k') as timeoff_end, time_format(timeoff_end_time,'%i') as timeoff_end_minutes, 
 		timeoff_start_date, timeoff_end_date
 		FROM employees as e, timeoff as t 
-		WHERE e.employee_number = t.employee_number and e.active = 'Active' and 
+		WHERE e.emp_id = t.emp_id and e.active = 'Active' and 
 		(timeoff_start_date >= '$today' OR (timeoff_start_date < '$today' AND timeoff_end_date >= '$today'))
 		ORDER by timeoff_start_date asc, first_name asc";
 	$result = mysql_query($query);
@@ -292,7 +292,7 @@ else {
 			while ($row = mysql_fetch_array($result, MYSQL_ASSOC)){
 				$first_name = $row['first_name'];
 				$last_name = $row['last_name'];
-				$empno = $row['employee_number'];
+				$emp_id = $row['emp_id'];
 				$division = $row['division'];
 				$timeoff_id = $row['timeoff_id'];
 				$timeoff_start_hours = $row['timeoff_start'];
@@ -447,7 +447,7 @@ else {
 						}
 					}
 				echo '<td><form action="edit_timeoff" method="post">
-					<input type="hidden" name="employee_number" value="' . $empno . '"/>
+					<input type="hidden" name="emp_id" value="' . $emp_id . '"/>
 					<input type="hidden" name="employee_name" value="' . $first_name . ' ' . $last_name . '"/>
 					<input type="hidden" name="timeoff_id" value="' . $timeoff_id . '"/>
 					<input type="hidden" name="came_from" value="' . $_SERVER['REQUEST_URI'] . '" />
@@ -455,7 +455,7 @@ else {
 					<input type="hidden" name="from_view" value="TRUE"/>
 					<input type="submit" name="submit" value="Edit" /></form></td>
 					<td><form action="view_timeoff" method="post" onsubmit="return deleteTimeoff()">
-					<input type="hidden" name="employee_number" value="' . $empno . '"/>
+					<input type="hidden" name="emp_id" value="' . $emp_id . '"/>
 					<input type="hidden" name="employee_name" value="' . $first_name . ' ' . $last_name . '"/>
 					<input type="hidden" name="timeoff_id" value="' . $timeoff_id . '"/>
 					<input type="hidden" name="date" value="' . $tosmonth . ' ' . $tosday . $tosyear . '"/>

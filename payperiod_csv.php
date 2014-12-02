@@ -28,7 +28,7 @@ if (isset($_POST['submitted'])){
 	$entries = array();
 
 	$query = "SELECT * from time_entry t, pay_periods p, employees e WHERE p.pp_id = t.pp_id and p.pp_id='$pp_id'
-		and e.employee_number = t.employee_number order by e.last_name asc";
+		and e.emp_id = t.emp_id order by e.last_name asc, entry_date asc";
 	$result = mysql_query($query);
 	while($row = mysql_fetch_array($result, MYSQL_ASSOC)){
 		$fn = $row['first_name'];

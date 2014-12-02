@@ -15,30 +15,30 @@ include('./includes/allsessionvariables.php');
 
 if (isset($_POST['from_view'])){
 	$_SESSION['coverage_employee_name'] = $_POST['employee_name'];
-	$_SESSION['coverage_employee_number'] = $_POST['employee_number'];
+	$_SESSION['coverage_emp_id'] = $_POST['emp_id'];
 	$_SESSION['coverage_date'] = $_POST['date'];
 	$_SESSION['coverage_id'] = $_POST['coverage_id'];
 	header('Location:edit_coverage');
 	}
 else{
 	$employee = $_SESSION['coverage_employee_name'];
-	$empno = $_SESSION['coverage_employee_number'];
+	$emp_id = $_SESSION['coverage_emp_id'];
 	$date = $_SESSION['coverage_date'];
 	$coverage_id = $_SESSION['coverage_id'];
 	}
 
-$query = "SELECT first_name, last_name, e.employee_number, coverage_id,
+$query = "SELECT first_name, last_name, e.emp_id, coverage_id,
 		time_format(coverage_start_time,'%k') as coverage_start, time_format(coverage_start_time,'%i') as coverage_start_minutes, 
 		time_format(coverage_end_time,'%k') as coverage_end, time_format(coverage_end_time,'%i') as coverage_end_minutes, 
 		coverage_date, coverage_division, coverage_offdesk, coverage_reason
 		FROM employees as e, coverage as t 
-		WHERE e.employee_number = t.employee_number and coverage_id = $coverage_id";
+		WHERE e.emp_id = t.emp_id and coverage_id = $coverage_id";
 $result = mysql_query($query);
 
 while ($row = mysql_fetch_array ($result, MYSQL_ASSOC)) {
 	$first_name = $row['first_name'];
 	$last_name = $row['last_name'];
-	$empno = $row['employee_number'];
+	$emp_id = $row['emp_id'];
 	$coverage_id = $row['coverage_id'];
 	$coverage_start_hours = $row['coverage_start'];
 	$coverage_start_minutes = $row['coverage_start_minutes'];
@@ -159,9 +159,9 @@ if (isset($_POST['edited'])) {
 		}
 		
 	//Check for overlaps
-	$query = "SELECT e.employee_number, division, concat(first_name, ' ', last_name) as employee_name, coverage_division,
+	$query = "SELECT e.emp_id, division, concat(first_name, ' ', last_name) as employee_name, coverage_division,
 		coverage_date, coverage_start_time, coverage_end_time FROM coverage as t, employees as e 
-		WHERE e.employee_number = t.employee_number and e.employee_number = '$empno' 
+		WHERE e.emp_id = t.emp_id and e.emp_id = '$emp_id' 
 		and coverage_id != '$coverage_id' and coverage_date = '$cd_date' and 
 		(('$cs_time' >= coverage_start_time and '$cs_time' < coverage_end_time) 
 		or ('$ce_time' > coverage_start_time and '$ce_time' <= coverage_end_time))";
@@ -170,7 +170,7 @@ if (isset($_POST['edited'])) {
 	if ($num_rows != 0) {
 		while ($row = mysql_fetch_array ($result, MYSQL_ASSOC)){
 			$full_name = $row['employee_name'];
-			$old_empno = $row['employee_number'];
+			$old_emp_id = $row['emp_id'];
 			$division = $row['division'];
 			$cov_date = $row['coverage_date'];
 			$covs_time = $row['coverage_start_time'];

@@ -15,30 +15,30 @@ include('./includes/allsessionvariables.php');
 
 if (isset($_POST['from_view'])){
 	$_SESSION['timeoff_employee_name'] = $_POST['employee_name'];
-	$_SESSION['timeoff_employee_number'] = $_POST['employee_number'];
+	$_SESSION['timeoff_emp_id'] = $_POST['emp_id'];
 	$_SESSION['timeoff_date'] = $_POST['date'];
 	$_SESSION['timeoff_id'] = $_POST['timeoff_id'];
 	header('Location:edit_timeoff');
 	}
 else{
 	$employee = $_SESSION['timeoff_employee_name'];
-	$empno = $_SESSION['timeoff_employee_number'];
+	$emp_id = $_SESSION['timeoff_emp_id'];
 	$date = $_SESSION['timeoff_date'];
 	$timeoff_id = $_SESSION['timeoff_id'] ;
 	}
 
-$query = "SELECT first_name, last_name, e.employee_number, timeoff_id,
+$query = "SELECT first_name, last_name, e.emp_id, timeoff_id,
 		time_format(timeoff_start_time,'%k') as timeoff_start, 	time_format(timeoff_start_time,'%i') as timeoff_start_minutes, 
 		time_format(timeoff_end_time,'%k') as timeoff_end, time_format(timeoff_end_time,'%i') as timeoff_end_minutes, 
 		timeoff_start_date, timeoff_end_date, timeoff_reason
 		FROM employees as e, timeoff as t
-		WHERE e.employee_number = t.employee_number and timeoff_id = $timeoff_id";
+		WHERE e.emp_id = t.emp_id and timeoff_id = $timeoff_id";
 $result = mysql_query($query);
 
 while ($row = mysql_fetch_array ($result, MYSQL_ASSOC)) {
 	$first_name = $row['first_name'];
 	$last_name = $row['last_name'];
-	$empno = $row['employee_number'];
+	$emp_id = $row['emp_id'];
 	$timeoff_id = $row['timeoff_id'];
 	$timeoff_start_hours = $row['timeoff_start'];
 	$timeoff_start_minutes = $row['timeoff_start_minutes'];
@@ -161,7 +161,7 @@ if (isset($_POST['edited'])) {
 		$result = mysql_query($query) or die(mysql_error($dbc));
 		if ($result){
 			if (isset($_SESSION['view_past'])){
-				$query = "SELECT division FROM employees WHERE employee_number='$empno'";
+				$query = "SELECT division FROM employees WHERE emp_id='$emp_id'";
 				$result = mysql_query($query) or die(mysql_error($dbc));
 				while ($row = mysql_fetch_array ($result, MYSQL_ASSOC)){
 					$timeoff_div = $row['division'];

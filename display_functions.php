@@ -61,8 +61,8 @@ function daily_schedule($now, $divisions) {
 		$query_pic = "SELECT first_name FROM employees e, pic p, pic_schedules s 
 			WHERE pic_start_date <= '$today' and pic_end_date >= '$today' and p.pic_schedule_id=s.pic_schedule_id
 			and week_type='$week_type' and pic_day='$day'
-			and p.employee_number=e.employee_number and e.employee_number not in 
-			(SELECT employee_number from timeoff WHERE
+			and p.emp_id=e.emp_id and e.emp_id not in 
+			(SELECT emp_id from timeoff WHERE
 			timeoff_start_date <= '$today' and timeoff_end_date >= '$today' and 
 			((timeoff_start_time <= '17:00:00' and timeoff_end_time >= '20:00:00') or
 			(timeoff_start_time <= '17:00:00' and (timeoff_end_time > '17:00:00' and timeoff_end_time <= '20:00:00')) or
@@ -73,8 +73,8 @@ function daily_schedule($now, $divisions) {
 		$query_pic = "SELECT first_name FROM employees e, pic p, pic_schedules s 
 			WHERE pic_start_date <= '$today' and pic_end_date >= '$today' and p.pic_schedule_id=s.pic_schedule_id
 			and week_type='$week_type' and pic_day='$day' 
-			and p.employee_number=e.employee_number and e.employee_number not in 
-			(SELECT employee_number from timeoff WHERE timeoff_start_date <= '$today' and timeoff_end_date >= '$today')";
+			and p.emp_id=e.emp_id and e.emp_id not in 
+			(SELECT emp_id from timeoff WHERE timeoff_start_date <= '$today' and timeoff_end_date >= '$today')";
 		}
 	$result_pic = mysql_query($query_pic);
 	if($result_pic){
@@ -87,7 +87,7 @@ function daily_schedule($now, $divisions) {
 		}
 		
 	$query_pic_cover = "SELECT first_name from employees e, pic_coverage c WHERE pic_coverage_date='$today' and
-		e.employee_number=c.employee_number";
+		e.emp_id=c.emp_id";
 	$result_pic_cover = mysql_query($query_pic_cover);
 	if($result_pic_cover){
 		while ($row = mysql_fetch_array($result_pic_cover, MYSQL_ASSOC)){
@@ -231,9 +231,9 @@ function daily_schedule($now, $divisions) {
 				echo $pic_name.' &ndash; <b>x2778</b></div>'."\n";
 				}
 			//See if schedules exist.
-			$query20 = "SELECT first_name, e.employee_number, time_format(shift_start,'%k') as shift_start
+			$query20 = "SELECT first_name, e.emp_id, time_format(shift_start,'%k') as shift_start
 				from employees as e, shifts as a, schedules as s 
-				WHERE e.employee_number = a.employee_number and schedule_start_date <= '$today' and schedule_end_date >= '$today' 
+				WHERE e.emp_id = a.emp_id and schedule_start_date <= '$today' and schedule_end_date >= '$today' 
 				and week_type='$week_type' and shift_day='$day' and a.specific_schedule=s.specific_schedule";
 			$result20 = mysql_query($query20);
 			if ($result20) {
@@ -244,7 +244,7 @@ function daily_schedule($now, $divisions) {
 				foreach ($divisions as $division=>$divrow){
 					if ($division != 'subs'){
 						//Get schedule data.
-						$query2 = "SELECT first_name, last_name, name_dup, e.employee_number, time_format(shift_start,'%k') as shift_start, 
+						$query2 = "SELECT first_name, last_name, name_dup, e.emp_id, time_format(shift_start,'%k') as shift_start, 
 							time_format(shift_start,'%i') as shift_start_minutes, time_format(shift_end,'%k') as shift_end, 
 							time_format(shift_end,'%i') as shift_end_minutes, time_format(desk_start,'%k') as desk_start, 
 							time_format(desk_start,'%i') as desk_start_minutes, time_format(desk_end,'%k') as desk_end, 
@@ -253,7 +253,7 @@ function daily_schedule($now, $divisions) {
 							time_format(desk_end2,'%i') as desk_end2_minutes, time_format(lunch_start,'%k') as lunch_start, 
 							time_format(lunch_start,'%i') as lunch_start_minutes, time_format(lunch_end,'%k') as lunch_end, 
 							time_format(lunch_end,'%i') as lunch_end_minutes from employees as e, shifts as a, schedules as s 
-							WHERE e.division = '$divrow' and e.employee_number = a.employee_number and 
+							WHERE e.division = '$divrow' and e.emp_id = a.emp_id and 
 							schedule_start_date <= '$today' and schedule_end_date >= '$today' 
 							and week_type='$week_type' and shift_day='$day' and a.specific_schedule=s.specific_schedule 
 							and e.active = 'Active' and (e.employee_lastday >= '$today' or e.employee_lastday is null) 
@@ -362,7 +362,7 @@ function daily_schedule($now, $divisions) {
 
 							//Create and display employee rows.
 							while ($row2 = mysql_fetch_array($result2, MYSQL_ASSOC)){
-								$empno = $row2['employee_number'];
+								$emp_id = $row2['emp_id'];
 								$first_name = $row2['first_name'];
 								if ($row2['name_dup'] == 'Y'){
 									$last_initial = substr($row2['last_name'],0,1);
@@ -384,7 +384,7 @@ function daily_schedule($now, $divisions) {
 								$lunch_start_minutes = $row2['lunch_start_minutes'];
 								$lunch_end = $row2['lunch_end'];
 								$lunch_end_minutes = $row2['lunch_end_minutes'];
-								$multi_alert[$empno] = array(0=>0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
+								$multi_alert[$emp_id] = array(0=>0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
 								
 								//Adjust 24-hour time.
 								if ($shift_start > 12){
@@ -439,10 +439,10 @@ function daily_schedule($now, $divisions) {
 									$lunch_end += dec_minutes($lunch_end_minutes);
 									}
 								
-								$query3 = "SELECT employee_number, timeoff_start_date, time_format(timeoff_start_time,'%k') as timeoff_start, 
+								$query3 = "SELECT emp_id, timeoff_start_date, time_format(timeoff_start_time,'%k') as timeoff_start, 
 									time_format(timeoff_start_time,'%i') as timeoff_start_minutes, timeoff_end_date, 
 									time_format(timeoff_end_time,'%k') as timeoff_end, time_format(timeoff_end_time,'%i') as timeoff_end_minutes,
-									timeoff_reason from timeoff as t where employee_number='$empno' and
+									timeoff_reason from timeoff as t where emp_id='$emp_id' and
 									timeoff_start_date <= '$today' and timeoff_end_date >= '$today'";
 								$result3 = mysql_query($query3) or die(mysql_error($dbc));
 
@@ -473,11 +473,11 @@ function daily_schedule($now, $divisions) {
 										$array[] = array('tos'=>$tostart, 'toe'=>$toend, 'tor'=>$toreason);
 										}
 									
-								$query4 = "SELECT employee_number, coverage_date, time_format(coverage_start_time,'%k') as coverage_start, 
+								$query4 = "SELECT emp_id, coverage_date, time_format(coverage_start_time,'%k') as coverage_start, 
 									time_format(coverage_start_time,'%i') as coverage_start_minutes, time_format(coverage_end_time,'%k') as coverage_end, 
 									time_format(coverage_end_time,'%i') as coverage_end_minutes, coverage_offdesk, coverage_reason
 									FROM coverage as c
-									where employee_number='$empno' and coverage_date = '$today' 
+									where emp_id='$emp_id' and coverage_date = '$today' 
 									and c.coverage_division= '$divrow'";
 								$result4 = mysql_query($query4) or die(mysql_error($dbc));
 								if (mysql_num_rows($result) != 0) {
@@ -514,20 +514,20 @@ function daily_schedule($now, $divisions) {
 										}
 									if (($hr >= $desk_start) && ($hr < $desk_end)){
 										$class='on';
-										$multi_alert[$empno][$key] = 1;
+										$multi_alert[$emp_id][$key] = 1;
 											
 										if (($hr >= $lunch_start) && ($hr < $lunch_end)){
 											$class='off';
-											$multi_alert[$empno][$key] = 0;
+											$multi_alert[$emp_id][$key] = 0;
 											}
 										}
 									if (($hr >= $desk_start2) && ($hr < $desk_end2)){
 										$class='on';
-										$multi_alert[$empno][$key] = 1;
+										$multi_alert[$emp_id][$key] = 1;
 										
 										if (($hr >= $lunch_start) && ($hr < $lunch_end)){
 											$class='off';
-											$multi_alert[$empno][$key] = 0;
+											$multi_alert[$emp_id][$key] = 0;
 											}
 										}
 									if (($hr >= $lunch_start) && ($hr < $lunch_end)){
@@ -540,7 +540,7 @@ function daily_schedule($now, $divisions) {
 											
 											if ((($hr >= $desk_start) && ($hr < $desk_end)) || 
 												(($hr >= $desk_start2) && ($hr < $desk_end2))){
-												$multi_alert[$empno][$key] = 0;
+												$multi_alert[$emp_id][$key] = 0;
 												}
 											}
 										}
@@ -550,25 +550,25 @@ function daily_schedule($now, $divisions) {
 												$class='here';
 												if ((($hr >= $desk_start) && ($hr < $desk_end)) || 
 													(($hr >= $desk_start2) && ($hr < $desk_end2))){
-													$multi_alert[$empno][$key] = 0;
+													$multi_alert[$emp_id][$key] = 0;
 													}
 												}
 											elseif($cover['cov_offdesk'] == 'Busy'){
 												$class='busy';
 												if ((($hr >= $desk_start) && ($hr < $desk_end)) || 
 													(($hr >= $desk_start2) && ($hr < $desk_end2))){
-													$multi_alert[$empno][$key] = 0;
+													$multi_alert[$emp_id][$key] = 0;
 													}
 												}
 											else {
 												$class='on';
-												$multi_alert[$empno][$key] = 1;
+												$multi_alert[$emp_id][$key] = 1;
 												}
 											}
 										}
 									if ((isset($close_start_hr))&&(($hr >= $close_start_hr) && ($hr < $close_end_hr))){
 										$class='closed';
-										$multi_alert[$empno][$key] = 1;
+										$multi_alert[$emp_id][$key] = 1;
 										}
 									
 									echo '<td class="' . $class;
@@ -606,7 +606,7 @@ function daily_schedule($now, $divisions) {
 								
 							//Get sub data.
 							$sub_array = array();
-							$query5 = "SELECT first_name, last_name, name_dup, e.employee_number, coverage_end_time as cet,
+							$query5 = "SELECT first_name, last_name, name_dup, e.emp_id, coverage_end_time as cet,
 								time_format(coverage_start_time,'%k') as coverage_start, 
 								time_format(coverage_start_time,'%i') as coverage_start_minutes, 
 								time_format(coverage_end_time,'%k') as coverage_end, 
@@ -614,12 +614,12 @@ function daily_schedule($now, $divisions) {
 								coverage_offdesk, coverage_reason, division 
 								FROM employees as e, coverage as c
 								WHERE division != '$divrow' and c.coverage_division = '$divrow' and 
-								coverage_date='$today' and e.employee_number = c.employee_number and e.active = 'Active' 
+								coverage_date='$today' and e.emp_id = c.emp_id and e.active = 'Active' 
 								ORDER BY last_name asc, cet asc";
 							$result5 = mysql_query($query5) or die(mysql_error($dbc));
 								
 							while ($row5 = mysql_fetch_array ($result5, MYSQL_ASSOC)) {
-								$empno = $row5['employee_number'];
+								$emp_id = $row5['emp_id'];
 								$first_name = $row5['first_name'];
 								if ($row2['name_dup'] == 'Y'){
 									$last_initial = substr($row2['last_name'],0,1);
@@ -633,7 +633,7 @@ function daily_schedule($now, $divisions) {
 								$coverage_offdesk = $row5['coverage_offdesk'];
 								$coverage_reason = $row5['coverage_reason'];
 								
-								$multi_alert[$empno] = array(0=>0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
+								$multi_alert[$emp_id] = array(0=>0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
 								
 								//Adjust 24-hour time.
 								if ($coverage_start > 12){
@@ -662,7 +662,7 @@ function daily_schedule($now, $divisions) {
 									$coverage_end += dec_minutes($coverage_end_minutes);
 									}
 								
-								$sub_array[$first_name][] = array('empno'=>$empno, 'coverage_start'=>$coverage_start, 
+								$sub_array[$first_name][] = array('emp_id'=>$emp_id, 'coverage_start'=>$coverage_start, 
 									'cs12'=>$cs12, 'coverage_end'=>$coverage_end, 'ce12'=>$ce12, 
 									'coverage_offdesk'=>$coverage_offdesk, 'coverage_reason'=>$coverage_reason);
 								}
@@ -677,7 +677,7 @@ function daily_schedule($now, $divisions) {
 										}
 									$class='off';
 									foreach ($subs as $keys){
-										$empno = $keys['empno'];
+										$emp_id = $keys['emp_id'];
 										if (($hr >= $keys['coverage_start']) && ($hr < $keys['coverage_end'])){
 											if ($keys['coverage_offdesk'] == 'Off'){
 												$class='here';
@@ -687,14 +687,14 @@ function daily_schedule($now, $divisions) {
 												}
 											else {
 												$class='on';
-												$multi_alert[$empno][$key] = 1;
+												$multi_alert[$emp_id][$key] = 1;
 												--$deficiencies[$key];
 												}
 											}
 										}
 									if ((isset($close_start_hr))&&(($hr >= $close_start_hr) && ($hr < $close_end_hr))){
 										$class='closed';
-										$multi_alert[$empno][$key] = 1;
+										$multi_alert[$emp_id][$key] = 1;
 										}
 									echo '<td class="' . $class;
 									if (isset($css)){ echo ' ' . $css;}
@@ -811,7 +811,7 @@ function daily_schedule($now, $divisions) {
 								}
 							
 							//Print alert data.
-							foreach ($multi_alert as $empno=>$array){
+							foreach ($multi_alert as $emp_id=>$array){
 								foreach ($array as $key=>$hr){
 									if ($hr == 1){
 										--$alertarray[$key];
@@ -920,23 +920,23 @@ function daily_schedule($now, $divisions) {
 										<td></td><td></td><td></td><td></td><td></td><td></td><td></td><td class="empty"></td><td class="empty"></td></tr>'."\n";
 									
 								//Get Subs employee data.
-								$query2 = "SELECT first_name, last_name, name_dup, employee_number from employees as e
+								$query2 = "SELECT first_name, last_name, name_dup, emp_id from employees as e
 									where division = 'Subs' and active = 'Active' order by first_name asc";
 								$result2 = mysql_query($query2) or die(mysql_error($dbc));
 
 								//Create and display employee rows.
 								while ($row2 = mysql_fetch_array($result2, MYSQL_ASSOC)){
-									$empno = $row2['employee_number'];
+									$emp_id = $row2['emp_id'];
 									$first_name = $row2['first_name'];
 									if ($row2['name_dup'] == 'Y'){
 										$last_initial = substr($row2['last_name'],0,1);
 										$first_name .= ' ' . $last_initial . '.';
 										}
 									
-									$query3 = "SELECT employee_number, timeoff_start_date, time_format(timeoff_start_time,'%k') as timeoff_start, 
+									$query3 = "SELECT emp_id, timeoff_start_date, time_format(timeoff_start_time,'%k') as timeoff_start, 
 										time_format(timeoff_start_time,'%i') as timeoff_start_minutes, timeoff_end_date, 
 										time_format(timeoff_end_time,'%k') as timeoff_end, time_format(timeoff_end_time,'%i') as timeoff_end_minutes,
-										timeoff_reason from timeoff as t where employee_number='$empno' and
+										timeoff_reason from timeoff as t where emp_id='$emp_id' and
 										timeoff_start_date <= '$today' and timeoff_end_date >= '$today'";
 									$result3 = mysql_query($query3) or die(mysql_error($dbc));
 
@@ -967,11 +967,11 @@ function daily_schedule($now, $divisions) {
 											$array[] = array('tos'=>$tostart, 'toe'=>$toend, 'tor'=>$toreason);
 											}
 										
-										$query4 = "SELECT employee_number, coverage_date, coverage_end_time as cet,
+										$query4 = "SELECT emp_id, coverage_date, coverage_end_time as cet,
 											time_format(coverage_start_time,'%k') as coverage_start, 
 											time_format(coverage_start_time,'%i') as coverage_start_minutes, time_format(coverage_end_time,'%k') as coverage_end, 
 											time_format(coverage_end_time,'%i') as coverage_end_minutes, coverage_offdesk, coverage_reason from coverage as c
-											where employee_number='$empno' and coverage_date = '$today'
+											where emp_id='$emp_id' and coverage_date = '$today'
 											ORDER BY cet asc";
 										$result4 = mysql_query($query4) or die(mysql_error($dbc));
 										if (mysql_num_rows($result) != 0) {
@@ -1158,8 +1158,8 @@ function division_daily($division, $now) {
 		$query_pic = "SELECT first_name FROM employees e, pic p, pic_schedules s 
 			WHERE pic_start_date <= '$today' and pic_end_date >= '$today' and p.pic_schedule_id=s.pic_schedule_id
 			and week_type='$week_type' and pic_day='$day'
-			and p.employee_number=e.employee_number and e.employee_number not in 
-			(SELECT employee_number from timeoff WHERE
+			and p.emp_id=e.emp_id and e.emp_id not in 
+			(SELECT emp_id from timeoff WHERE
 			timeoff_start_date <= '$today' and timeoff_end_date >= '$today' and 
 			((timeoff_start_time <= '17:00:00' and timeoff_end_time >= '20:00:00') or
 			(timeoff_start_time <= '17:00:00' and (timeoff_end_time > '17:00:00' and timeoff_end_time <= '20:00:00')) or
@@ -1170,8 +1170,8 @@ function division_daily($division, $now) {
 		$query_pic = "SELECT first_name FROM employees e, pic p, pic_schedules s 
 			WHERE pic_start_date <= '$today' and pic_end_date >= '$today' and p.pic_schedule_id=s.pic_schedule_id
 			and week_type='$week_type' and pic_day='$day' 
-			and p.employee_number=e.employee_number and e.employee_number not in 
-			(SELECT employee_number from timeoff WHERE timeoff_start_date <= '$today' and timeoff_end_date >= '$today')";
+			and p.emp_id=e.emp_id and e.emp_id not in 
+			(SELECT emp_id from timeoff WHERE timeoff_start_date <= '$today' and timeoff_end_date >= '$today')";
 		}
 	$result_pic = mysql_query($query_pic);
 	if($result_pic){
@@ -1184,7 +1184,7 @@ function division_daily($division, $now) {
 		}
 		
 	$query_pic_cover = "SELECT first_name from employees e, pic_coverage c WHERE pic_coverage_date='$today' and
-		e.employee_number=c.employee_number";
+		e.emp_id=c.emp_id";
 	$result_pic_cover = mysql_query($query_pic_cover);
 	if($result_pic_cover){
 		while ($row = mysql_fetch_array($result_pic_cover, MYSQL_ASSOC)){
@@ -1345,9 +1345,9 @@ function division_daily($division, $now) {
 				}
 			echo '</div>';
 			//See if schedules exist.
-			$query20 = "SELECT first_name, e.employee_number, time_format(shift_start,'%k') as shift_start
+			$query20 = "SELECT first_name, e.emp_id, time_format(shift_start,'%k') as shift_start
 				from employees as e, shifts as a, schedules as s
-				where e.employee_number = a.employee_number and schedule_start_date <= '$today' and schedule_end_date >= '$today' 
+				where e.emp_id = a.emp_id and schedule_start_date <= '$today' and schedule_end_date >= '$today' 
 				and week_type='$week_type' and shift_day='$day' and e.division = '$division' 
 				and a.specific_schedule=s.specific_schedule";
 			$result20 = mysql_query($query20);
@@ -1357,7 +1357,7 @@ function division_daily($division, $now) {
 					$divrow = ucwords($division);		
 				
 					//Get schedule data.
-					$query2 = "SELECT first_name, last_name, name_dup, e.employee_number, time_format(shift_start,'%k') as shift_start, 
+					$query2 = "SELECT first_name, last_name, name_dup, e.emp_id, time_format(shift_start,'%k') as shift_start, 
 						time_format(shift_start,'%i') as shift_start_minutes, time_format(shift_end,'%k') as shift_end, 
 						time_format(shift_end,'%i') as shift_end_minutes, time_format(desk_start,'%k') as desk_start, 
 						time_format(desk_start,'%i') as desk_start_minutes, time_format(desk_end,'%k') as desk_end, 
@@ -1366,7 +1366,7 @@ function division_daily($division, $now) {
 						time_format(desk_end2,'%i') as desk_end2_minutes, time_format(lunch_start,'%k') as lunch_start, 
 						time_format(lunch_start,'%i') as lunch_start_minutes, time_format(lunch_end,'%k') as lunch_end, 
 						time_format(lunch_end,'%i') as lunch_end_minutes from employees as e, shifts as a, schedules as s 
-						WHERE e.division = '$divrow' and e.employee_number = a.employee_number and 
+						WHERE e.division = '$divrow' and e.emp_id = a.emp_id and 
 						schedule_start_date <= '$today' and schedule_end_date >= '$today' 
 						and week_type='$week_type' and shift_day='$day' and a.specific_schedule=s.specific_schedule 
 						and e.active = 'Active' and (e.employee_lastday >= '$today' or e.employee_lastday is null) 
@@ -1466,7 +1466,7 @@ function division_daily($division, $now) {
 
 					//Create and display employee rows.
 					while ($row2 = mysql_fetch_array($result2, MYSQL_ASSOC)){
-						$empno = $row2['employee_number'];
+						$emp_id = $row2['emp_id'];
 						$first_name = $row2['first_name'];
 						if ($row2['name_dup'] == 'Y'){
 							$last_initial = substr($row2['last_name'],0,1);
@@ -1488,7 +1488,7 @@ function division_daily($division, $now) {
 						$lunch_start_minutes = $row2['lunch_start_minutes'];
 						$lunch_end = $row2['lunch_end'];
 						$lunch_end_minutes = $row2['lunch_end_minutes'];
-						$multi_alert[$empno] = array(0=>0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
+						$multi_alert[$emp_id] = array(0=>0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
 						
 						//Adjust 24-hour time.
 						if ($shift_start > 12){
@@ -1543,10 +1543,10 @@ function division_daily($division, $now) {
 							$lunch_end += dec_minutes($lunch_end_minutes);
 							}
 						
-						$query3 = "SELECT employee_number, timeoff_start_date, time_format(timeoff_start_time,'%k') as timeoff_start, 
+						$query3 = "SELECT emp_id, timeoff_start_date, time_format(timeoff_start_time,'%k') as timeoff_start, 
 							time_format(timeoff_start_time,'%i') as timeoff_start_minutes, timeoff_end_date, 
 							time_format(timeoff_end_time,'%k') as timeoff_end, time_format(timeoff_end_time,'%i') as timeoff_end_minutes,
-							timeoff_reason from timeoff as t where employee_number='$empno' and
+							timeoff_reason from timeoff as t where emp_id='$emp_id' and
 							timeoff_start_date <= '$today' and timeoff_end_date >= '$today'";
 						$result3 = mysql_query($query3) or die(mysql_error($dbc));
 
@@ -1577,11 +1577,11 @@ function division_daily($division, $now) {
 							$array[] = array('tos'=>$tostart, 'toe'=>$toend, 'tor'=>$toreason);
 							}
 						
-						$query4 = "SELECT employee_number, coverage_date, time_format(coverage_start_time,'%k') as coverage_start, 
+						$query4 = "SELECT emp_id, coverage_date, time_format(coverage_start_time,'%k') as coverage_start, 
 							time_format(coverage_start_time,'%i') as coverage_start_minutes, time_format(coverage_end_time,'%k') as coverage_end, 
 							time_format(coverage_end_time,'%i') as coverage_end_minutes, coverage_offdesk, coverage_reason
 							FROM coverage as c
-							where employee_number='$empno' and coverage_date = '$today' 
+							where emp_id='$emp_id' and coverage_date = '$today' 
 							and c.coverage_division= '$divrow'";
 						$result4 = mysql_query($query4) or die(mysql_error($dbc));
 						if (mysql_num_rows($result) != 0) {
@@ -1618,20 +1618,20 @@ function division_daily($division, $now) {
 								}
 							if (($hr >= $desk_start) && ($hr < $desk_end)){
 								$class='on';
-								$multi_alert[$empno][$key] = 1;
+								$multi_alert[$emp_id][$key] = 1;
 									
 								if (($hr >= $lunch_start) && ($hr < $lunch_end)){
 									$class='off';
-									$multi_alert[$empno][$key] = 0;
+									$multi_alert[$emp_id][$key] = 0;
 									}
 								}
 							if (($hr >= $desk_start2) && ($hr < $desk_end2)){
 								$class='on';
-								$multi_alert[$empno][$key] = 1;
+								$multi_alert[$emp_id][$key] = 1;
 								
 								if (($hr >= $lunch_start) && ($hr < $lunch_end)){
 									$class='off';
-									$multi_alert[$empno][$key] = 0;
+									$multi_alert[$emp_id][$key] = 0;
 									}
 								}
 							if (($hr >= $lunch_start) && ($hr < $lunch_end)){
@@ -1644,7 +1644,7 @@ function division_daily($division, $now) {
 									
 									if ((($hr >= $desk_start) && ($hr < $desk_end)) || 
 										(($hr >= $desk_start2) && ($hr < $desk_end2))){
-										$multi_alert[$empno][$key] = 0;
+										$multi_alert[$emp_id][$key] = 0;
 										}
 									}
 								}
@@ -1654,26 +1654,26 @@ function division_daily($division, $now) {
 										$class='here';
 										if ((($hr >= $desk_start) && ($hr < $desk_end)) || 
 											(($hr >= $desk_start2) && ($hr < $desk_end2))){
-											$multi_alert[$empno][$key] = 0;
+											$multi_alert[$emp_id][$key] = 0;
 											}
 										}
 									elseif($cover['cov_offdesk'] == 'Busy'){
 										$class='busy';
 										if ((($hr >= $desk_start) && ($hr < $desk_end)) || 
 											(($hr >= $desk_start2) && ($hr < $desk_end2))){
-											$multi_alert[$empno][$key] = 0;
+											$multi_alert[$emp_id][$key] = 0;
 											}
 										}
 									else {
 										$class='on';
-										$multi_alert[$empno][$key] = 1;
+										$multi_alert[$emp_id][$key] = 1;
 										}
 									}
 								}
 								
 							if ((isset($close_start_hr))&&(($hr >= $close_start_hr) && ($hr < $close_end_hr))){
 								$class='closed';
-								$multi_alert[$empno][$key] = 1;
+								$multi_alert[$emp_id][$key] = 1;
 								}
 							
 							echo '<td class="' . $class;
@@ -1712,7 +1712,7 @@ function division_daily($division, $now) {
 						
 					//Get sub data.
 					$sub_array = array();
-					$query5 = "SELECT first_name, last_name, name_dup, e.employee_number, coverage_end_time as cet,
+					$query5 = "SELECT first_name, last_name, name_dup, e.emp_id, coverage_end_time as cet,
 						time_format(coverage_start_time,'%k') as coverage_start, 
 						time_format(coverage_start_time,'%i') as coverage_start_minutes, 
 						time_format(coverage_end_time,'%k') as coverage_end, 
@@ -1720,11 +1720,11 @@ function division_daily($division, $now) {
 						coverage_offdesk, coverage_reason, division 
 						FROM employees as e, coverage as c
 						WHERE division != '$divrow' and c.coverage_division = '$divrow' and 
-						coverage_date='$today' and e.employee_number = c.employee_number and e.active = 'Active' 
+						coverage_date='$today' and e.emp_id = c.emp_id and e.active = 'Active' 
 						ORDER BY last_name asc, cet asc";
 					$result5 = mysql_query($query5) or die(mysql_error($dbc));
 					while ($row5 = mysql_fetch_array ($result5, MYSQL_ASSOC)) {
-						$empno = $row5['employee_number'];
+						$emp_id = $row5['emp_id'];
 						$first_name = $row5['first_name'];
 						if ($row2['name_dup'] == 'Y'){
 							$last_initial = substr($row2['last_name'],0,1);
@@ -1738,7 +1738,7 @@ function division_daily($division, $now) {
 						$coverage_offdesk = $row5['coverage_offdesk'];
 						$coverage_reason = $row5['coverage_reason'];
 						
-						$multi_alert[$empno] = array(0=>0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
+						$multi_alert[$emp_id] = array(0=>0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
 						
 						//Adjust 24-hour time.
 						if ($coverage_start > 12){
@@ -1767,7 +1767,7 @@ function division_daily($division, $now) {
 							$coverage_end += dec_minutes($coverage_end_minutes);
 							}
 						
-						$sub_array[$first_name][] = array('empno'=>$empno, 'coverage_start'=>$coverage_start, 
+						$sub_array[$first_name][] = array('emp_id'=>$emp_id, 'coverage_start'=>$coverage_start, 
 							'cs12'=>$cs12, 'coverage_end'=>$coverage_end, 'ce12'=>$ce12, 
 							'coverage_offdesk'=>$coverage_offdesk, 'coverage_reason'=>$coverage_reason);
 						}
@@ -1782,7 +1782,7 @@ function division_daily($division, $now) {
 								}
 							$class='off';
 							foreach ($subs as $keys){
-								$empno = $keys['empno'];
+								$emp_id = $keys['emp_id'];
 								if (($hr >= $keys['coverage_start']) && ($hr < $keys['coverage_end'])){
 									if ($keys['coverage_offdesk'] == 'Off'){
 										$class='here';
@@ -1792,14 +1792,14 @@ function division_daily($division, $now) {
 										}
 									else {
 										$class='on';
-										$multi_alert[$empno][$key] = 1;
+										$multi_alert[$emp_id][$key] = 1;
 										--$deficiencies[$key];
 										}
 									}
 								}
 							if ((isset($close_start_hr))&&(($hr >= $close_start_hr) && ($hr < $close_end_hr))){
 								$class='closed';
-								$multi_alert[$empno][$key] = 1;
+								$multi_alert[$emp_id][$key] = 1;
 								}
 								
 							echo '<td class="' . $class;
@@ -1917,7 +1917,7 @@ function division_daily($division, $now) {
 						}
 					
 					//Print alert data.
-					foreach ($multi_alert as $empno=>$array){
+					foreach ($multi_alert as $emp_id=>$array){
 						foreach ($array as $key=>$hr){
 							if ($hr == 1){
 								--$alertarray[$key];
@@ -2088,8 +2088,8 @@ function subs_specific($division, $now) {
 		$query_pic = "SELECT first_name FROM employees e, pic p, pic_schedules s 
 			WHERE pic_start_date <= '$today' and pic_end_date >= '$today' and p.pic_schedule_id=s.pic_schedule_id
 			and week_type='$week_type' and pic_day='$day'
-			and p.employee_number=e.employee_number and e.employee_number not in 
-			(SELECT employee_number from timeoff WHERE
+			and p.emp_id=e.emp_id and e.emp_id not in 
+			(SELECT emp_id from timeoff WHERE
 			timeoff_start_date <= '$today' and timeoff_end_date >= '$today' and 
 			((timeoff_start_time <= '17:00:00' and timeoff_end_time >= '20:00:00') or
 			(timeoff_start_time <= '17:00:00' and (timeoff_end_time > '17:00:00' and timeoff_end_time <= '20:00:00')) or
@@ -2100,8 +2100,8 @@ function subs_specific($division, $now) {
 		$query_pic = "SELECT first_name FROM employees e, pic p, pic_schedules s 
 			WHERE pic_start_date <= '$today' and pic_end_date >= '$today' and p.pic_schedule_id=s.pic_schedule_id
 			and week_type='$week_type' and pic_day='$day' 
-			and p.employee_number=e.employee_number and e.employee_number not in 
-			(SELECT employee_number from timeoff WHERE timeoff_start_date <= '$today' and timeoff_end_date >= '$today')";
+			and p.emp_id=e.emp_id and e.emp_id not in 
+			(SELECT emp_id from timeoff WHERE timeoff_start_date <= '$today' and timeoff_end_date >= '$today')";
 		}
 	$result_pic = mysql_query($query_pic);
 	if($result_pic){
@@ -2114,7 +2114,7 @@ function subs_specific($division, $now) {
 		}
 		
 	$query_pic_cover = "SELECT first_name from employees e, pic_coverage c WHERE pic_coverage_date='$today' and
-		e.employee_number=c.employee_number";
+		e.emp_id=c.emp_id";
 	$result_pic_cover = mysql_query($query_pic_cover);
 	if($result_pic_cover){
 		while ($row = mysql_fetch_array($result_pic_cover, MYSQL_ASSOC)){
@@ -2256,7 +2256,7 @@ function subs_specific($division, $now) {
 				}
 			echo "</div>\n";
 			//Get Subs names.
-			$query = "SELECT first_name, last_name, name_dup, employee_number FROM employees 
+			$query = "SELECT first_name, last_name, name_dup, emp_id FROM employees 
 				WHERE division = 'Subs' and active = 'Active' 
 				and (employee_lastday >= '$today' or employee_lastday is null) ORDER BY first_name asc";
 			$result = mysql_query($query);
@@ -2276,7 +2276,7 @@ function subs_specific($division, $now) {
 					echo '<td class="shift"><div class="hr">8</div></td>';
 					echo '<td class="timeoff_reason"></td></tr>'."\n";
 					while ($row = mysql_fetch_array($result, MYSQL_ASSOC)){
-						$empno = $row['employee_number'];
+						$emp_id = $row['emp_id'];
 						$first_name = $row['first_name'];
 						if ($row['name_dup'] == 'Y'){
 							$last_initial = substr($row['last_name'],0,1);
@@ -2286,14 +2286,14 @@ function subs_specific($division, $now) {
 						
 						echo '<tr class="emps"><td class="first_name">' . $first_name . '</td>';
 						
-						$query2 = "SELECT employee_number, coverage_date, coverage_end_time as cet,
+						$query2 = "SELECT emp_id, coverage_date, coverage_end_time as cet,
 							time_format(coverage_start_time,'%k') as coverage_start, 
 							time_format(coverage_start_time,'%i') as coverage_start_minutes, 
 							time_format(coverage_end_time,'%k') as coverage_end, 
 							time_format(coverage_end_time,'%i') as coverage_end_minutes,
 							coverage_division, coverage_offdesk, coverage_reason
 							FROM coverage as c
-							WHERE employee_number='$empno' and coverage_date = '$today'
+							WHERE emp_id='$emp_id' and coverage_date = '$today'
 							ORDER BY cet asc";
 						$result2 = mysql_query($query2);
 							
@@ -2420,11 +2420,11 @@ function subs_specific($division, $now) {
 	}
 	
 function division_timeoff($division, $today){
-	$query = "SELECT first_name, last_name, name_dup, e.employee_number, time_format(timeoff_start_time,'%k') as timeoff_start, 
+	$query = "SELECT first_name, last_name, name_dup, e.emp_id, time_format(timeoff_start_time,'%k') as timeoff_start, 
 		time_format(timeoff_start_time,'%i') as timeoff_start_minutes, time_format(timeoff_end_time,'%k') as timeoff_end, 
 		time_format(timeoff_end_time,'%i') as timeoff_end_minutes, timeoff_start_date, timeoff_end_date
 		FROM employees as e, timeoff as t, divisions
-		WHERE div_link = '$division' and division=div_name and e.employee_number = t.employee_number and e.active = 'Active' 
+		WHERE div_link = '$division' and division=div_name and e.emp_id = t.emp_id and e.active = 'Active' 
 		and (e.employee_lastday >= '$today' or e.employee_lastday is null)
 		and (timeoff_start_date >= '$today' OR (timeoff_start_date < '$today' AND timeoff_end_date >= '$today'))
 		ORDER by timeoff_start_date asc, first_name asc";
@@ -2440,7 +2440,7 @@ function division_timeoff($division, $today){
 					$last_initial = substr($row['last_name'],0,1);
 					$first_name .= ' ' . $last_initial . '.';
 					}
-				$empno = $row['employee_number'];
+				$emp_id = $row['emp_id'];
 				$timeoff_start_hours = $row['timeoff_start'];
 				$timeoff_start_minutes = $row['timeoff_start_minutes'];
 				$timeoff_end_hours = $row['timeoff_end'];
@@ -2685,7 +2685,7 @@ function subs_weekly($division, $now) {
 		}
 
 	//Get Subs names.
-	$query = "SELECT first_name, last_name, name_dup, employee_number FROM employees, divisions 
+	$query = "SELECT first_name, last_name, name_dup, emp_id FROM employees, divisions 
 		WHERE div_link = '$division' and division=div_name and active = 'Active'
 		and (employee_lastday >= '$today' or employee_lastday is null) ORDER BY first_name asc";
 	$result = mysql_query($query);
@@ -2722,21 +2722,21 @@ function subs_weekly($division, $now) {
 					$last_initial = substr($row['last_name'],0,1);
 					$first_name .= ' ' . $last_initial . '.';
 					}
-				$empno = $row['employee_number'];
+				$emp_id = $row['emp_id'];
 				$hr_total = 0;
 				
 				echo '<tr class="divisions"><td class="first_name">' . $first_name . '</td>';
 		
 				foreach ($dates as $k=>$v) {
 					$cov_array = array();
-					$query2 = "SELECT employee_number, coverage_date, coverage_end_time as cet,
+					$query2 = "SELECT emp_id, coverage_date, coverage_end_time as cet,
 						time_format(coverage_start_time,'%k') as coverage_start, 
 						time_format(coverage_start_time,'%i') as coverage_start_minutes, 
 						time_format(coverage_end_time,'%k') as coverage_end, 
 						time_format(coverage_end_time,'%i') as coverage_end_minutes,
 						coverage_division
 						FROM coverage as c
-						WHERE employee_number='$empno' and coverage_date = '$v'
+						WHERE emp_id='$emp_id' and coverage_date = '$v'
 						ORDER BY cet asc";
 					$result2 = mysql_query($query2);
 						
@@ -2889,7 +2889,7 @@ function division_weekly($division, $now) {
 		$season = 'fall';
 		}
 	//Get division names.
-	$query = "SELECT first_name, last_name, name_dup, employee_number FROM employees, divisions 
+	$query = "SELECT first_name, last_name, name_dup, emp_id FROM employees, divisions 
 		WHERE div_link = '$division' and division=div_name and active = 'Active'
 		and (employee_lastday >= '$today' or employee_lastday is null) ORDER BY exempt_status asc, weekly_hours desc, first_name asc";
 	$result = mysql_query($query);
@@ -2926,7 +2926,7 @@ function division_weekly($division, $now) {
 					$last_initial = substr($row['last_name'],0,1);
 					$first_name .= ' ' . $last_initial . '.';
 					}
-				$empno = $row['employee_number'];
+				$emp_id = $row['emp_id'];
 				$hr_total = 0;
 				
 				echo '<tr class="divisions"><td class="first_name">' . $first_name . '</td>';
@@ -2944,8 +2944,8 @@ function division_weekly($division, $now) {
 						time_format(lunch_start,'%i') as lunch_start_minutes, time_format(lunch_end,'%k') as lunch_end, 
 						time_format(lunch_end,'%i') as lunch_end_minutes 
 						FROM employees as e, shifts as a, schedules as s 
-						WHERE e.employee_number = '$empno' 
-						and e.employee_number = a.employee_number and schedule_start_date <= '$v' and schedule_end_date >= '$v' 
+						WHERE e.emp_id = '$emp_id' 
+						and e.emp_id = a.emp_id and schedule_start_date <= '$v' and schedule_end_date >= '$v' 
 						and week_type='$week_type' and shift_day='$day' and a.specific_schedule=s.specific_schedule 
 						and e.active = 'Active' and (e.employee_lastday >= '$v' or e.employee_lastday is null)";
 					$result2 = mysql_query($query2);
@@ -3031,7 +3031,7 @@ function division_weekly($division, $now) {
 							$query3 = "SELECT timeoff_start_date, time_format(timeoff_start_time,'%k') as timeoff_start, 
 								time_format(timeoff_start_time,'%i') as timeoff_start_minutes, timeoff_end_date, 
 								time_format(timeoff_end_time,'%k') as timeoff_end, time_format(timeoff_end_time,'%i') as timeoff_end_minutes
-								from timeoff as t where employee_number='$empno' and
+								from timeoff as t where emp_id='$emp_id' and
 								timeoff_start_date <= '$v' and timeoff_end_date >= '$v' order by timeoff_start_date asc, timeoff_start asc";
 							$result3 = mysql_query($query3);
 
@@ -3112,11 +3112,11 @@ function division_weekly($division, $now) {
 									}
 								}
 							
-							$query4 = "SELECT employee_number, coverage_date, time_format(coverage_start_time,'%k') as coverage_start, 
+							$query4 = "SELECT emp_id, coverage_date, time_format(coverage_start_time,'%k') as coverage_start, 
 								time_format(coverage_start_time,'%i') as coverage_start_minutes, time_format(coverage_end_time,'%k') as coverage_end, 
 								time_format(coverage_end_time,'%i') as coverage_end_minutes, coverage_offdesk
 								FROM coverage as c
-								where employee_number='$empno' and coverage_date = '$v' 
+								where emp_id='$emp_id' and coverage_date = '$v' 
 								and c.coverage_division= '$division'";
 							$result4 = mysql_query($query4);
 							if (mysql_num_rows($result) != 0) {
@@ -3398,8 +3398,8 @@ function division_master($sched_id){
 		while ($row1 = mysql_fetch_array($result1, MYSQL_ASSOC)){
 			$week_type = $row1['week_type'];
 			$day = $row1['shift_day'];
-			$empno = $row1['employee_number'];
-			$shifts[$week_type][$day][$empno] = array('shift_start'=>$row1['shift_start'],'shift_end'=>$row1['shift_end'],'desk_start'=>$row1['desk_start'],'desk_end'=>$row1['desk_end'],'desk_start2'=>$row1['desk_start2'],'desk_end2'=>$row1['desk_end2'],'lunch_start'=>$row1['lunch_start'],'lunch_end'=>$row1['lunch_end']);
+			$emp_id = $row1['emp_id'];
+			$shifts[$week_type][$day][$emp_id] = array('shift_start'=>$row1['shift_start'],'shift_end'=>$row1['shift_end'],'desk_start'=>$row1['desk_start'],'desk_end'=>$row1['desk_end'],'desk_start2'=>$row1['desk_start2'],'desk_end2'=>$row1['desk_end2'],'lunch_start'=>$row1['lunch_start'],'lunch_end'=>$row1['lunch_end']);
 			}
 		}
 	
@@ -3416,7 +3416,7 @@ function division_master($sched_id){
 			}
 		echo '<td class="hrs">Hrs</td></tr>'."\n";
 		
-		$query = "SELECT first_name, last_name, name_dup, employee_number FROM employees, divisions 
+		$query = "SELECT first_name, last_name, name_dup, emp_id FROM employees, divisions 
 			WHERE div_link = '$division' and division=div_name and active = 'Active'
 			and (employee_lastday >= '$today' or employee_lastday is null)
 			ORDER BY division asc, exempt_status asc, weekly_hours desc, first_name asc";
@@ -3427,21 +3427,21 @@ function division_master($sched_id){
 				$last_initial = substr($row['last_name'],0,1);
 				$first_name .= ' ' . $last_initial . '.';
 				}
-			$empno = $row['employee_number'];
+			$emp_id = $row['emp_id'];
 			$hr_total = 0;
 			
 			echo '<tr class="divisions"><td class="first_name">' . $first_name . '</td>';
 			
 			foreach ($daysofweek as $k1=>$v1){
-				if ((array_key_exists($v, $shifts)) && (array_key_exists($v1, $shifts[$v])) && (array_key_exists($empno, $shifts[$v][$v1]))){
-					list($shift_start, $shift_start_minutes, $shift_start_seconds) = explode(":", $shifts[$v][$v1][$empno]['shift_start']);
-					list($shift_end, $shift_end_minutes, $shift_end_seconds) = explode(":", $shifts[$v][$v1][$empno]['shift_end']);
-					list($desk_start, $desk_start_minutes, $desk_start_seconds) = explode(":", $shifts[$v][$v1][$empno]['desk_start']);
-					list($desk_end, $desk_end_minutes, $desk_end_seconds) = explode(":", $shifts[$v][$v1][$empno]['desk_end']);
-					list($desk_start2, $desk_start2_minutes, $desk_start2_seconds) = explode(":", $shifts[$v][$v1][$empno]['desk_start2']);
-					list($desk_end2, $desk_end2_minutes, $desk_end2_seconds) = explode(":", $shifts[$v][$v1][$empno]['desk_end2']);
-					list($lunch_start, $lunch_start_minutes, $lunch_start_seconds) = explode(":", $shifts[$v][$v1][$empno]['lunch_start']);
-					list($lunch_end, $lunch_end_minutes, $lunch_end_seconds) = explode(":", $shifts[$v][$v1][$empno]['lunch_end']);
+				if ((array_key_exists($v, $shifts)) && (array_key_exists($v1, $shifts[$v])) && (array_key_exists($emp_id, $shifts[$v][$v1]))){
+					list($shift_start, $shift_start_minutes, $shift_start_seconds) = explode(":", $shifts[$v][$v1][$emp_id]['shift_start']);
+					list($shift_end, $shift_end_minutes, $shift_end_seconds) = explode(":", $shifts[$v][$v1][$emp_id]['shift_end']);
+					list($desk_start, $desk_start_minutes, $desk_start_seconds) = explode(":", $shifts[$v][$v1][$emp_id]['desk_start']);
+					list($desk_end, $desk_end_minutes, $desk_end_seconds) = explode(":", $shifts[$v][$v1][$emp_id]['desk_end']);
+					list($desk_start2, $desk_start2_minutes, $desk_start2_seconds) = explode(":", $shifts[$v][$v1][$emp_id]['desk_start2']);
+					list($desk_end2, $desk_end2_minutes, $desk_end2_seconds) = explode(":", $shifts[$v][$v1][$emp_id]['desk_end2']);
+					list($lunch_start, $lunch_start_minutes, $lunch_start_seconds) = explode(":", $shifts[$v][$v1][$emp_id]['lunch_start']);
+					list($lunch_end, $lunch_end_minutes, $lunch_end_seconds) = explode(":", $shifts[$v][$v1][$emp_id]['lunch_end']);
 					
 					//Adjust 24-hour time.
 					if ($shift_start > 12){

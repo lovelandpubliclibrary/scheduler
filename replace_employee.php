@@ -131,7 +131,7 @@ if (isset($_POST['submitted'])) {
 	$errors = array();
 	
 	//Assign Old Employee Variable.
-	$oldempno = $_POST['oldemployee'];
+	$oldemp_id = $_POST['oldemployee'];
 	
 	//Check for Employee Number.
 	if (empty($_POST['employee_number'])) {
@@ -210,13 +210,13 @@ if (isset($_POST['submitted'])) {
 		$query = "SELECT employee_number, first_name, last_name FROM employees WHERE employee_number='$empn' or (first_name='$fn' and last_name='$ln')";
 		$result = mysql_query($query);
 		if (mysql_num_rows($result) == 0) {
-			$query2 = "SELECT employee_number, first_name FROM employees where first_name='$fn'";
+			$query2 = "SELECT emp_id, first_name FROM employees where first_name='$fn'";
 			$result2 = mysql_query($query2);
 			
 			if (mysql_num_rows($result2) != 0) {
 				while ($row2 = mysql_fetch_array($result2, MYSQL_ASSOC)){
-					$empno = $row2['employee_number'];
-					$query3 = "UPDATE employees SET name_dup='Y' WHERE employee_number='$empno'";
+					$emp_id = $row2['emp_id'];
+					$query3 = "UPDATE employees SET name_dup='Y' WHERE emp_id='$emp_id'";
 					$result3 = mysql_query($query3);
 					}
 				
@@ -226,7 +226,8 @@ if (isset($_POST['submitted'])) {
 					VALUES ('$empn', '$fn', '$ln', '$div', '$exs', '$hrs', 'Active', 'Y', '$safe_home_phone','$safe_mobile_phone', null)";
 				$result4 = mysql_query($query4);
 				if ($result4) {
-					$query5 = "UPDATE employees SET active='Inactive' WHERE employee_number='$oldempno'";
+					$emp_id = mysql_insert_id();
+					$query5 = "UPDATE employees SET active='Inactive' WHERE emp_id='$oldemp_id'";
 					$result5 = mysql_query($query5);
 					
 					$query6 = "SELECT specific_schedule from schedules WHERE schedule_end_date>'$today'";
@@ -234,11 +235,11 @@ if (isset($_POST['submitted'])) {
 					
 					while ($row6 = mysql_fetch_array($result6, MYSQL_ASSOC)){
 						$specific_schedule = $row6['specific_schedule'];
-						$query7 = "INSERT into shifts (week_type, shift_day, employee_number, shift_start, shift_end, 
+						$query7 = "INSERT into shifts (week_type, shift_day, emp_id, shift_start, shift_end, 
 							desk_start, desk_end, desk_start2, desk_end2, lunch_start, lunch_end, specific_schedule, schedule_create) 
-							SELECT week_type, shift_day, $empn, shift_start, shift_end, desk_start, desk_end, 
+							SELECT week_type, shift_day, $emp_id, shift_start, shift_end, desk_start, desk_end, 
 							desk_start2, desk_end2, lunch_start, lunch_end, specific_schedule, null from shifts 
-							where employee_number='$oldempno' and specific_schedule='$specific_schedule'";
+							where emp_id='$oldemp_id' and specific_schedule='$specific_schedule'";
 						$result7 = mysql_query($query7);
 						}
 					
@@ -264,7 +265,8 @@ if (isset($_POST['submitted'])) {
 					VALUES ('$empn', '$fn', '$ln', '$div', '$exs', '$hrs', 'Active', '$safe_home_phone','$safe_mobile_phone', null)";
 				$result3 = mysql_query($query3);
 				if ($result3) {
-					$query4 = "UPDATE employees SET active='Inactive' WHERE employee_number='$oldempno'";
+					$emp_id = mysql_insert_id();
+					$query4 = "UPDATE employees SET active='Inactive' WHERE emp_id='$oldemp_id'";
 					$result4 = mysql_query($query4);
 					
 					$query5 = "SELECT specific_schedule from schedules WHERE schedule_end_date>'$today'";
@@ -272,11 +274,11 @@ if (isset($_POST['submitted'])) {
 					
 					while ($row5 = mysql_fetch_array($result5, MYSQL_ASSOC)){
 						$specific_schedule = $row5['specific_schedule'];
-						$query6 = "INSERT into shifts (week_type, shift_day, employee_number, shift_start, shift_end, 
+						$query6 = "INSERT into shifts (week_type, shift_day, emp_id, shift_start, shift_end, 
 							desk_start, desk_end, desk_start2, desk_end2, lunch_start, lunch_end, specific_schedule, schedule_create) 
-							SELECT week_type, shift_day, $empn, shift_start, shift_end, desk_start, desk_end, 
+							SELECT week_type, shift_day, $emp_id, shift_start, shift_end, desk_start, desk_end, 
 							desk_start2, desk_end2, lunch_start, lunch_end, specific_schedule, null from shifts 
-							where employee_number='$oldempno' and specific_schedule='$specific_schedule'";
+							where emp_id='$oldemp_id' and specific_schedule='$specific_schedule'";
 						$result6 = mysql_query($query6);
 						}
 						
@@ -316,7 +318,7 @@ if (isset($_POST['submitted'])) {
 	}
 
 //Get employee info for dynamic selects
-$query = "SELECT division, employee_number, first_name, last_name FROM employees WHERE active='Active'
+$query = "SELECT division, emp_id, first_name, last_name FROM employees WHERE active='Active'
 	ORDER BY division asc, last_name asc";
 $result = mysql_query($query) or die(mysql_error($dbc));
 
@@ -338,9 +340,9 @@ while ($row = mysql_fetch_array ($result, MYSQL_ASSOC)) {
 <?php
 				foreach ($array as $row){
 					$employee = $row['first_name'] . ' ' . $row['last_name'];
-					$empno = $row['employee_number'];
+					$emp_id = $row['emp_id'];
 					$division = $row['division'];
-					echo '<option data-parent-value="' . $division . '" value="' . $empno . '" name="test">'
+					echo '<option data-parent-value="' . $division . '" value="' . $emp_id . '" name="test">'
 						. $employee . '</option>';
 					}
 ?>

@@ -246,7 +246,7 @@ function validator() {
 <?php 
 	
 	//Get employee info for dynamic selects
-	$query = "SELECT division, employee_number, first_name, last_name FROM employees WHERE active = 'Active'
+	$query = "SELECT division, emp_id, first_name, last_name FROM employees WHERE active = 'Active'
 		order by division asc, last_name asc";
 	$result = mysql_query($query) or die(mysql_error($dbc));
 	
@@ -258,7 +258,7 @@ $dates = getdate();
 	
 	//Create Date & Time inputs
 if (isset($_POST['submitted'])){
-	$empno = $_POST['employee'];
+	$emp_id = $_POST['employee'];
 	$timeoff_div = $_POST['division'];
 
 	list($ts_mon, $ts_day, $ts_yr) = explode('/',$_POST['timeoff_start_date']);
@@ -315,12 +315,12 @@ if (isset($_POST['submitted'])){
 	
 	if (empty($errors)) {
 	
-	$query = "INSERT into timeoff(employee_number, timeoff_start_date, timeoff_start_time, timeoff_end_date, timeoff_end_time,
-		timeoff_reason, timeoff_create) values('$empno', '$ts_date', '$ts_time', '$te_date', '$te_time', '$reason', null)";
+	$query = "INSERT into timeoff(emp_id, timeoff_start_date, timeoff_start_time, timeoff_end_date, timeoff_end_time,
+		timeoff_reason, timeoff_create) values('$emp_id', '$ts_date', '$ts_time', '$te_date', '$te_time', '$reason', null)";
 	$result = mysql_query($query) or die(mysql_error($dbc));
 	if ($result) {
 		$query2 = "SELECT concat(first_name, ' ', last_name) as employee_name 
-			FROM employees where employee_number='$empno'";
+			FROM employees where emp_id='$emp_id'";
 		$result2 = mysql_query($query2) or die(mysql_error($dbc));
 		$full_name = mysql_result($result2, 0);
 	
@@ -354,9 +354,9 @@ if (isset($_POST['submitted'])){
 <?php
 				foreach ($array as $row){
 					$employee = $row['first_name'] . ' ' . $row['last_name'];
-					$empno = $row['employee_number'];
+					$emp_id = $row['emp_id'];
 					$division = $row['division'];
-					echo '<option data-parent-value="' . $division . '" value="' . $empno . '" name="test">'
+					echo '<option data-parent-value="' . $division . '" value="' . $emp_id . '" name="test">'
 						. $employee . '</option>';
 					}
 ?>

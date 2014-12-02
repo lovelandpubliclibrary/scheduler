@@ -44,8 +44,8 @@ if (isset($_POST['delete'])){
 	echo '<div class="message"><b>PIC coverage by</b> '. $first_name . ' on ' . $date . ' has been deleted.</div>';
 	}
 
-$query = "SELECT pic_coverage_id, pic_coverage_date, first_name, e.employee_number
-	FROM employees e, pic_coverage as c WHERE e.employee_number = c.employee_number 
+$query = "SELECT pic_coverage_id, pic_coverage_date, first_name, e.emp_id
+	FROM employees e, pic_coverage as c WHERE e.emp_id = c.emp_id
 	and pic_coverage_date >= '$today' ORDER BY pic_coverage_date asc";
 $result = mysql_query($query);
 if ($result){
@@ -56,7 +56,7 @@ if ($result){
 			$pic_coverage_id = $row['pic_coverage_id'];
 			$pic_coverage_date = $row['pic_coverage_date'];
 			$first_name = $row['first_name'];
-			$empno = $row['employee_number'];
+			$emp_id = $row['emp_id'];
 			
 			//Date specifics
 			$cmonth = date('M', strtotime($pic_coverage_date));
@@ -73,7 +73,7 @@ if ($result){
 				<td class=\"first_name\">$first_name</td>";
 			echo '<td><form action="edit_pic_coverage" method="post">
 				<input type="hidden" name="pic_coverage_id" value="' . $pic_coverage_id . '"/>
-				<input type="hidden" name="employee_number" value="'.$empno.'"/>
+				<input type="hidden" name="emp_id" value="'.$emp_id.'"/>
 				<input type="hidden" name="first_name" value="' . $first_name  . '"/>
 				<input type="hidden" name="came_from" value="' . $_SERVER['REQUEST_URI'] . '" />
 				<input type="hidden" name="date" value="' . $cmonth . ' ' . $cday . $cyear . '"/>
@@ -81,7 +81,7 @@ if ($result){
 				<input type="submit" name="submit" value="Edit" /></form></td>
 				<td><form action="view_pic_coverage" method="post" onsubmit="return deletecoverage()">
 				<input type="hidden" name="pic_coverage_id" value="' . $pic_coverage_id . '"/>
-				<input type="hidden" name="employee_number" value="'.$empno.'"/>
+				<input type="hidden" name="emp_id" value="'.$emp_id.'"/>
 				<input type="hidden" name="first_name" value="' . $first_name  . '"/>
 				<input type="hidden" name="came_from" value="' . $_SERVER['REQUEST_URI'] . '" />
 				<input type="hidden" name="date" value="' . $cmonth . ' ' . $cday . $cyear . '"/>
