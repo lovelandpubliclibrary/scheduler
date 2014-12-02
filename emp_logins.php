@@ -32,7 +32,7 @@ while($row = mysql_fetch_array ($result, MYSQL_ASSOC)) {
 	
 	}*/
 
-$array = ('logins','coverage','timeoff','pic_coverage','shifts','sub_needs_available','sub_needs_declined','pic','timesheet_confirm','time_entry');	
+$array = array('logins','coverage','timeoff','pic_coverage','shifts','sub_needs_available','sub_needs_declined','pic','timesheet_confirm','time_entry');	
 
 foreach ($array as $k=>$v){
 	if ($v != 'logins'){
