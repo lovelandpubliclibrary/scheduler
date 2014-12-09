@@ -11,9 +11,9 @@ if (isset($_POST['division'])) {
 	$_SESSION['timesheet_view_div'] = $_POST['division'];
 	header('Location:approve_timesheets');
 	}
-elseif (isset($_SESSION['timesheet_view_div'])){
+if (isset($_SESSION['timesheet_view_div'])){
 	$division = $_SESSION['timesheet_view_div'];
-	}	
+	}
 	
 include('./includes/allsessionvariables.php');
 include ('./includes/header.html');
@@ -62,7 +62,7 @@ echo '</select>
 if ((isset($division)) && ($division !== 'All')) {
 	
 	$query = "SELECT last_name, first_name, e.emp_id, assignment_id FROM employees e, logins l WHERE active='Active'
-		and e.emp_id = l.emp_id and division='$division' ORDER BY last_name asc";
+		and e.emp_id = l.emp_id and division like '%".$division."%' ORDER BY last_name asc";
 	$result = mysql_query($query) or die(mysql_error($dbc));
 	$num = mysql_num_rows ($result);
 
