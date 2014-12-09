@@ -243,6 +243,7 @@ function daily_schedule($now, $divisions) {
 				//Create and display division rows.
 				foreach ($divisions as $division=>$divrow){
 					if ($division != 'subs'){
+						$specific_schedule = '';
 						//Get schedule data.
 						$query1 = "SELECT specific_schedule from schedules WHERE division='$divrow'
 							and schedule_start_date <= '$today' and schedule_end_date >= '$today'";
@@ -1359,28 +1360,28 @@ function division_daily($division, $now) {
 				$num_rows = mysql_num_rows($result20);
 				if ($num_rows != 0) {
 					$divrow = ucwords($division);		
-				
+					$specific_schedule = '';
 					//Get schedule data.
-						$query1 = "SELECT specific_schedule from schedules WHERE division='$divrow'
-							and schedule_start_date <= '$today' and schedule_end_date >= '$today'";
-						$result1 = mysql_query($query1);
-						while ($row1 = mysql_fetch_array($result1, MYSQL_ASSOC)){
-							$specific_schedule = $row1['specific_schedule'];
-							}
-						$query2 = "SELECT first_name, last_name, name_dup, e.emp_id, time_format(shift_start,'%k') as shift_start, 
-							time_format(shift_start,'%i') as shift_start_minutes, time_format(shift_end,'%k') as shift_end, 
-							time_format(shift_end,'%i') as shift_end_minutes, time_format(desk_start,'%k') as desk_start, 
-							time_format(desk_start,'%i') as desk_start_minutes, time_format(desk_end,'%k') as desk_end, 
-							time_format(desk_end,'%i') as desk_end_minutes, time_format(desk_start2,'%k') as desk_start2, 
-							time_format(desk_start2,'%i') as desk_start2_minutes, time_format(desk_end2,'%k') as desk_end2, 
-							time_format(desk_end2,'%i') as desk_end2_minutes, time_format(lunch_start,'%k') as lunch_start, 
-							time_format(lunch_start,'%i') as lunch_start_minutes, time_format(lunch_end,'%k') as lunch_end, 
-							time_format(lunch_end,'%i') as lunch_end_minutes from employees as e, shifts as a 
-							WHERE a.specific_schedule = '$specific_schedule' and e.emp_id = a.emp_id 
-							and week_type='$week_type' and shift_day='$day'  
-							and e.active = 'Active' and (e.employee_lastday >= '$today' or e.employee_lastday is null) 
-							order by exempt_status asc, weekly_hours desc, first_name asc";
-						$result2 = mysql_query($query2);
+					$query1 = "SELECT specific_schedule from schedules WHERE division='$divrow'
+						and schedule_start_date <= '$today' and schedule_end_date >= '$today'";
+					$result1 = mysql_query($query1);
+					while ($row1 = mysql_fetch_array($result1, MYSQL_ASSOC)){
+						$specific_schedule = $row1['specific_schedule'];
+						}
+					$query2 = "SELECT first_name, last_name, name_dup, e.emp_id, time_format(shift_start,'%k') as shift_start, 
+						time_format(shift_start,'%i') as shift_start_minutes, time_format(shift_end,'%k') as shift_end, 
+						time_format(shift_end,'%i') as shift_end_minutes, time_format(desk_start,'%k') as desk_start, 
+						time_format(desk_start,'%i') as desk_start_minutes, time_format(desk_end,'%k') as desk_end, 
+						time_format(desk_end,'%i') as desk_end_minutes, time_format(desk_start2,'%k') as desk_start2, 
+						time_format(desk_start2,'%i') as desk_start2_minutes, time_format(desk_end2,'%k') as desk_end2, 
+						time_format(desk_end2,'%i') as desk_end2_minutes, time_format(lunch_start,'%k') as lunch_start, 
+						time_format(lunch_start,'%i') as lunch_start_minutes, time_format(lunch_end,'%k') as lunch_end, 
+						time_format(lunch_end,'%i') as lunch_end_minutes from employees as e, shifts as a 
+						WHERE a.specific_schedule = '$specific_schedule' and e.emp_id = a.emp_id 
+						and week_type='$week_type' and shift_day='$day'  
+						and e.active = 'Active' and (e.employee_lastday >= '$today' or e.employee_lastday is null) 
+						order by exempt_status asc, weekly_hours desc, first_name asc";
+					$result2 = mysql_query($query2);
 				
 					//Initialize alert arrays.
 					if ($day == 'Sat'){
