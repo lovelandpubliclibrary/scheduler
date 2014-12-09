@@ -29,7 +29,7 @@ $week_types = array('a','b','c','d');
 $daysofweek = array('sat','sun','mon','tue','wed','thu','fri');
 
 $employees = array();
-$employee_query = "SELECT emp_id, first_name, last_name FROM employees where (division='$division') and active = 'Active' 
+$employee_query = "SELECT emp_id, first_name, last_name FROM employees where (division like '%".$division."%') and active = 'Active' 
 	order by exempt_status asc, weekly_hours desc, first_name asc";
 $employee_result = mysql_query($employee_query);
 
