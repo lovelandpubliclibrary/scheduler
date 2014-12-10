@@ -264,7 +264,7 @@ echo '			<li class ="drop super"><a href="#">Supervisors</a>
 					</div>
 				</li>';
 	}
-elseif (($_SESSION['role'] == 'Staff')&&(isset($this_empno))){
+elseif (($_SESSION['role'] == 'Staff')&&(isset($this_emp_id))){
 	echo '<li class ="drop super"><a href="#">Employees</a>
 			<div class="dropdown_1column">
 				<a href="/scheduler2/timesheet">Timesheet</a>
@@ -376,7 +376,7 @@ echo '				<li class ="super">
 						</ul>
 					</li>';
 	}
-elseif (($_SESSION['role'] == 'Staff')&&(isset($this_empno))){
+elseif (($_SESSION['role'] == 'Staff')&&(isset($this_emp_id))){
 	echo '			<li class ="super">
 						<a href="#">Employees</a>
 						<ul>

@@ -59,7 +59,7 @@ echo '</select>
 	</p>
 </form>';
 
-if ((isset($division)) && ($division !== 'All')) {
+if ((isset($division)) && ($division != 'All')) {
 	
 	$query = "SELECT last_name, first_name, e.emp_id, assignment_id FROM employees e, logins l WHERE active='Active'
 		and e.emp_id = l.emp_id and division like '%".$division."%' ORDER BY last_name asc";
@@ -111,6 +111,7 @@ if ((isset($division)) && ($division !== 'All')) {
 					<input type="hidden" name="assignment_id" value="'.$assignment_id.'"/>
 					<input type="hidden" name="pp_id" value="'.$pp_id.'"/>
 					<input type="hidden" name="pp_start_date" value="'.$dates[0].'"/>
+					<input type="hidden" name="from_approve" value="TRUE"/>
 					<input type="submit" name="submit" value="View" />
 					</form></td></tr>';
 				$counter++;

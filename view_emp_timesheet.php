@@ -195,6 +195,7 @@ foreach ($array as $k=>$v){
 		and e.active = 'Active' and (e.employee_lastday >= '$v' or e.employee_lastday is null)";
 	$result2 = mysql_query($query2);
 	if($result2){
+		$shift_array = array();
 		while ($row2 = mysql_fetch_array($result2, MYSQL_ASSOC)){
 			$shift_start = $row2['shift_start'];
 			$shift_start_minutes = $row2['shift_start_minutes'];
@@ -231,8 +232,23 @@ foreach ($array as $k=>$v){
 				$shift_display .= $ss12 . '-' . $se12;
 				}
 			if (!empty($shift_display)){
-				echo $shift_display;
+				$shift_array[] = $shift_display;
 				}
+			}
+		if (count($shift_array)==1){
+			echo $shift_array[0];
+			}
+		else{
+			$sh_display = '';
+			foreach ($shift_array as $item=>$shift){
+				if ($item == 0){
+					$sh_display .= $shift;
+					}
+				else{
+					$sh_display .= '<br/>'.$shift;
+					}
+				}
+			echo $sh_display;
 			}
 		}
 	if ($emp_division == 'Subs'){
@@ -379,21 +395,30 @@ foreach ($array as $k=>$v){
 							else{
 								$ce = $ce_hr;
 								}
-							
-							if(($cs <= $shift_start)&&($ce >= $shift_end)){
-								$reg_hours = 0;
-								$closure = 0;
-								}
-							elseif(($row3['closure_start_time'] == '00:01:00')||(($cs <= $shift_start)&&($ce <= $shift_end))){
-								$closure = $ce-$shift_start;
-								}
-							elseif(($row3['closure_end_time'] == '23:59:00')||(($ce >= $shift_end)&&($cs >= $shift_start))){
-								$closure = $shift_end-$cs;
+							if (($shift_start > 0)&&($shift_end > 0)){
+								if(($cs <= $shift_start)&&($ce >= $shift_end)){
+									$reg_hours = 0;
+									$closure = 0;
+									}
+								elseif((($shift_start >= $cs)&&($shift_start<=$ce))||(($shift_end >=$cs)&&($shift_end<=$ce))){
+									if(($row3['closure_start_time'] == '00:01:00')||(($cs <= $shift_start)&&($ce <= $shift_end))){
+										$closure = $ce-$shift_start;
+										}
+									elseif(($row3['closure_end_time'] == '23:59:00')||(($ce >= $shift_end)&&($cs >= $shift_start))){
+										$closure = $shift_end-$cs;
+										}
+									else{
+										$closure = $ce-$cs;
+										}
+									}
+								else{
+									$closure = 0;
+									}
+								$reg_hours -= $closure;
 								}
 							else{
-								$closure = $ce-$cs;
+								$reg_hours = 0;
 								}
-							$reg_hours -= $closure;
 							}
 						}
 					}
@@ -531,6 +556,7 @@ foreach ($array as $k=>$v){
 		and e.active = 'Active' and (e.employee_lastday >= '$v' or e.employee_lastday is null)";
 	$result2 = mysql_query($query2);
 	if($result2){
+		$shift_array = array();
 		while ($row2 = mysql_fetch_array($result2, MYSQL_ASSOC)){
 			$shift_start = $row2['shift_start'];
 			$shift_start_minutes = $row2['shift_start_minutes'];
@@ -567,8 +593,23 @@ foreach ($array as $k=>$v){
 				$shift_display .= $ss12 . '-' . $se12;
 				}
 			if (!empty($shift_display)){
-				echo $shift_display;
+				$shift_array[] = $shift_display;
 				}
+			}
+		if (count($shift_array)==1){
+			echo $shift_array[0];
+			}
+		else{
+			$sh_display = '';
+			foreach ($shift_array as $item=>$shift){
+				if ($item == 0){
+					$sh_display .= $shift;
+					}
+				else{
+					$sh_display .= '<br/>'.$shift;
+					}
+				}
+			echo $sh_display;
 			}
 		}
 	if ($emp_division == 'Subs'){
@@ -716,20 +757,30 @@ foreach ($array as $k=>$v){
 								$ce = $ce_hr;
 								}
 							
-							if(($cs <= $shift_start)&&($ce >= $shift_end)){
-								$reg_hours = 0;
-								$closure = 0;
-								}
-							elseif(($row3['closure_start_time'] == '00:01:00')||(($cs <= $shift_start)&&($ce <= $shift_end))){
-								$closure = $ce-$shift_start;
-								}
-							elseif(($row3['closure_end_time'] == '23:59:00')||(($ce >= $shift_end)&&($cs >= $shift_start))){
-								$closure = $shift_end-$cs;
+							if (($shift_start > 0)&&($shift_end > 0)){
+								if(($cs <= $shift_start)&&($ce >= $shift_end)){
+									$reg_hours = 0;
+									$closure = 0;
+									}
+								elseif((($shift_start >= $cs)&&($shift_start<=$ce))||(($shift_end >=$cs)&&($shift_end<=$ce))){
+									if(($row3['closure_start_time'] == '00:01:00')||(($cs <= $shift_start)&&($ce <= $shift_end))){
+										$closure = $ce-$shift_start;
+										}
+									elseif(($row3['closure_end_time'] == '23:59:00')||(($ce >= $shift_end)&&($cs >= $shift_start))){
+										$closure = $shift_end-$cs;
+										}
+									else{
+										$closure = $ce-$cs;
+										}
+									}
+								else{
+									$closure = 0;
+									}
+								$reg_hours -= $closure;
 								}
 							else{
-								$closure = $ce-$cs;
+								$reg_hours = 0;
 								}
-							$reg_hours -= $closure;
 							}
 						}
 					}

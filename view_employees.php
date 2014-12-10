@@ -104,7 +104,7 @@ echo '</select>
 if ((isset($division)) && ($division !== 'All')) {
 	
 	$query = "SELECT emp_id, last_name, first_name, employee_number, exempt_status, weekly_hours, division, 
-		home_phone, mobile_phone FROM employees WHERE division='$division' and active='Active'
+		home_phone, mobile_phone FROM employees WHERE division like '%".$division."%' and active='Active'
 	ORDER BY division ASC, last_name asc";
 	$result = mysql_query($query) or die(mysql_error($dbc));
 	$num = mysql_num_rows ($result);
