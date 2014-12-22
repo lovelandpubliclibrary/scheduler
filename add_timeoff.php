@@ -245,14 +245,16 @@ function validator() {
 
 <?php 
 	
-	//Get employee info for dynamic selects
-	$query = "SELECT division, emp_id, first_name, last_name FROM employees WHERE active = 'Active'
-		order by division asc, last_name asc";
+//Get employee info for dynamic selects
+foreach ($divisions as $k=>$v){
+	$query = "SELECT emp_id, first_name, last_name FROM employees WHERE active = 'Active' and 
+		(division like '%".$v."%') order by last_name asc";
 	$result = mysql_query($query) or die(mysql_error($dbc));
 	
 	while ($row = mysql_fetch_array ($result, MYSQL_ASSOC)) {
-		$array[]=$row;
+		$array[$v][]=$row;
 		}
+	}
 	
 $dates = getdate();
 	
@@ -352,12 +354,14 @@ if (isset($_POST['submitted'])){
 			<select id="name">
 				<option data-parent-value="0" value="0">Select Employee...</option>
 <?php
-				foreach ($array as $row){
-					$employee = $row['first_name'] . ' ' . $row['last_name'];
-					$emp_id = $row['emp_id'];
-					$division = $row['division'];
-					echo '<option data-parent-value="' . $division . '" value="' . $emp_id . '" name="test">'
-						. $employee . '</option>';
+				foreach ($array as $div=>$arr){
+					foreach ($arr as $row){
+						$employee = $row['first_name'] . ' ' . $row['last_name'];
+						$emp_id = $row['emp_id'];
+						$division = $div;
+						echo '<option data-parent-value="' . $division . '" value="' . $emp_id . '" name="test">'
+							. $employee . '</option>';
+						}
 					}
 ?>
 			</select>
