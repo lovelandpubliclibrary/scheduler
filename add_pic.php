@@ -117,7 +117,7 @@ if (isset($_POST['submitted'])){
 $pic_poss = array();
 
 $query = "SELECT emp_id, first_name, last_name FROM employees WHERE active='Active' and pic_status='Y'
-	ORDER BY last_name";
+	ORDER BY first_name";
 $result = mysql_query($query);
 if ($result){
 	$num_rows = mysql_num_rows($result);
