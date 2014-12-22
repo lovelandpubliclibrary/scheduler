@@ -120,16 +120,14 @@ if ((isset($division)) && ($division !== 'All')) {
 			$row['weekly_hours'] . '</td><td>' . $row['division'] . '</td>
 			<td><form action="edit_employee" method="post">
 			<input type="hidden" name="employee_name" value="' . $row['first_name'] . ' ' . $row['last_name'] . '"/>
-			<input type="hidden" name="employee_number" value="' . $row['employee_number'] . '"/>
-			<input type="submit" name="submit" value="Edit" />
-			</form></td>
+			<input type="hidden" name="emp_id" value="' . $row['emp_id'] . '"/>
+			<input type="hidden" name="from_view_emp" value="TRUE"/>
+			<input type="submit" name="submit" value="Edit" /></form></td>
 			<td><form action="view_employees" method="post" onsubmit="return deleteEmployee(this)">
 			<input type="hidden" name="emp_id" value="' . $row['emp_id'] . '"/>
 			<input type="hidden" name="employee_name" value="' . $row['first_name'] . ' ' . $row['last_name'] . '"/>
 			<input type="hidden" name="delete" value="TRUE" />
-			<input type="hidden" name="submitted" value="TRUE" />
-			<input type="hidden" name="division" value="' . $division . '" />
-			<input type="submit" name="deletesub" value="Delete" /></form>
+			<input type="submit" name="delete" value="Delete" /></form>
 			</td></tr>';
 			}
 	
