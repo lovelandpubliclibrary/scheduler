@@ -116,7 +116,7 @@ if (isset($_POST['submitted'])){
 
 $pic_poss = array();
 
-$query = "SELECT emp_id, first_name, last_name FROM employees WHERE active='Active' and pic_status='Y'
+$query = "SELECT emp_id, first_name, last_name, name_dup FROM employees WHERE active='Active' and pic_status='Y'
 	ORDER BY first_name";
 $result = mysql_query($query);
 if ($result){
@@ -126,6 +126,10 @@ if ($result){
 			$emp_id = $row['emp_id'];
 			$fn = $row['first_name'];
 			$ln = $row['last_name'];
+			if ($row['name_dup'] == 'Y'){
+				$last_initial = substr($row['last_name'],0,1);
+				$fn .= ' ' . $last_initial . '.';
+				}
 			$pic_poss[$emp_id] = array($fn,$ln);
 			}
 		}
