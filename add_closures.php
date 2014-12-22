@@ -222,11 +222,11 @@ echo '<div id="timeoff">
 		echo '<tr><td>'.$friendly_date.'</td>';
 		if (($v[1] != '00:01:00')&&($v[2] != '23:59:00')){
 			$start = explode(':',$v[1]);
-			$start_hr = int($start[0]);
-			$start_mn = int($start[1]);
+			$start_hr = (int)$start[0];
+			$start_mn = (int)$start[1];
 			$end = explode(':',$v[2]);
-			$end_hr = int($end[0]);
-			$end_mn = int($end[1]);
+			$end_hr = (int)$end[0];
+			$end_mn = (int)$end[1];
 			if ($start_hr > 12){
 				$ss12 = $start_hr - 12;
 				}
