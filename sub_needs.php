@@ -34,6 +34,7 @@ if (($_SESSION['role'] == 'Admin')||($_SESSION['role'] == 'Supervisor')){
 		$division = $_SESSION['sub_needs_division'];
 		}
 	else{
+		$_SESSION['sub_needs_division'] = 'All';
 		}
 		
 	include ('./includes/header.html');
@@ -67,7 +68,7 @@ if (($_SESSION['role'] == 'Admin')||($_SESSION['role'] == 'Supervisor')){
 	echo '<span class="date"><h1>Sub Needs</h1></span>'."\n";
 	
 	if (isset($_POST['add_sub_needs_submitted'])){
-		if ($_SESSION['sub_needs_division'] == 'All'){
+		if (isset($_SESSION['sub_needs_division'])&&($_SESSION['sub_needs_division'] == 'All')){
 			$division = 'All';
 			}
 		else{
@@ -447,7 +448,7 @@ elseif ($_SESSION['role'] == 'Subs'){
 		}
 	if (isset($_POST['decline_comment'])){
 		$sub_needs_declined_id = $_POST['sub_needs_declined_id'];
-		$comment = $_POST['declined_comment'];
+		$comment = escape_data($_POST['declined_comment']);
 		$query6 = "UPDATE sub_needs_declined SET comment='$comment' WHERE sub_needs_declined_id = '$sub_needs_declined_id'";
 		$result6 = mysql_query($query6);
 		}
@@ -461,6 +462,12 @@ elseif ($_SESSION['role'] == 'Subs'){
 		$emp_id = $_POST['availability'];
 		$query4 = "INSERT into sub_needs_available (sub_needs_id, emp_id) VALUES ('$sub_needs_id', '$emp_id')";
 		$result4 = mysql_query($query4);
+		}
+	if (isset($_POST['available_comment'])){
+		$sub_needs_available_id = $_POST['sub_needs_available_id'];
+		$comment2 = escape_data($_POST['available_comment']);
+		$query7 = "UPDATE sub_needs_available SET comment='$comment2' WHERE sub_needs_available_id = '$sub_needs_available_id'";
+		$result7 = mysql_query($query7);
 		}
 	if (isset($_POST['unavailable'])){
 		$sub_needs_available_id = $_POST['sub_needs_available_id'];
@@ -566,7 +573,8 @@ elseif ($_SESSION['role'] == 'Subs'){
 				while ($row3 = mysql_fetch_array($result3, MYSQL_ASSOC)){
 					$sub_needs_available_id = $row3['sub_needs_available_id'];
 					$emp_id = $row3['emp_id'];
-					$available[$sub_needs_available_id] = $emp_id;
+					$comment2 = $row3['comment'];
+					$available[$emp_id] = array($sub_needs_available_id=>$comment2);
 					}
 				
 				echo "<tr><td class=\"division\">$sub_needs_division</td>";
@@ -619,15 +627,27 @@ elseif ($_SESSION['role'] == 'Subs'){
 					echo "<td class=\"assign\">";
 					echo '<b>Available:</b><br/>';
 					foreach($subs as $emp_id=>$name){
-						if (in_array($emp_id, $available)){
-							$sub_needs_available_id = array_search($emp_id, $available);
-							echo '<form id="unavailable" action="sub_needs" method="post">
-								<input type="checkbox" onchange="getScrollXY();this.form.submit();" name="availability" value="'.$emp_id.'"';
-							echo ' checked="checked"';
-							echo '><span class="decline">'.$name.'</span><br/>';
-							echo '<input type="hidden" name="unavailable" value="TRUE" />
-								<input type="hidden" name="sub_needs_available_id" value="' . $sub_needs_available_id . '"/>
-								</form>';	
+						if (array_key_exists($emp_id, $available)){
+							$avarray = $available[$emp_id];
+							foreach ($avarray as $k=>$v){
+								$sub_needs_available_id = $k;
+								$comment2 = $v;
+								echo '<form id="unavailable" action="sub_needs" method="post" class="undecline" style="float:left;margin-right:5px;">
+									<input type="checkbox" onchange="getScrollXY();this.form.submit();" name="availability" value="'.$emp_id.'"';
+								echo ' checked="checked"';
+								echo '><span class="decline">'.$name.'</span><br/>';
+								echo '<input type="hidden" name="unavailable" value="TRUE" />
+									<input type="hidden" name="sub_needs_available_id" value="' . $sub_needs_available_id . '"/>
+									</form>';	
+								echo '<div class="comment" style="display:inline;text-align:right;">
+									<form class="declinecomment" action="sub_needs" method="post">
+									<input type="submit" name="submit" value="Save" onclick="getScrollXY();this.form.submit();"/>
+									<input type="hidden" name="available_comment" value="TRUE" />
+									<input type="hidden" name="sub_needs_available_id" value="'.$sub_needs_available_id.'"/>
+									<input type="text" name="available_comment" size="20" maxlength="140" value="'.$comment2.'"/>
+									</form>
+									</div>';
+								}
 							}
 						else {
 							echo '<form id="available" action="sub_needs" method="post">
