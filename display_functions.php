@@ -619,7 +619,7 @@ function daily_schedule($now, $divisions) {
 								time_format(coverage_end_time,'%i') as coverage_end_minutes, 
 								coverage_offdesk, coverage_reason, division 
 								FROM employees as e, coverage as c
-								WHERE division != '$divrow' and c.coverage_division = '$divrow' and 
+								WHERE (division not like '%".$divrow."%') and c.coverage_division = '$divrow' and 
 								coverage_date='$today' and e.emp_id = c.emp_id and e.active = 'Active' 
 								ORDER BY last_name asc, cet asc";
 							$result5 = mysql_query($query5) or die(mysql_error($dbc));
@@ -1729,7 +1729,7 @@ function division_daily($division, $now) {
 						time_format(coverage_end_time,'%i') as coverage_end_minutes, 
 						coverage_offdesk, coverage_reason, division 
 						FROM employees as e, coverage as c
-						WHERE division != '$divrow' and c.coverage_division = '$divrow' and 
+						WHERE (division not like '%".$divrow."%') and c.coverage_division = '$divrow' and 
 						coverage_date='$today' and e.emp_id = c.emp_id and e.active = 'Active' 
 						ORDER BY last_name asc, cet asc";
 					$result5 = mysql_query($query5) or die(mysql_error($dbc));
