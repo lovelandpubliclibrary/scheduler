@@ -2914,7 +2914,7 @@ function division_weekly($division, $now) {
 				'<input class="prev" type="button" onclick="loadprevweekDiv()" value="Previous" />'."\n".
 				'<input class="next" type="button" value="Next" onclick="loadnextweekDiv()" />'."\n";
 			echo "<div class=\"divspec screen\">$startday $startmon_long";
-			if ($startyear != $endyear){echo $startyear;}
+			if ($startyear != $endyear){echo ' '.$startyear;}
 			echo " &ndash; $endday $endmon_long $endyear</div>\n";
 			echo "<div class=\"divspec mobile\">$startday $startmon_short";
 			if ($startyear != $endyear){echo $startyear;}
@@ -3187,7 +3187,7 @@ function division_weekly($division, $now) {
 										}
 									}
 								}
-							print_r($shift_array);
+							
 							//Adjust 24-hour time.
 							$shift_display = '';
 							if(count($shift_array) >= 1){
