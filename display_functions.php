@@ -3187,7 +3187,8 @@ function division_weekly($division, $now) {
 										}
 									}
 								}
-							
+							print_r($desk_array);
+							echo '<br/>';
 							//Adjust 24-hour time.
 							$shift_display = '';
 							if(count($shift_array) >= 1){
@@ -3266,6 +3267,7 @@ function division_weekly($division, $now) {
 										}
 									}
 								usort($desk_array, 'sortByOrder');
+								print_r($desk_array);
 								foreach ($desk_array as $row=>$desk){
 									if ((int)$desk[0] > 12){
 										$ds12 = $desk[0] - 12;
