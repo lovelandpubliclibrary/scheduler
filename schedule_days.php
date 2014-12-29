@@ -295,64 +295,87 @@ if(isset($_POST['day_submit'])){
 					$schedule_array[$emp_id][$week_type][$day]['shift_end']['minutes'] = $se_mn;
 					}
 				
-				$ds_hr = $sched['desk_start']['hours'];
-					if (!empty($ds_hr) && ($ds_hr < 8)) {$ds_hr = $ds_hr+12;}
-					if (empty($ds_hr)){$ds_hr = "00";}
-				$ds_mn = $sched['desk_start']['minutes'];
-					if (empty($ds_mn)){$ds_mn = "00";}
-				$ds = "$ds_hr:$ds_mn:00";
-				if (!empty($ds_hr)){
-					$schedule_array[$emp_id][$week_type][$day]['desk_start']['minutes'] = $ds_mn;
+				if (($ss_hr=='00')&&($se_hr=='00')){
+					$ds = "00:00:00";
+					$de = "00:00:00";
+					$ds2 = "00:00:00";
+					$de2 = "00:00:00";
+					$ls = "00:00:00";
+					$le = "00:00:00";
+					
+					$schedule_array[$emp_id][$week_type][$day]['desk_start']['hours'] = '';
+					$schedule_array[$emp_id][$week_type][$day]['desk_start']['minutes'] = '';
+					$schedule_array[$emp_id][$week_type][$day]['desk_end']['minutes'] = '';
+					$schedule_array[$emp_id][$week_type][$day]['desk_end']['minutes'] = '';					
+					$schedule_array[$emp_id][$week_type][$day]['desk_start2']['hours'] = '';
+					$schedule_array[$emp_id][$week_type][$day]['desk_start2']['minutes'] = '';
+					$schedule_array[$emp_id][$week_type][$day]['desk_end2']['minutes'] = '';
+					$schedule_array[$emp_id][$week_type][$day]['desk_end2']['minutes'] = '';
+					$schedule_array[$emp_id][$week_type][$day]['lunch_start']['hours'] = '';
+					$schedule_array[$emp_id][$week_type][$day]['lunch_start']['minutes'] = '';
+					$schedule_array[$emp_id][$week_type][$day]['lunch_end']['hours'] = '';
+					$schedule_array[$emp_id][$week_type][$day]['lunch_end']['minutes'] = '';
 					}
-				
-				$de_hr = $sched['desk_end']['hours'];
-					if (!empty($de_hr) && ($de_hr < $ds_hr)) {$de_hr = $de_hr+12;}
-					if (empty($de_hr)){$de_hr = "00";}
-				$de_mn = $sched['desk_end']['minutes'];
-					if (empty($de_mn)){$de_mn = "00";}
-				$de = "$de_hr:$de_mn:00";
-				if (!empty($de_hr)){
-					$schedule_array[$emp_id][$week_type][$day]['desk_end']['minutes'] = $de_mn;
-					}
-				
-				$ds2_hr = $sched['desk_start2']['hours'];
-					if (!empty($ds2_hr) && ($ds2_hr < 8)) {$ds2_hr = $ds2_hr+12;}
-					if (empty($ds2_hr)){$ds2_hr = "00";}
-				$ds2_mn = $sched['desk_start2']['minutes'];
-					if (empty($ds2_mn)){$ds2_mn = "00";}
-				$ds2 = "$ds2_hr:$ds2_mn:00";
-				if (!empty($ds2_hr)){
-					$schedule_array[$emp_id][$week_type][$day]['desk_start2']['minutes'] = $ds2_mn;
-					}
-				
-				$de2_hr = $sched['desk_end2']['hours'];
-					if (!empty($de2_hr) && ($de2_hr < $ds_hr)) {$de2_hr = $de2_hr+12;}
-					if (empty($de2_hr)){$de2_hr = "00";}
-				$de2_mn = $sched['desk_end2']['minutes'];
-					if (empty($de2_mn)){$de2_mn = "00";}
-				$de2 = "$de2_hr:$de2_mn:00";
-				if (!empty($de2_hr)){
-					$schedule_array[$emp_id][$week_type][$day]['desk_end2']['minutes'] = $de2_mn;
-					}
-				
-				$ls_hr = $sched['lunch_start']['hours'];
-					if (!empty($ls_hr) && ($ls_hr < 7)) {$ls_hr = $ls_hr+12;}
-					if (empty($ls_hr)){$ls_hr = "00";}
-				$ls_mn = $sched['lunch_start']['minutes'];
-					if (empty($ls_mn)){$ls_mn = "00";}
-				$ls = "$ls_hr:$ls_mn:00";
-				if (!empty($ls_hr)){
-					$schedule_array[$emp_id][$week_type][$day]['lunch_start']['minutes'] = $ls_mn;
-					}
-				
-				$le_hr = $sched['lunch_end']['hours'];
-					if (!empty($le_hr) && ($le_hr < $ls_hr)) {$le_hr = $le_hr+12;}
-					if (empty($le_hr)){$le_hr = "00";}
-				$le_mn = $sched['lunch_end']['minutes'];
-					if (empty($le_mn)){$le_mn = "00";}
-				$le = "$le_hr:$le_mn:00";
-				if (!empty($le_hr)){
-					$schedule_array[$emp_id][$week_type][$day]['lunch_end']['minutes'] = $le_mn;
+				else{
+					$ds_hr = $sched['desk_start']['hours'];
+						if (!empty($ds_hr) && ($ds_hr < 8)) {$ds_hr = $ds_hr+12;}
+						if (empty($ds_hr)){$ds_hr = "00";}
+					$ds_mn = $sched['desk_start']['minutes'];
+						if (empty($ds_mn)){$ds_mn = "00";}
+					$ds = "$ds_hr:$ds_mn:00";
+					if (!empty($ds_hr)){
+						$schedule_array[$emp_id][$week_type][$day]['desk_start']['minutes'] = $ds_mn;
+						}
+					
+					$de_hr = $sched['desk_end']['hours'];
+						if (!empty($de_hr) && ($de_hr < $ds_hr)) {$de_hr = $de_hr+12;}
+						if (empty($de_hr)){$de_hr = "00";}
+					$de_mn = $sched['desk_end']['minutes'];
+						if (empty($de_mn)){$de_mn = "00";}
+					$de = "$de_hr:$de_mn:00";
+					if (!empty($de_hr)){
+						$schedule_array[$emp_id][$week_type][$day]['desk_end']['minutes'] = $de_mn;
+						}
+					
+					$ds2_hr = $sched['desk_start2']['hours'];
+						if (!empty($ds2_hr) && ($ds2_hr < 8)) {$ds2_hr = $ds2_hr+12;}
+						if (empty($ds2_hr)){$ds2_hr = "00";}
+					$ds2_mn = $sched['desk_start2']['minutes'];
+						if (empty($ds2_mn)){$ds2_mn = "00";}
+					$ds2 = "$ds2_hr:$ds2_mn:00";
+					if (!empty($ds2_hr)){
+						$schedule_array[$emp_id][$week_type][$day]['desk_start2']['minutes'] = $ds2_mn;
+						}
+					
+					$de2_hr = $sched['desk_end2']['hours'];
+						if (!empty($de2_hr) && ($de2_hr < $ds_hr)) {$de2_hr = $de2_hr+12;}
+						if (empty($de2_hr)){$de2_hr = "00";}
+					$de2_mn = $sched['desk_end2']['minutes'];
+						if (empty($de2_mn)){$de2_mn = "00";}
+					$de2 = "$de2_hr:$de2_mn:00";
+					if (!empty($de2_hr)){
+						$schedule_array[$emp_id][$week_type][$day]['desk_end2']['minutes'] = $de2_mn;
+						}
+					
+					$ls_hr = $sched['lunch_start']['hours'];
+						if (!empty($ls_hr) && ($ls_hr < 7)) {$ls_hr = $ls_hr+12;}
+						if (empty($ls_hr)){$ls_hr = "00";}
+					$ls_mn = $sched['lunch_start']['minutes'];
+						if (empty($ls_mn)){$ls_mn = "00";}
+					$ls = "$ls_hr:$ls_mn:00";
+					if (!empty($ls_hr)){
+						$schedule_array[$emp_id][$week_type][$day]['lunch_start']['minutes'] = $ls_mn;
+						}
+					
+					$le_hr = $sched['lunch_end']['hours'];
+						if (!empty($le_hr) && ($le_hr < $ls_hr)) {$le_hr = $le_hr+12;}
+						if (empty($le_hr)){$le_hr = "00";}
+					$le_mn = $sched['lunch_end']['minutes'];
+						if (empty($le_mn)){$le_mn = "00";}
+					$le = "$le_hr:$le_mn:00";
+					if (!empty($le_hr)){
+						$schedule_array[$emp_id][$week_type][$day]['lunch_end']['minutes'] = $le_mn;
+						}
 					}
 			
 				if(array_key_exists($day, $prev_schedules[$emp_id][$week_type])){
@@ -820,6 +843,7 @@ $(document).ready(function() {
 			$(this).next('.hidden').show();
 			}
         else{
+			$(this).next('.hidden').find('input').val('');
 			$(this).next('.hidden').hide();
 			}
 		});

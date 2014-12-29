@@ -158,8 +158,8 @@ calcTotals();
 
 function forceNumeric(input){
 	$(document).ready(function(){
-		if (!/^[0-9]+$/.test(input.val())) {
-			input.val(input.val().replace(/[^0-9]/g, ''));
+		if (!/^[0-9\.]+$/.test(input.val())) {
+			input.val(input.val().replace(/[^0-9\.]/g, ''));
 			}
 		});
 	}
