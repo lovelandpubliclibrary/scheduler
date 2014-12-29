@@ -3187,7 +3187,7 @@ function division_weekly($division, $now) {
 										}
 									}
 								}
-							
+							print_r($shift_array);
 							//Adjust 24-hour time.
 							$shift_display = '';
 							if(count($shift_array) >= 1){
