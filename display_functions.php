@@ -3214,9 +3214,9 @@ function division_weekly($division, $now) {
 										}
 									}
 								}
+							
 							echo '<pre>';
 							print_r($details_array);
-							
 							
 							$chunks = array();
 							$last_state = '';
@@ -3231,16 +3231,50 @@ function division_weekly($division, $now) {
 									$last_state = $state;
 									}
 								if ($hour==19.5){
-									$chunks[$last_state][$count]['end'] = $hour;
+									$chunks[$last_state][$count]['end'] = 20;
 									}
 								}
-								
 							
 							print_r($chunks);
 							echo '</pre>';
 							
 							//Adjust 24-hour time.
 							$shift_display = '';
+							
+							$desk_display = '';
+							$desk_count = 0;
+							foreach ($chunks as $state=>$desk_array){
+								if ($state == 'On'){
+									if ((int)$desk_array['start'] > 12){
+										$ds12 = $desk_array['start'] - 12;
+										}
+									else{
+										$ds12 = $desk_array['start'];
+										}
+									if (round($ds12, 0) != $ds12){
+										$ds12 = (int)$ds12.':'.(int)(($ds12-(int)$ds12) * 60);
+										}
+									if ((int)$desk_array['end'] > 12){
+										$de12 = $desk_array['end'] - 12;
+										}
+									else{
+										$de12 = $desk_array['end'];
+										}
+									if (round($de12, 0) != $de12){
+										$de12 = (int)$de12.':'.(int)(($de12-(int)$de12) * 60);
+										}
+										
+									if($desk_count>0){
+										$desk_display .= ', '. $ds12 . '-' . $de12;
+										}
+									else{
+										$desk_display .= $ds12 . '-' . $de12;
+										}
+									$desk_count++;
+									}
+								}
+							
+							
 							if(count($shift_array) >= 1){
 								foreach ($shift_array as $row=>$shift){
 									if($shift[0] == 0){
@@ -3309,7 +3343,7 @@ function division_weekly($division, $now) {
 									}
 								}
 							
-							$desk_display = '';
+							/*$desk_display = '';
 							if(count($desk_array) >= 1){
 								foreach ($desk_array as $row=>$desk){
 									if($desk[0] == 0){
@@ -3346,7 +3380,7 @@ function division_weekly($division, $now) {
 											}
 										}
 									}
-								}
+								}*/
 
 							if ((int)$lunch_start > 12){
 								$ls12 = (int)$lunch_start - 12;
