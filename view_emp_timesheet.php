@@ -384,7 +384,7 @@ foreach ($array as $k=>$v){
 					$shift = $shift_end-$shift_start;
 					$reg_hours += $shift;
 					$lunch = $lunch_end-$lunch_start;
-					$reg_hours -= $shift;
+					$reg_hours -= $lunch;
 					}
 					
 				$query3 = "SELECT * from closures where closure_date='$v'";
@@ -759,7 +759,7 @@ foreach ($array as $k=>$v){
 					$shift = $shift_end-$shift_start;
 					$reg_hours += $shift;
 					$lunch = $lunch_end-$lunch_start;
-					$reg_hours -= $shift;
+					$reg_hours -= $lunch;
 					}
 					
 				$query3 = "SELECT * from closures where closure_date='$v'";
