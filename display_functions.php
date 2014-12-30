@@ -3468,10 +3468,12 @@ function division_weekly($division, $now) {
 								}
 								
 							//Calculate Hour Totals
-							if((count($timeoff_array) >= 1)&&(isset($chunks['shift']))){
-								foreach ($chunks['shift'] as $k=>$arr){
-									$shift_total = $arr['end'] - $arr['start'];
-									$hr_total += $shift_total;
+							if(count($timeoff_array) >= 1){
+								if(isset($chunks['shift'])){
+									foreach ($chunks['shift'] as $k=>$arr){
+										$shift_total = $arr['end'] - $arr['start'];
+										$hr_total += $shift_total;
+										}
 									}
 								}
 							else{
