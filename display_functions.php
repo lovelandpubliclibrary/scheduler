@@ -3010,7 +3010,6 @@ function division_weekly($division, $now) {
 							else{
 								$working_end = $shift_end;
 								}
-							//$shift_array = array(0=>array($working_start, $working_end));
 							
 							if ($desk_start != '00'){
 								if ($desk_start_minutes != '00') {
@@ -3025,7 +3024,6 @@ function division_weekly($division, $now) {
 								else{
 									$working_desk_end = $desk_end;
 									}
-								//$desk_array[] = array($working_desk_start,$working_desk_end);
 								}
 							if ($desk_start2 != '00'){
 								if ($desk_start2_minutes != '00') {
@@ -3040,7 +3038,6 @@ function division_weekly($division, $now) {
 								else{
 									$working_desk_end2 = $desk_end2;
 									}
-								//$desk_array[] = array($working_desk_start2,$working_desk_end2);
 								}
 							
 							if ($lunch_start_minutes != '00') {
@@ -3082,57 +3079,6 @@ function division_weekly($division, $now) {
 								
 								$timeoff_array[] = array('tos'=>$tostart, 'toe'=>$toend);
 								}
-							/*if(count($timeoff_array) != 0){
-								foreach ($timeoff_array as $key=>$timeoff){
-									if((($timeoff['tos'] == 1)&&($timeoff['toe'] == 23))||(($timeoff['tos'] <= $working_start)&&($timeoff['toe'] >= $working_end))){
-										$shift_array[0] = array(0,0);
-										$desk_array = array(array(0,0));
-										$lunch_start = 0;
-										$lunch_end = 0;
-										break;
-										}
-									else{
-										foreach ($shift_array as $row=>$shift){
-											if(($timeoff['tos'] <= $shift[0])&&($timeoff['toe'] >= $shift[1])){
-												$shift_array[$row][0] = 0;
-												$shift_array[$row][1] = 0;
-												}
-											elseif(($timeoff['tos'] <= $shift[0])&&($timeoff['toe'] > $shift[0])){
-												$shift_array[$row][0] = $timeoff['toe'];
-												}
-											elseif(($timeoff['toe'] >= $shift[1])&&($timeoff['tos'] < $shift[1])){
-												$shift_array[$row][1] = $timeoff['tos'];
-												}
-											elseif(($timeoff['tos'] > $shift[0])&&($timeoff['toe'] < $shift[1])){
-												$new_end = $shift[1];
-												$shift_array[$row][1] = $timeoff['tos'];
-												$shift_array[] = array($timeoff['toe'], $new_end);
-												}
-											}
-										foreach ($desk_array as $row=>$shift){
-											if(($timeoff['tos'] <= $shift[0])&&($timeoff['toe'] >= $shift[1])){
-												$desk_array[$row][0] = 0;
-												$desk_array[$row][1] = 0;
-												}
-											elseif(($timeoff['tos'] <= $shift[0])&&($timeoff['toe'] > $shift[0])){
-												$desk_array[$row][0] = $timeoff['toe'];
-												}
-											elseif(($timeoff['toe'] >= $shift[1])&&($timeoff['tos'] < $shift[1])){
-												$desk_array[$row][1] = $timeoff['tos'];
-												}
-											elseif(($timeoff['tos'] > $shift[0])&&($timeoff['toe'] < $shift[1])){
-												$new_end = $shift[1];
-												$desk_array[$row][1] = $timeoff['tos'];
-												$desk_array[] = array($timeoff['toe'], $new_end);
-												}
-											}
-										if(($timeoff['tos'] <= $lunch_start)&&($timeoff['toe'] >= $lunch_end)){
-											$lunch_start = 0;
-											$lunch_end = 0;
-											}
-										}
-									}
-								}*/
 							
 							$query4 = "SELECT emp_id, coverage_date, time_format(coverage_start_time,'%k') as coverage_start, 
 								time_format(coverage_start_time,'%i') as coverage_start_minutes, time_format(coverage_end_time,'%k') as coverage_end, 
@@ -3159,36 +3105,6 @@ function division_weekly($division, $now) {
 										'cov_offdesk'=>$cov_offdesk);
 									}
 								}
-							/*foreach ($cov_array as $row=>$cover){
-								foreach ($shift_array as $r=>$a){
-									if (($cover['cov_start'] > $a[0])&&($cover['cov_start'] <= $a[1])){
-										$shift_array[$r][1] = $cover['cov_end'];
-										$shiftaddon = TRUE;
-										}
-									elseif (($cover['cov_end'] < $a[1])&&($cover['cov_end'] >= $a[0])){
-										$shift_array[$r][0] = $cover['cov_start'];
-										$shiftaddon = TRUE;
-										}
-									}
-								if (!isset($shiftaddon)){
-									$shift_array[] = array($cover['cov_start'],$cover['cov_end']);
-									}
-								if ($cov_offdesk == 'On'){
-									foreach ($desk_array as $r=>$a){
-										if (($cover['cov_start'] > $a[0])&&($cover['cov_start'] <= $a[1])){
-											$desk_array[$r][1] = $cover['cov_end'];
-											$addon = TRUE;
-											}
-										elseif (($cover['cov_end'] < $a[1])&&($cover['cov_end'] >= $a[0])){
-											$desk_array[$r][0] = $cover['cov_start'];
-											$addon = TRUE;
-											}
-										}
-									if(!isset($addon)){
-										$desk_array[] = array($cover['cov_start'],$cover['cov_end']);
-										}
-									}
-								}*/
 							
 							foreach ($details_array as $hour=>$state){
 								if (($hour >= $working_start) && ($hour < $working_end)){
@@ -3214,9 +3130,6 @@ function division_weekly($division, $now) {
 										}
 									}
 								}
-							
-							echo '<pre>';
-							print_r($details_array);
 							
 							$chunks = array();
 							$last_state = '';
@@ -3246,9 +3159,6 @@ function division_weekly($division, $now) {
 										}
 									}
 								}
-							
-							print_r($chunks);
-							echo '</pre>';
 							
 							//Adjust 24-hour time.
 							
@@ -3318,42 +3228,6 @@ function division_weekly($division, $now) {
 										$counter++;
 										}
 									}
-								
-								/*foreach ($shift_array as $row=>$shift){
-									if($shift[0] == 0){
-										unset($shift_array[$row]);
-										}
-									}
-								usort($shift_array, 'sortByOrder');
-								foreach ($shift_array as $row=>$shift){
-									if ((int)$shift[0] > 12){
-										$ss12 = $shift[0] - 12;
-										}
-									else{
-										$ss12 = $shift[0];
-										}
-									if (round($ss12, 0) != $ss12){
-										$ss12 = (int)$ss12.':'.(int)(($ss12-(int)$ss12) * 60);
-										}
-								
-									if ((int)$shift[1] > 12){
-										$se12 = $shift[1] - 12;
-										}
-									else{
-										$se12 = $shift[1];
-										}
-									if (round($se12, 0) != $se12){
-										$se12 = (int)$se12.':'.(int)(($se12-(int)$se12) * 60);
-										}
-									if (isset($ss12)){
-										if ($row != 0){
-											$shift_display .= ', '. $ss12 . '-' . $se12;
-											}
-										else{
-											$shift_display .= $ss12 . '-' . $se12;
-											}
-										}
-									}*/
 								}
 							else{
 								if ((int)$working_start > 12){
@@ -3385,45 +3259,6 @@ function division_weekly($division, $now) {
 									$shift_display .= $ss12 . '-' . $se12;
 									}
 								}
-							
-							/*$desk_display = '';
-							if(count($desk_array) >= 1){
-								foreach ($desk_array as $row=>$desk){
-									if($desk[0] == 0){
-										unset($desk_array[$row]);
-										}
-									}
-								usort($desk_array, 'sortByOrder');
-								foreach ($desk_array as $row=>$desk){
-									if ((int)$desk[0] > 12){
-										$ds12 = $desk[0] - 12;
-										}
-									else{
-										$ds12 = $desk[0];
-										}
-									if (round($ds12, 0) != $ds12){
-										$ds12 = (int)$ds12.':'.(int)(($ds12-(int)$ds12) * 60);
-										}
-								
-									if ((int)$desk[1] > 12){
-										$de12 = $desk[1] - 12;
-										}
-									else{
-										$de12 = $desk[1];
-										}
-									if (round($de12, 0) != $de12){
-										$de12 = (int)$de12.':'.(int)(($de12-(int)$de12) * 60);
-										}
-									if (isset($ds12)){
-										if ($row != 0){
-											$desk_display .= ', '. $ds12 . '-' . $de12;
-											}
-										else{
-											$desk_display .= $ds12 . '-' . $de12;
-											}
-										}
-									}
-								}*/
 
 							if ((int)$lunch_start > 12){
 								$ls12 = (int)$lunch_start - 12;
