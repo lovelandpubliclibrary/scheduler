@@ -3221,8 +3221,17 @@ function division_weekly($division, $now) {
 							$chunks = array();
 							$last_state = '';
 							$count = 0;
+							$shift_count = 0;
 							foreach ($details_array as $hour=>$state){
 								if ($state != $last_state){
+									if ($last_state == 'N'){
+										$chunks['shift'][$shift_count]['start'] = $hour;
+										}
+									if ($state == 'N'){
+										$chunks['shift'][$shift_count]['end'] = $hour;
+										$shift_count++;
+										}
+									
 									if (isset($chunks[$last_state][$count])){
 										$chunks[$last_state][$count]['end'] = $hour;
 										}
