@@ -3241,6 +3241,9 @@ function division_weekly($division, $now) {
 									}
 								if ($hour==19.5){
 									$chunks[$last_state][$count]['end'] = 20;
+									if (!isset($chunks['shift'][$shift_count]['end'])){
+										$chunks['shift'][$shift_count]['end'] = 20;
+										}
 									}
 								}
 							
