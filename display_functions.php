@@ -3245,6 +3245,7 @@ function division_weekly($division, $now) {
 							$desk_count = 0;
 							foreach ($chunks as $state=>$desk_array){
 								if ($state == 'On'){
+									print_r($desk_array);
 									if ((int)$desk_array['start'] > 12){
 										$ds12 = $desk_array['start'] - 12;
 										}
