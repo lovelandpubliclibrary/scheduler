@@ -3227,7 +3227,7 @@ function division_weekly($division, $now) {
 									if ($last_state == 'N'){
 										$chunks['shift'][$shift_count]['start'] = $hour;
 										}
-									if ($state == 'N'){
+									if (($state == 'N')&&($last_state != '')){
 										$chunks['shift'][$shift_count]['end'] = $hour;
 										$shift_count++;
 										}
