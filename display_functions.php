@@ -3241,7 +3241,7 @@ function division_weekly($division, $now) {
 									}
 								if ($hour==19.5){
 									$chunks[$last_state][$count]['end'] = 20;
-									if (!isset($chunks['shift'][$shift_count]['end'])){
+									if ((isset($chunks['shift'][$shift_count]['start']))&&(!isset($chunks['shift'][$shift_count]['end']))){
 										$chunks['shift'][$shift_count]['end'] = 20;
 										}
 									}
@@ -3251,46 +3251,75 @@ function division_weekly($division, $now) {
 							echo '</pre>';
 							
 							//Adjust 24-hour time.
-							$shift_display = '';
 							
 							$desk_display = '';
-							$desk_count = 0;
-							foreach ($chunks as $state=>$desk_array){
-								if ($state == 'On'){
-									foreach ($desk_array as $k=>$arr){
-										if ((int)$arr['start'] > 12){
-											$ds12 = $arr['start'] - 12;
-											}
-										else{
-											$ds12 = $arr['start'];
-											}
-										if (round($ds12, 0) != $ds12){
-											$ds12 = (int)$ds12.':'.(int)(($ds12-(int)$ds12) * 60);
-											}
-										if ((int)$arr['end'] > 12){
-											$de12 = $arr['end'] - 12;
-											}
-										else{
-											$de12 = $arr['end'];
-											}
-										if (round($de12, 0) != $de12){
-											$de12 = (int)$de12.':'.(int)(($de12-(int)$de12) * 60);
-											}
-											
-										if($desk_count>0){
-											$desk_display .= ', '. $ds12 . '-' . $de12;
-											}
-										else{
-											$desk_display .= $ds12 . '-' . $de12;
-											}
-										$desk_count++;
+							if (isset($chunks['On'])){
+								$desk_count = 0;
+								foreach ($chunks['On'] as $k=>$arr){
+									if ((int)$arr['start'] > 12){
+										$ds12 = $arr['start'] - 12;
 										}
+									else{
+										$ds12 = $arr['start'];
+										}
+									if (round($ds12, 0) != $ds12){
+										$ds12 = (int)$ds12.':'.(int)(($ds12-(int)$ds12) * 60);
+										}
+									if ((int)$arr['end'] > 12){
+										$de12 = $arr['end'] - 12;
+										}
+									else{
+										$de12 = $arr['end'];
+										}
+									if (round($de12, 0) != $de12){
+										$de12 = (int)$de12.':'.(int)(($de12-(int)$de12) * 60);
+										}
+										
+									if($desk_count>0){
+										$desk_display .= ', '. $ds12 . '-' . $de12;
+										}
+									else{
+										$desk_display .= $ds12 . '-' . $de12;
+										}
+									$desk_count++;
 									}
 								}
 							
-							
-							if(count($shift_array) >= 1){
-								foreach ($shift_array as $row=>$shift){
+							$shift_display = '';
+							if(count($timeoff_array) >= 1){
+								if(isset($chunks['shift'])){
+									$counter = 0;
+									foreach ($chunks['shift'] as $k=>$arr){
+										if ((int)$arr['start'] > 12){
+											$ss12 = $arr['start'] - 12;
+											}
+										else{
+											$ss12 = $arr['start'];
+											}
+										if (round($ss12, 0) != $ss12){
+											$ss12 = (int)$ss12.':'.(int)(($ss12-(int)$ss12) * 60);
+											}
+									
+										if ((int)$arr['end'] > 12){
+											$se12 = $arr['end'] - 12;
+											}
+										else{
+											$se12 = $arr['end'];
+											}
+										if (round($se12, 0) != $se12){
+											$se12 = (int)$se12.':'.(int)(($se12-(int)$se12) * 60);
+											}
+										if ($counter>0){
+											$shift_display .= ', '. $ss12 . '-' . $se12;
+											}
+										else{
+											$shift_display .= $ss12 . '-' . $se12;
+											}
+										}
+									$counter++;
+									}
+								
+								/*foreach ($shift_array as $row=>$shift){
 									if($shift[0] == 0){
 										unset($shift_array[$row]);
 										}
@@ -3324,7 +3353,7 @@ function division_weekly($division, $now) {
 											$shift_display .= $ss12 . '-' . $se12;
 											}
 										}
-									}
+									}*/
 								}
 							else{
 								if ((int)$working_start > 12){
