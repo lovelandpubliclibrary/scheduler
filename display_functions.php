@@ -3230,6 +3230,9 @@ function division_weekly($division, $now) {
 									$chunks[$state][$count] = array('start'=>$hour);
 									$last_state = $state;
 									}
+								if ($hour==19.5){
+									$chunks[$last_state][$count]['end'] = $hour;
+									}
 								}
 								
 							
