@@ -2946,6 +2946,8 @@ function division_weekly($division, $now) {
 				echo '<tr class="divisions"><td class="first_name">' . $first_name . '</td>';
 		
 				foreach ($dates as $k=>$v) {
+					$hour_keys = array(7,7.5,8,8.5,9,9.5,10,10.5,11,11.5,12,12.5,13,13.5,14,14.5,15,15.5,16,16.5,17,17.5,18,18.5,19,19.5);
+					$details_array = array_fill_keys($hour_keys, 'N');
 					echo '<td class="shift">';
 					$day = date('D', strtotime($v));
 					$query1 = "SELECT specific_schedule from schedules WHERE division='$div_name'
@@ -3008,7 +3010,7 @@ function division_weekly($division, $now) {
 							else{
 								$working_end = $shift_end;
 								}
-							$shift_array = array(0=>array($working_start, $working_end));
+							//$shift_array = array(0=>array($working_start, $working_end));
 							
 							if ($desk_start != '00'){
 								if ($desk_start_minutes != '00') {
@@ -3023,7 +3025,7 @@ function division_weekly($division, $now) {
 								else{
 									$working_desk_end = $desk_end;
 									}
-								$desk_array[] = array($working_desk_start,$working_desk_end);
+								//$desk_array[] = array($working_desk_start,$working_desk_end);
 								}
 							if ($desk_start2 != '00'){
 								if ($desk_start2_minutes != '00') {
@@ -3038,7 +3040,7 @@ function division_weekly($division, $now) {
 								else{
 									$working_desk_end2 = $desk_end2;
 									}
-								$desk_array[] = array($working_desk_start2,$working_desk_end2);
+								//$desk_array[] = array($working_desk_start2,$working_desk_end2);
 								}
 							
 							if ($lunch_start_minutes != '00') {
@@ -3080,7 +3082,7 @@ function division_weekly($division, $now) {
 								
 								$timeoff_array[] = array('tos'=>$tostart, 'toe'=>$toend);
 								}
-							if(count($timeoff_array) != 0){
+							/*if(count($timeoff_array) != 0){
 								foreach ($timeoff_array as $key=>$timeoff){
 									if((($timeoff['tos'] == 1)&&($timeoff['toe'] == 23))||(($timeoff['tos'] <= $working_start)&&($timeoff['toe'] >= $working_end))){
 										$shift_array[0] = array(0,0);
@@ -3130,7 +3132,7 @@ function division_weekly($division, $now) {
 											}
 										}
 									}
-								}
+								}*/
 							
 							$query4 = "SELECT emp_id, coverage_date, time_format(coverage_start_time,'%k') as coverage_start, 
 								time_format(coverage_start_time,'%i') as coverage_start_minutes, time_format(coverage_end_time,'%k') as coverage_end, 
@@ -3157,7 +3159,7 @@ function division_weekly($division, $now) {
 										'cov_offdesk'=>$cov_offdesk);
 									}
 								}
-							foreach ($cov_array as $row=>$cover){
+							/*foreach ($cov_array as $row=>$cover){
 								foreach ($shift_array as $r=>$a){
 									if (($cover['cov_start'] > $a[0])&&($cover['cov_start'] <= $a[1])){
 										$shift_array[$r][1] = $cover['cov_end'];
@@ -3186,7 +3188,26 @@ function division_weekly($division, $now) {
 										$desk_array[] = array($cover['cov_start'],$cover['cov_end']);
 										}
 									}
+								}*/
+							
+							foreach ($details_array as $hour=>$state){
+								if (($hour >= $working_start) && ($hour < $working_end)){
+									$details_array[$hour] = 'Y';
+									}
+								foreach ($timeoff_array as $row=>$timeoff){
+									if (($hour >= $timeoff['tos']) && ($hour < $timeoff['toe'])){
+										$details_array[$hour] = 'N';
+										}
+									}
+								foreach ($cov_array as $row=>$cov){
+									if (($hour >= $cov['cov_start']) && ($hour < $cov['cov_end'])){
+										$details_array[$hour] = $cov['cov_offdesk'];
+										}
+									}
 								}
+							echo '<pre>';
+							print_r($details_array);
+							echo '</pre>';
 							
 							//Adjust 24-hour time.
 							$shift_display = '';
