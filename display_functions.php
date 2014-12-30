@@ -3080,9 +3080,6 @@ function division_weekly($division, $now) {
 								$timeoff_array[] = array('tos'=>$tostart, 'toe'=>$toend);
 								}
 								
-							echo '<pre>';
-							print_r($timeoff_array);
-								
 							$query5 = "SELECT time_format(closure_end_time,'%k') as closure_start, 
 								time_format(closure_start_time,'%i') as closure_start_minutes, 
 								time_format(closure_end_time,'%k') as closure_end, 
@@ -3105,6 +3102,9 @@ function division_weekly($division, $now) {
 								
 								$timeoff_array[] = array('tos'=>$cd_start, 'toe'=>$cd_end);
 								}
+								
+							echo '<pre>';
+							print_r($timeoff_array);
 							
 							$query4 = "SELECT emp_id, coverage_date, time_format(coverage_start_time,'%k') as coverage_start, 
 								time_format(coverage_start_time,'%i') as coverage_start_minutes, time_format(coverage_end_time,'%k') as coverage_end, 
