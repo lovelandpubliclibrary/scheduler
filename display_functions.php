@@ -3214,9 +3214,19 @@ function division_weekly($division, $now) {
 										}
 									}
 								}
+							
+							$chunks = array();
+							$last_state = '';
+							foreach ($details_array as $hour=>$state){
+								if ($state != $last_state){
+									$chunks[$state] = array('start'=>$hour);
+									$last_state = $state;
+									}
+								}
 							echo '<pre>';
-							print_r($details_array);
+							print_r($chunks);
 							echo '</pre>';
+							
 							
 							//Adjust 24-hour time.
 							$shift_display = '';
