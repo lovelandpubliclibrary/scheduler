@@ -3194,6 +3194,15 @@ function division_weekly($division, $now) {
 								if (($hour >= $working_start) && ($hour < $working_end)){
 									$details_array[$hour] = 'Y';
 									}
+								if (($hour >= $working_desk_start) && ($hour < $working_desk_end)){
+									$details_array[$hour] = 'On';
+									}
+								if (($hour >= $working_desk_start2) && ($hour < $working_desk_end2)){
+									$details_array[$hour] = 'On';
+									}
+								if (($hour >= $lunch_start) && ($hour < $lunch_end)){
+									$details_array[$hour] = 'N';
+									}
 								foreach ($timeoff_array as $row=>$timeoff){
 									if (($hour >= $timeoff['tos']) && ($hour < $timeoff['toe'])){
 										$details_array[$hour] = 'N';
