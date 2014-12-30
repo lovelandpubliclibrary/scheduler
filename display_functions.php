@@ -3260,6 +3260,7 @@ function division_weekly($division, $now) {
 									}
 								}
 							
+							$ls12 = '';
 							if(isset($chunks['shift'])){
 								if ((int)$lunch_start > 12){
 									$ls12 = (int)$lunch_start - 12;
@@ -3297,7 +3298,7 @@ function division_weekly($division, $now) {
 							elseif ($division != 'pages'){
 								echo '<br/>';
 								}
-							if (isset($ls12)){
+							if (!empty($ls12)){
 								echo '<br/><span class="lunch">'.$ls12.'-'.$le12.'</span>';
 								}
 							elseif ($division != 'pages'){
