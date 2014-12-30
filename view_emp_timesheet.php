@@ -347,7 +347,9 @@ foreach ($array as $k=>$v){
 		
 		$query2 = "SELECT time_format(shift_start,'%k') as shift_start, 
 			time_format(shift_start,'%i') as shift_start_minutes, time_format(shift_end,'%k') as shift_end, 
-			time_format(shift_end,'%i') as shift_end_minutes from employees as e, shifts as a, schedules as s 
+			time_format(shift_end,'%i') as shift_end_minutes, time_format(lunch_start,'%k') as lunch_start, 
+			time_format(lunch_start,'%i') as lunch_start_minutes, time_format(lunch_end,'%k') as lunch_end, 
+			time_format(lunch_end,'%i') as lunch_end_minutes FROM employees as e, shifts as a, schedules as s 
 			WHERE e.emp_id = '$emp_id' and e.emp_id = a.emp_id and 
 			schedule_start_date <= '$v' and schedule_end_date >= '$v' 
 			and week_type='$week_type' and shift_day='$day' and a.specific_schedule=s.specific_schedule 
@@ -359,11 +361,21 @@ foreach ($array as $k=>$v){
 				$shift_start_minutes = $row2['shift_start_minutes'];
 				$shift_end = $row2['shift_end'];
 				$shift_end_minutes = $row2['shift_end_minutes'];
+				$lunch_start = $row2['lunch_start'];
+				$lunch_start_minutes = $row2['lunch_start_minutes'];
+				$lunch_end = $row2['lunch_end'];
+				$lunch_end_minutes = $row2['lunch_end_minutes'];
 				if ($shift_start_minutes != '00') {
 					$shift_start += dec_minutes($shift_start_minutes);
 					}
 				if ($shift_end_minutes != '00') {
 					$shift_end += dec_minutes($shift_end_minutes);
+					}
+				if ($lunch_start_minutes != '00') {
+					$lunch_start += dec_minutes($lunch_start_minutes);
+					}
+				if ($lunch_end_minutes != '00') {
+					$lunch_end += dec_minutes($lunch_end_minutes);
 					}
 				if(($shift_end-$shift_start)>=8){
 					$reg_hours += 8;
@@ -371,6 +383,8 @@ foreach ($array as $k=>$v){
 				else{
 					$shift = $shift_end-$shift_start;
 					$reg_hours += $shift;
+					$lunch = $lunch_end-$lunch_start;
+					$reg_hours -= $lunch;
 					}
 					
 				$query3 = "SELECT * from closures where closure_date='$v'";
@@ -708,7 +722,9 @@ foreach ($array as $k=>$v){
 		
 		$query2 = "SELECT time_format(shift_start,'%k') as shift_start, 
 			time_format(shift_start,'%i') as shift_start_minutes, time_format(shift_end,'%k') as shift_end, 
-			time_format(shift_end,'%i') as shift_end_minutes from employees as e, shifts as a, schedules as s 
+			time_format(shift_end,'%i') as shift_end_minutes, time_format(lunch_start,'%k') as lunch_start, 
+			time_format(lunch_start,'%i') as lunch_start_minutes, time_format(lunch_end,'%k') as lunch_end, 
+			time_format(lunch_end,'%i') as lunch_end_minutes FROM employees as e, shifts as a, schedules as s 
 			WHERE e.emp_id = '$emp_id' and e.emp_id = a.emp_id and 
 			schedule_start_date <= '$v' and schedule_end_date >= '$v' 
 			and week_type='$week_type' and shift_day='$day' and a.specific_schedule=s.specific_schedule 
@@ -720,11 +736,21 @@ foreach ($array as $k=>$v){
 				$shift_start_minutes = $row2['shift_start_minutes'];
 				$shift_end = $row2['shift_end'];
 				$shift_end_minutes = $row2['shift_end_minutes'];
+				$lunch_start = $row2['lunch_start'];
+				$lunch_start_minutes = $row2['lunch_start_minutes'];
+				$lunch_end = $row2['lunch_end'];
+				$lunch_end_minutes = $row2['lunch_end_minutes'];
 				if ($shift_start_minutes != '00') {
 					$shift_start += dec_minutes($shift_start_minutes);
 					}
 				if ($shift_end_minutes != '00') {
 					$shift_end += dec_minutes($shift_end_minutes);
+					}
+				if ($lunch_start_minutes != '00') {
+					$lunch_start += dec_minutes($lunch_start_minutes);
+					}
+				if ($lunch_end_minutes != '00') {
+					$lunch_end += dec_minutes($lunch_end_minutes);
 					}
 				if(($shift_end-$shift_start)>=8){
 					$reg_hours += 8;
@@ -732,6 +758,8 @@ foreach ($array as $k=>$v){
 				else{
 					$shift = $shift_end-$shift_start;
 					$reg_hours += $shift;
+					$lunch = $lunch_end-$lunch_start;
+					$reg_hours -= $lunch;
 					}
 					
 				$query3 = "SELECT * from closures where closure_date='$v'";
