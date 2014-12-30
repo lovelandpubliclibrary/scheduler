@@ -3080,6 +3080,9 @@ function division_weekly($division, $now) {
 								$timeoff_array[] = array('tos'=>$tostart, 'toe'=>$toend);
 								}
 								
+							echo '<pre>';
+							print_r($timeoff_array);
+								
 							$query5 = "SELECT * from closures WHERE closure_date='$v' limit 1";
 							$result5 = mysql_query($query5);
 							
@@ -3115,7 +3118,8 @@ function division_weekly($division, $now) {
 										'cov_offdesk'=>$cov_offdesk);
 									}
 								}
-							
+							print_r($details_array);
+							echo '</pre>';
 							foreach ($details_array as $hour=>$state){
 								if (($hour >= $working_start) && ($hour < $working_end)){
 									$details_array[$hour] = 'Y';
