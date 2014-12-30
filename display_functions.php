@@ -3083,12 +3083,25 @@ function division_weekly($division, $now) {
 							echo '<pre>';
 							print_r($timeoff_array);
 								
-							$query5 = "SELECT * from closures WHERE closure_date='$v' limit 1";
+							$query5 = "SELECT time_format(closure_end_time,'%k') as closure_start, 
+								time_format(closure_start_time,'%i') as closure_start_minutes, 
+								time_format(closure_end_time,'%k') as closure_end, 
+								time_format(closure_end_time,'%i') as closure_end_minutes 
+								from closures WHERE closure_date='$v' limit 1";
 							$result5 = mysql_query($query5);
 							
 							while ($row5 = mysql_fetch_array ($result5, MYSQL_ASSOC)){
-								$cd_start = $row5['closure_start_time'];
-								$cd_end = $row5['closure_end_time'];
+								$cd_start = $row5['closure_start'];
+								$cd_start_minutes = $row5['closure_start_minutes'];
+								$cd_end = $row5['closure_end'];
+								$cd_end_minutes = $row5['closure_end_minutes'];
+								
+								if ($cd_start_minutes != '00') {
+									$cd_start += dec_minutes($cd_start_minutes);
+									}
+								if ($cd_end_minutes != '00') {
+									$cd_end += dec_minutes($cd_end_minutes);
+									}
 								
 								$timeoff_array[] = array('tos'=>$cd_start, 'toe'=>$cd_end);
 								}
