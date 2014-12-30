@@ -3079,6 +3079,16 @@ function division_weekly($division, $now) {
 								
 								$timeoff_array[] = array('tos'=>$tostart, 'toe'=>$toend);
 								}
+								
+							$query5 = "SELECT * from closures WHERE closure_date='$v' limit 1";
+							$result5 = mysql_query($query5);
+							
+							while ($row5 = mysql_fetch_array ($result5, MYSQL_ASSOC)){
+								$cd_start = $row5['closure_start_time'];
+								$cd_end = $row5['closure_end_time'];
+								
+								$timeoff_array[] = array('tos'=>$cd_start, 'toe'=>$cd_end);
+								}
 							
 							$query4 = "SELECT emp_id, coverage_date, time_format(coverage_start_time,'%k') as coverage_start, 
 								time_format(coverage_start_time,'%i') as coverage_start_minutes, time_format(coverage_end_time,'%k') as coverage_end, 
