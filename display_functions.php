@@ -3080,7 +3080,7 @@ function division_weekly($division, $now) {
 								$timeoff_array[] = array('tos'=>$tostart, 'toe'=>$toend);
 								}
 								
-							$query5 = "SELECT time_format(closure_end_time,'%k') as closure_start, 
+							$query5 = "SELECT time_format(closure_start_time,'%k') as closure_start, 
 								time_format(closure_start_time,'%i') as closure_start_minutes, 
 								time_format(closure_end_time,'%k') as closure_end, 
 								time_format(closure_end_time,'%i') as closure_end_minutes 
