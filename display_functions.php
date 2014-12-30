@@ -3286,7 +3286,7 @@ function division_weekly($division, $now) {
 								}
 							
 							$shift_display = '';
-							if(count($timeoff_array) >= 1){
+							if((count($timeoff_array) >= 1)||(empty($working_start))){
 								if(isset($chunks['shift'])){
 									$counter = 0;
 									foreach ($chunks['shift'] as $k=>$arr){
@@ -3468,7 +3468,7 @@ function division_weekly($division, $now) {
 								}
 								
 							//Calculate Hour Totals
-							if(count($timeoff_array) >= 1){
+							if((count($timeoff_array) >= 1)||(empty($working_start))){
 								if(isset($chunks['shift'])){
 									foreach ($chunks['shift'] as $k=>$arr){
 										$shift_total = $arr['end'] - $arr['start'];
