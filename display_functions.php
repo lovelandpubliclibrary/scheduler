@@ -3315,8 +3315,8 @@ function division_weekly($division, $now) {
 										else{
 											$shift_display .= $ss12 . '-' . $se12;
 											}
+										$counter++;
 										}
-									$counter++;
 									}
 								
 								/*foreach ($shift_array as $row=>$shift){
