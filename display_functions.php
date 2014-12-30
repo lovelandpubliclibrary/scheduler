@@ -3222,7 +3222,7 @@ function division_weekly($division, $now) {
 							$last_state = '';
 							foreach ($details_array as $hour=>$state){
 								if ($state != $last_state){
-									$chunks[$state] = array('start'=>$hour);
+									$chunks[$state][] = array('start'=>$hour);
 									$last_state = $state;
 									}
 								}
