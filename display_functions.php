@@ -3245,33 +3245,34 @@ function division_weekly($division, $now) {
 							$desk_count = 0;
 							foreach ($chunks as $state=>$desk_array){
 								if ($state == 'On'){
-									print_r($desk_array);
-									if ((int)$desk_array['start'] > 12){
-										$ds12 = $desk_array['start'] - 12;
+									foreach ($desk_array as $k=>$arr){
+										if ((int)$arr['start'] > 12){
+											$ds12 = $arr['start'] - 12;
+											}
+										else{
+											$ds12 = $arr['start'];
+											}
+										if (round($ds12, 0) != $ds12){
+											$ds12 = (int)$ds12.':'.(int)(($ds12-(int)$ds12) * 60);
+											}
+										if ((int)$arr['end'] > 12){
+											$de12 = $arr['end'] - 12;
+											}
+										else{
+											$de12 = $arr['end'];
+											}
+										if (round($de12, 0) != $de12){
+											$de12 = (int)$de12.':'.(int)(($de12-(int)$de12) * 60);
+											}
+											
+										if($desk_count>0){
+											$desk_display .= ', '. $ds12 . '-' . $de12;
+											}
+										else{
+											$desk_display .= $ds12 . '-' . $de12;
+											}
+										$desk_count++;
 										}
-									else{
-										$ds12 = $desk_array['start'];
-										}
-									if (round($ds12, 0) != $ds12){
-										$ds12 = (int)$ds12.':'.(int)(($ds12-(int)$ds12) * 60);
-										}
-									if ((int)$desk_array['end'] > 12){
-										$de12 = $desk_array['end'] - 12;
-										}
-									else{
-										$de12 = $desk_array['end'];
-										}
-									if (round($de12, 0) != $de12){
-										$de12 = (int)$de12.':'.(int)(($de12-(int)$de12) * 60);
-										}
-										
-									if($desk_count>0){
-										$desk_display .= ', '. $ds12 . '-' . $de12;
-										}
-									else{
-										$desk_display .= $ds12 . '-' . $de12;
-										}
-									$desk_count++;
 									}
 								}
 							
