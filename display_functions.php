@@ -3468,12 +3468,18 @@ function division_weekly($division, $now) {
 								}
 								
 							//Calculate Hour Totals
-							foreach ($shift_array as $row=>$shift){
-								$shift_total = $shift[1] - $shift[0];
-								$hr_total += $shift_total;
+							if(count($timeoff_array) >= 1){
+								foreach ($chunks['shift'] as $k=>$arr){
+									$shift_total = $arr['end'] - $arr['start'];
+									$hr_total += $shift_total;
+									}
 								}
-							$lunch_total = $lunch_end - $lunch_start;
-							$hr_total -= $lunch_total;
+							else{
+								$shift_total = $working_end - $working_start;
+								$hr_total += $shift_total;
+								$lunch_total = $lunch_end - $lunch_start;
+								$hr_total -= $lunch_total;
+								}							
 							}
 						}
 					echo '</td>';
