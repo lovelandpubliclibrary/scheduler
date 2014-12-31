@@ -916,29 +916,29 @@ foreach ($array as $k=>$v){
 					}
 				}
 			}
-		}
-	if ($_SESSION['role'] == 'Subs'){
-		$sub_query = "SELECT time_format(coverage_start_time,'%k') as cov_start, 
-			time_format(coverage_start_time,'%i') as cov_start_minutes, time_format(coverage_end_time,'%k') as cov_end, 
-			time_format(coverage_end_time,'%i') as cov_end_minutes from coverage 
-			WHERE coverage_date = '$v' and emp_id = '$this_emp_id' ORDER BY coverage_start_time asc";
-		$sub_result = mysql_query($sub_query);
-		if ($sub_result){
-			$num = mysql_num_rows($sub_result);
-			if ($num>0) {
-				while ($sub_row = mysql_fetch_array($sub_result, MYSQL_ASSOC)){
-					$cov_start = $sub_row['cov_start'];
-					$cov_start_minutes = $sub_row['cov_start_minutes'];
-					$cov_end = $sub_row['cov_end'];
-					$cov_end_minutes = $sub_row['cov_end_minutes'];
-					if ($cov_start_minutes != '00') {
-						$cov_start += dec_minutes($cov_start_minutes);
+		if ($_SESSION['role'] == 'Subs'){
+			$sub_query = "SELECT time_format(coverage_start_time,'%k') as cov_start, 
+				time_format(coverage_start_time,'%i') as cov_start_minutes, time_format(coverage_end_time,'%k') as cov_end, 
+				time_format(coverage_end_time,'%i') as cov_end_minutes from coverage 
+				WHERE coverage_date = '$v' and emp_id = '$this_emp_id' ORDER BY coverage_start_time asc";
+			$sub_result = mysql_query($sub_query);
+			if ($sub_result){
+				$num = mysql_num_rows($sub_result);
+				if ($num>0) {
+					while ($sub_row = mysql_fetch_array($sub_result, MYSQL_ASSOC)){
+						$cov_start = $sub_row['cov_start'];
+						$cov_start_minutes = $sub_row['cov_start_minutes'];
+						$cov_end = $sub_row['cov_end'];
+						$cov_end_minutes = $sub_row['cov_end_minutes'];
+						if ($cov_start_minutes != '00') {
+							$cov_start += dec_minutes($cov_start_minutes);
+							}
+						if ($cov_end_minutes != '00') {
+							$cov_end += dec_minutes($cov_end_minutes);
+							}
+						$shift = $cov_end-$cov_start;
+						$reg_hours += $shift;
 						}
-					if ($cov_end_minutes != '00') {
-						$cov_end += dec_minutes($cov_end_minutes);
-						}
-					$shift = $cov_end-$cov_start;
-					$reg_hours += $shift;
 					}
 				}
 			}
