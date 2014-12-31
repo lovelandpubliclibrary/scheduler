@@ -64,6 +64,8 @@ if (isset($_POST['submitted'])){
 	$pp_end_date = strtotime('+13days', strtotime($pp_start_date));
 	$pp_end_date = date('Y-m-d', $pp_end_date );
 	dates_between_inclusive("$pp_start_date","$pp_end_date");
+	$pay_date = strtotime('+11days', strtotime($pp_end_date));
+	$pay_date = date('m/d/Y', $pay_date);
 	
 	$entries = array();
 	
@@ -84,7 +86,7 @@ if (isset($_POST['submitted'])){
 	foreach ($array as $k=>$v){
 		$csv .= $v.',';
 		}
-	$csv .= "\r\n\r\n$year,Pay Period #$cycle,$pp_start_date\r\nDate*YYYY-MM-DD,Hour Code,Number of Hours##.##\r\n";
+	$csv .= "\r\n$pay_date\r\n$year,Pay Period #$cycle,$pp_start_date\r\nDate*YYYY-MM-DD,Hour Code,Number of Hours##.##\r\n";
 	foreach ($entries as $k=>$v){
 		$csv .= $v[0].','.$v[1].','.$v[2]."\r\n";
 		}
