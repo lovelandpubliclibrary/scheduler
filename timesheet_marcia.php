@@ -26,9 +26,9 @@ while ($row = mysql_fetch_array($result, MYSQL_ASSOC)){
 function dates_between_inclusive($start_date, $end_date){
 	global $array;
 	$array = array();
-	$array[] = $start_date;
 	
 	$start_date .= ' 10:00:00am';
+	$array[] = date('m/d/Y',strtotime($start_date));
 	$end_date .= ' 10:00:00am';
 	$start_date = is_int($start_date) ? $start_date : strtotime($start_date);
 	$end_date = is_int($end_date) ? $end_date : strtotime($end_date);
@@ -41,7 +41,7 @@ function dates_between_inclusive($start_date, $end_date){
 	 
 	do{
 		$test_date = $start_date + ($day_incrementer * 60 * 60 * 24);
-		$realdate = date('Y-m-d' , $test_date);
+		$realdate = date('m/d/Y', $test_date);
 		$array[] = $realdate;
 		} 
 	while ($test_date <= $end_date && ++$day_incrementer );
@@ -80,7 +80,11 @@ if (isset($_POST['submitted'])){
 
 	$file = 'timesheet/marcia_timesheet.csv';	
 	$handle = fopen($file, "w");
-	$csv = "$year,Pay Period #$cycle,$pp_start_date\r\nDate*YYYY-MM-DD,Hour Code,Number of Hours##.##\r\n";
+	$csv = '';
+	foreach ($array as $k=>$v){
+		$csv .= $v.',';
+		}
+	$csv .= "\r\n\r\n$year,Pay Period #$cycle,$pp_start_date\r\nDate*YYYY-MM-DD,Hour Code,Number of Hours##.##\r\n";
 	foreach ($entries as $k=>$v){
 		$csv .= $v[0].','.$v[1].','.$v[2]."\r\n";
 		}
