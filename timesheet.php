@@ -43,20 +43,20 @@ if (isset($this_emp_id)){
 			echo '<td class="scheddate confirmed">Timesheet confirmed</td>';
 			$row = mysql_fetch_array($result1, MYSQL_ASSOC);
 			if ($row['supervisor_approve'] == 'Y'){
-				echo '<td class="locked">Locked</td><td><form action="../view_my_timesheet" method="post">
+				echo '<td class="locked">Locked</td><td><form action="view_my_timesheet" method="post">
 				<input type="hidden" name="pp_id" value="'.$pp_id.'"/>
 				<input type="hidden" name="pp_start_date" value="'.$pp_start_date.'"/>
 				<input type="submit" name="submit" value="View" /></form></td>';
 				}
 			else{
-				echo '<td><form action="../edit_my_timesheet" method="post">
+				echo '<td><form action="edit_my_timesheet" method="post">
 				<input type="hidden" name="pp_id" value="'.$pp_id.'"/>
 				<input type="hidden" name="pp_start_date" value="'.$pp_start_date.'"/>
 				<input type="submit" name="submit" value="Edit" /></form></td><td></td>';
 				}
 			}
 		else{
-			echo '<td><form action="../edit_my_timesheet" method="post">
+			echo '<td><form action="edit_my_timesheet" method="post">
 				<input type="hidden" name="pp_id" value="'.$pp_id.'"/>
 				<input type="hidden" name="pp_start_date" value="'.$pp_start_date.'"/>
 				<input type="submit" name="submit" value="Confirm Timesheet" /></form></td><td></td><td></td>';
