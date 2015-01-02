@@ -80,7 +80,7 @@ if (isset($_POST['submitted'])){
 		$entries[] = array($date, $hour_code, $hours);
 		}
 
-	$file = 'timesheet/marcia_timesheet.csv';	
+	$file = 'timesheets/marcia_timesheet.csv';	
 	$handle = fopen($file, "w");
 	$csv = '';
 	foreach ($array as $k=>$v){
