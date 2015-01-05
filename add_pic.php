@@ -53,7 +53,6 @@ if (isset($_POST['submitted'])){
 			}
 		if (isset($query2)){
 			$result2 = mysql_query($query2);
-			echo $query2;
 			}
 		$message = 'PIC Schedule for '.$pic_start_date.' to '.$pic_end_date.' has been updated!';
 		}
