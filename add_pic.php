@@ -160,7 +160,6 @@ if ($result){
 					$pic_details[$week_type][$day] = $row['emp_id'];
 					}
 				}
-				
 			$pic_form = '<div class="screen old" id="pic_'.$pic_schedule_id.'" style="display:none;"><table class="pic_table"><tr><th></th>';
 			foreach ($days as $k=>$v){
 				$pic_form .= '<th>'.ucfirst($v).'</th>';
@@ -170,7 +169,7 @@ if ($result){
 				$pic_form .= '<tr><td>'.ucfirst($wv).'</td>';
 				foreach ($days as $dk=>$dv){
 					$pic_form .= '<td><select name="pic['.$wv.']['.$dv.']">
-						<option value="select" selected="selected">- Select -</option>';
+						<option value="select">- Select -</option>';
 					foreach ($pic_poss as $pk=>$pv){
 						$pic_form .= '<option value="' . $pk . '"';
 						if ((isset($pic_details[$wv][$dv]))&&($pic_details[$wv][$dv]==$pk)){
@@ -324,7 +323,7 @@ if ((isset($prev_pics))&&(!empty($prev_pics))){
 
 <div id="picform" style="display:none;">
 <div class="pic_action">Creating New PIC Schedule</div>
-<form action="add_pic" method="post" name="add_pic" id="add_pic" onsubmit="return validateForm();">
+<form action="add_pic" method="post" name="add_pic" id="add_pic">
 	<div style="float:left;margin-right:20px;"><div class="label">Starting Date:</div>
 		<input class="picstart_datepick" name="picstart_datepick" placeholder="Choose Starting Sat"
 		<?php if(isset($error)){ echo 'value="'.$_POST['picstart_datepick'].'"';};?>/>
@@ -365,7 +364,7 @@ if ((isset($prev_pics))&&(!empty($prev_pics))){
 		}
 ?>
 
-	<p><input type="submit" name="submit" value="Save" /></p>
+	<p style="clear:both;"><input type="submit" name="submit" value="Save" /></p>
 	<input type="hidden" name="submitted" value="TRUE" />
 </form>
 

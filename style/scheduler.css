@@ -901,6 +901,7 @@ background:#E0EEE0;
 border:1px solid #BFBFBF;
 padding:10px 20px 1px 20px;
 box-shadow: 0 8px 6px -6px #4D4D4D;
+float:left;
 }
 
 /* New Schedule Entry jQuery */
