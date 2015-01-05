@@ -44,7 +44,7 @@ else {
 				$_SESSION['role'] = $row[2];
 				$_SESSION['username'] = $row[1];
 				$_SESSION['this_emp_id'] = $row[3];
-				$_SESSION['assignment_id'] = $row[4];
+				$_SESSION['this_assignment_id'] = $row[4];
 				
 				$url = 'http://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF']);
 				if ((substr($url, -1) == '/') OR (substr($url, -1) == '\\')){
