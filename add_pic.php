@@ -40,6 +40,8 @@ if (isset($_POST['submitted'])){
 					$dup_num_rows = mysql_num_rows($dup_result);
 					if ($dup_num_rows != 0) {
 						$query = "UPDATE pic SET emp_id='$value' WHERE pic_schedule_id='$pic_id' and pic_day='$day' and week_type='$week_type'";
+						$query2 = "UPDATE pic_schedules SET pic_start_date='$pic_start_date', pic_end_date='$pic_end_date'
+							WHERE pic_schedule_id='$pic_id'";
 						}
 					else{
 						$query = "INSERT into pic (week_type, pic_day, emp_id, pic_schedule_id) VALUES 
@@ -48,6 +50,10 @@ if (isset($_POST['submitted'])){
 					$result = mysql_query($query);
 					}
 				}
+			}
+		if (isset($query2)){
+			$result2 = mysql_query($query2);
+			echo $query2;
 			}
 		$message = 'PIC Schedule for '.$pic_start_date.' to '.$pic_end_date.' has been updated!';
 		}
