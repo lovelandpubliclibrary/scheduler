@@ -504,7 +504,9 @@ if(isset($previous)){
 		if (($prev_date >= $pp_start_date)&&($prev_date <= $pp_midweek_end_date)){
 			foreach ($prev_codes as $code=>$hours){
 				if (isset($other_hours[$code])){
-					$selects[] = $code;
+					if(!in_array($code, $selects)){
+						$selects[] = $code;
+						}
 					}
 				}
 			}
@@ -880,7 +882,9 @@ if(isset($previous)){
 		if (($prev_date >= $pp_midweek_start_date)&&($prev_date <= $pp_end_date)){
 			foreach ($prev_codes as $code=>$hours){
 				if (isset($other_hours[$code])){
-					$selects[] = $code;
+					if(!in_array($code, $selects)){
+						$selects[] = $code;
+						}
 					}
 				}
 			}

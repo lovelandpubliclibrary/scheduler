@@ -179,7 +179,7 @@ $(document).ready(function(){
 		var code = $(this).val();
 		$(this).parent().parent().find('input').each(function(){
 			var dateName = $(this).attr('name');
-			var newName = dateName.replace( /\[[a-zA-Z0-9]{1,2}\]/, '['+code+']');
+			var newName = dateName.replace( /\[[a-zA-Z0-9]{1,3}\]/, '['+code+']');
 			$(this).attr('name', newName);
 			});
 		});
@@ -587,7 +587,9 @@ if(isset($previous)){
 		if (($prev_date >= $pp_start_date)&&($prev_date <= $pp_midweek_end_date)){
 			foreach ($prev_codes as $code=>$hours){
 				if (isset($other_hours[$code])){
-					$selects[] = $code;
+					if(!in_array($code, $selects)){
+						$selects[] = $code;
+						}
 					}
 				}
 			}
@@ -982,13 +984,15 @@ if(isset($previous)){
 		if (($prev_date >= $pp_midweek_start_date)&&($prev_date <= $pp_end_date)){
 			foreach ($prev_codes as $code=>$hours){
 				if (isset($other_hours[$code])){
-					$selects[] = $code;
+					if(!in_array($code, $selects)){
+						$selects[] = $code;
+						}
 					}
 				}
 			}
 		}
 	}
-
+	
 echo '<tr><td class="hours_type">Other <select name="Other1">
 	<option value="X" selected="selected">- Select -</option>';
 foreach ($other_hours as $code=>$desc){
