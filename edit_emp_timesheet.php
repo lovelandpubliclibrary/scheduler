@@ -185,7 +185,7 @@ function validateNumbers() {
 	$(document).ready(function(){
 		$('input:text').each(function(){
 			var entry = $(this).val();
-			if ((entry != null)&&(entry != '')&&(entry != parseInt(entry))){
+			if ((entry != null)&&(entry != '')&&(entry != parseFloat(entry))){
 				alert("Numbers only, please!");
 				var falseness = false;
 				}
