@@ -80,6 +80,18 @@ if (isset($_POST['approved'])){
 	$query1 = "UPDATE time_entry set locked='Yes' WHERE emp_id='$emp_id' and pp_id='$pp_id' and assignment_id='$assignment_id'";
 	$result1 = mysql_query($query1);
 	
+	if(mysql_affected_rows() == 0){
+		if(isset($_POST['new_entry'])){
+			foreach($_POST['new_entry'] as $entry_date=>$hours){
+				if((!empty($hours))&&($hours != 0)&&(is_numeric($hours))){
+					$query2 = "INSERT into time_entry (pp_id, emp_id, assignment_id, entry_date, hour_code, hours, locked)
+						VALUES ('$pp_id', '$emp_id','$assignment_id','$entry_date','02','$hours','Yes')";
+					$result2 = mysql_query($query2) or die(mysql_error());
+					}
+				}
+			}
+		}
+	
 	$_SESSION['timesheet_approved'] = TRUE;
 	header ('Location: approve_timesheets');
 	}
@@ -464,6 +476,7 @@ foreach ($array as $k=>$v){
 					}
 				}
 			}
+		$new_entry[$v] = $reg_hours;
 		}
 	echo $reg_hours;
 	echo '</td>';
@@ -842,6 +855,7 @@ foreach ($array as $k=>$v){
 					}
 				}
 			}
+		$new_entry[$v] = $reg_hours;
 		}
 	echo $reg_hours;
 	echo '</td>';
@@ -931,8 +945,13 @@ echo '<form action="view_emp_timesheet" method="post">
 	<input type="hidden" name="pp_start_date" value="'.$pp_start_date.'"/>
 	<input type="hidden" name="emp_id" value="'.$emp_id.'"/>
 	<input type="hidden" name="assignment_id" value="'.$assignment_id.'"/>
-	<input type="hidden" name="employee_name" value="'.$employee_name.'"/>
-	<input type="hidden" name="approved" value="TRUE"/>
+	<input type="hidden" name="employee_name" value="'.$employee_name.'"/>';
+if (isset($new_entry)){
+	foreach($new_entry as $key=>$value){
+		echo '<input type="hidden" name="new_entry['.$key.']" value="'. $value. '">';
+		}
+	}
+echo '<input type="hidden" name="approved" value="TRUE"/>
 	<input type="submit" name="submit" value="Approve Timesheet" /></form>';
 	
 echo '</div>';
