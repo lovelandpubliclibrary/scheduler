@@ -850,7 +850,12 @@ $(document).ready(function() {
 	$(':text').blur(function(){
 		var att = $(this).val();
 		if ($(this).val() == '0'){
-			$(this).val('00');
+			if(($(this).hasClass('hrs'))||($(this).prev().prev().val()=='')){
+				$(this).val('');
+				}
+			else{
+				$(this).val('00');
+				}
 			}
 		var intRegex = /^[0-9]+$/;
 		if(!att.match(intRegex)){
