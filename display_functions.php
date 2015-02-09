@@ -237,6 +237,7 @@ function daily_schedule($now, $divisions) {
 				and week_type='$week_type' and shift_day='$day' and a.specific_schedule=s.specific_schedule";
 			echo $query20;
 			$result20 = mysql_query($query20);
+			echo $result20;
 			if ($result20) {
 				$num_rows = mysql_num_rows($result20);
 				if ($num_rows != 0) {
