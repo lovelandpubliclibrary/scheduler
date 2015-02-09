@@ -230,7 +230,7 @@ function showMe (it, box) {
 <div class="emph"><?php echo $employee; ?></div>
 <form action="edit_employee" method="post" name="Employee" onsubmit="return validateForm();">
 	<p><div class="label">Employee Number:</div> <input type="number" name="employee_number" size="20" maxlength="7"
-	value="<?php if (isset($empno)) echo $empno;?>" readonly="readonly"/></p>
+	value="<?php if (isset($empno)) echo $empno;?>" /></p>
 	<p><div class="label">First Name:</div> <input type="text" name="first_name" size="15" maxlength="15"
 	value="<?php if (isset($first_name)) echo $first_name;?>" /></p>
 	<p><div class="label">Last Name:</div> <input type="text" name="last_name" size="15" maxlength="30"
