@@ -121,9 +121,8 @@ if (isset($_POST['edited'])) {
 			}
 		}
 	
-	if (empty($errors)) {//If everything's okay.
+	if (empty($errors)) {
 	
-		//Update the user record in the database
 		$query = "UPDATE employees SET employee_number='$empno', first_name='$fn', last_name='$ln', division='$div', exempt_status='$exs',
 			weekly_hours='$hrs', home_phone='$safe_home_phone', mobile_phone='$safe_mobile_phone',employee_lastday=";
 		if ($emp_lastday == null){
@@ -133,19 +132,40 @@ if (isset($_POST['edited'])) {
 			$query .= "'$emp_lastday'";
 			}
 		$query .= " WHERE emp_id = '$emp_id'";
-		$result = mysql_query($query) or die(mysql_error($dbc)); //Run the query.
-		if ($result) {//If it ran okay.
+		$result = mysql_query($query) or die(mysql_error($dbc));
+		
+		// Switch shifts to new division, if applicable
+		if ($div != $division){
+			$today = date('Y-m-d');
+			$query1 = "SELECT specific_schedule from schedules WHERE division='$division'
+				and schedule_start_date <= '$today' and schedule_end_date >= '$today'";
+			$result1 = mysql_query($query1);
+			while ($row1 = mysql_fetch_array($result1, MYSQL_ASSOC)){
+				$old_specific_schedule = $row1['specific_schedule'];
+				}
+			$query2 = "SELECT specific_schedule from schedules WHERE division='$div'
+				and schedule_start_date <= '$today' and schedule_end_date >= '$today'";
+			$result2 = mysql_query($query2);
+			while ($row2 = mysql_fetch_array($result2, MYSQL_ASSOC)){
+				$new_specific_schedule = $row2['specific_schedule'];
+				}
+			if (isset($new_specific_schedule)){
+				$query3	= "UPDATE shifts SET specific_schedule = $new_specific_schedule WHERE emp_id='$emp_id' and specific_schedule='$old_specific_schedule'";
+				$result3 = mysql_query($query3) or die(mysql_error());
+				}
+			}
+		
+		if ($result) {
 			$_SESSION['success'] = TRUE;
 			header ('Location: view_employees');
-			//Print a message.
+
 			echo '<div class="message"><b>'. $fn . ' ' . $ln . '</b> has been updated.<br/>
 				To edit another employee <a href="view_employees">click here</a></div></div>';
 			
-			//Include the footer and then quit the script.
 			include ('./includes/footer.html');
 			exit();
 			}
-		else {//If it did not run okay.
+		else {
 			$page_title = "Edit $employee" ;
 			include('./includes/supersessionstart.php');
 			include ('./includes/header.html');
@@ -160,7 +180,7 @@ if (isset($_POST['edited'])) {
 	else {
 		echo '<div class="errormessage"><h3>Error!</h3><br/>
 		The following error(s) occurred:<br/><br/>';
-		foreach ($errors as $msg) { //Print each error
+		foreach ($errors as $msg) {
 			echo " - $msg<br/>\n";
 			}
 		echo '</div>';

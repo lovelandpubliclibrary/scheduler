@@ -156,8 +156,10 @@ if ($date_result){
 	
 //Check for previous schedules
 $prev_schedules = array();
+$emp_id_arr = array();
 foreach ($employees as $key=>$employeearray){
 	$emp_id = $employeearray['emp_id'];
+	$emp_id_arr[] = $emp_id;
 	$prev_schedules[$emp_id] = array();
 	foreach ($week_types as $key=>$value){
 		foreach ($daysofweek as $key2=>$value2){
@@ -270,6 +272,10 @@ if ($result){
 if(isset($_POST['day_submit'])){
 	$schedule_array = $_POST['schedule'];
 	$def_array = $_POST['def'];
+	
+	$emp_id_str = implode(",",$emp_id_arr);
+	$deleteold_query = "DELETE from shifts WHERE emp_id not in ($emp_id_str) and specific_schedule='$specific_schedule'";
+	$deleteold_result = mysql_query($deleteold_query) or die(mysql_error());
 	
 	foreach ($schedule_array as $emp_id=>$weekarray){
 		foreach ($weekarray as $week_type=>$dayarray){
@@ -386,8 +392,8 @@ if(isset($_POST['day_submit'])){
 					}
 				else{
 					$insert_query = "INSERT into shifts (week_type, shift_day, emp_id, shift_start, shift_end, desk_start, desk_end, 
-						desk_start2, desk_end2, lunch_start, lunch_end, specific_schedule, schedule_create) 
-						values ('$week_type','$day','$emp_id','$ss', '$se', '$ds', '$de', '$ds2', '$de2', '$ls', '$le', '$specific_schedule', null)";
+						desk_start2, desk_end2, lunch_start, lunch_end, specific_schedule) 
+						values ('$week_type','$day','$emp_id','$ss', '$se', '$ds', '$de', '$ds2', '$de2', '$ls', '$le', '$specific_schedule')";
 					$insert_result = mysql_query($insert_query) or die(mysql_error());
 					}
 					
