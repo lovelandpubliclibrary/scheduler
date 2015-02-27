@@ -473,6 +473,8 @@ if (isset($_POST['submitted'])){
 				oNode.appendChild(txtNode);
 				s2New.appendChild(oNode);
 			}
+		optionIndex = this.s1.options[this.s1.selectedIndex].value;
+		document.getElementById('coverage_division').value = optionIndex;
 		}
 		
 		// Swap out old and new select elements
@@ -598,7 +600,7 @@ function validator() {
 ?>
 			</select>
 		<div class="label">Covered Division: </div>
-			<select name="coverage_division">
+			<select name="coverage_division" id="coverage_division">
 				<option value="select" disabled="disabled" selected="selected">- Select -</option>
 				<?php foreach ($divisions as $k=>$v){echo '<option value="'.$v.'"';
 				if(isset($old_emp_id) && isset($cd_div) && ($cd_div == $v)){
