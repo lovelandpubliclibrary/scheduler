@@ -27,7 +27,7 @@ function dates_between_inclusive($start_date, $end_date){
 	global $array;
 	$array = array();
 	
-	$start_date .= ' 10:00:00am';
+	$start_date .= ' 9:00:00am';
 	$array[] = date('m/d/Y',strtotime($start_date));
 	$end_date .= ' 10:00:00am';
 	$start_date = is_int($start_date) ? $start_date : strtotime($start_date);
@@ -102,7 +102,7 @@ if (isset($_POST['submitted'])){
 	}
 
 echo '<div class="coverform">';
-echo '<form action="/scheduler2/timesheet_marcia" method="post" name="payperiod_select" id="payperiod_select">
+echo '<form action="timesheet_marcia" method="post" name="payperiod_select" id="payperiod_select">
 	<div class="label">Choose Pay Period Start Date:</div>
 	<select name="payperiod">';
 foreach ($pps as $pp_id=>$pp_start_date){
