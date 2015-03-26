@@ -220,16 +220,16 @@ function daily_schedule($now, $divisions) {
 			if(isset($closure_message)){
 				echo $closure_message;
 				}
-			if ($pic_name != ''){
-				echo '<div class="pic"><b>Person In Charge:</b> ';
-				if (in_array($day_short,array('Mon','Tue','Wed','Thu'))){
-					echo '(5-8pm) ';
-					}
-				elseif($day_short == 'Fri'){
-					echo '(5-6pm) ';
-					}
-				echo $pic_name.' &ndash; <b>x2778</b></div>'."\n";
+			echo '<div class="pic"><b>Person In Charge:</b> ';
+			if (in_array($day_short,array('Mon','Tue','Wed','Thu'))){
+				echo '(5-8pm) ';
 				}
+			elseif($day_short == 'Fri'){
+				echo '(5-6pm) ';
+				}
+			if ($pic_name != ''){echo $pic_name.' &ndash; ';
+				}
+			echo '<b>x2778</b></div>'."\n";
 			//See if schedules exist.
 			$query20 = "SELECT first_name, e.emp_id, time_format(shift_start,'%k') as shift_start
 				from employees as e, shifts as a, schedules as s 
@@ -1338,16 +1338,16 @@ function division_daily($division, $now) {
 			if(isset($closure_message)){
 				echo $closure_message;
 				}
-			if ($pic_name != ''){
-				echo '<div class="pic"><b>Person In Charge:</b> ';
-				if (in_array($day_short,array('Mon','Tue','Wed','Thu'))){
-					echo '(5-8pm) ';
-					}
-				elseif($day_short == 'Fri'){
-					echo '(5-6pm) ';
-					}
-				echo $pic_name.' -- <b>Extension:</b> x2778</div>'."\n";
+			echo '<div class="pic"><b>Person In Charge:</b> ';
+			if (in_array($day_short,array('Mon','Tue','Wed','Thu'))){
+				echo '(5-8pm) ';
 				}
+			elseif($day_short == 'Fri'){
+				echo '(5-6pm) ';
+				}
+			if ($pic_name != ''){echo $pic_name.' &ndash; ';
+				}
+			echo '<b>x2778</b></div>'."\n";
 			echo '</div>';
 			//See if schedules exist.
 			$query20 = "SELECT first_name, e.emp_id, time_format(shift_start,'%k') as shift_start
@@ -2256,13 +2256,16 @@ function subs_specific($division, $now) {
 			if(isset($closure_message)){
 				echo $closure_message;
 				}
-			if ($pic_name != ''){
-				echo '<div class="pic"><b>Person In Charge:</b> ';
-				if (in_array($day_short,array('Mon','Tue','Wed','Thu'))){
-					echo '(5-8pm) ';
-					}
-				echo $pic_name.' -- <b>Extension:</b> x2778</div>'."\n";
+			echo '<div class="pic"><b>Person In Charge:</b> ';
+			if (in_array($day_short,array('Mon','Tue','Wed','Thu'))){
+				echo '(5-8pm) ';
 				}
+			elseif($day_short == 'Fri'){
+				echo '(5-6pm) ';
+				}
+			if ($pic_name != ''){echo $pic_name.' &ndash; ';
+				}
+			echo '<b>x2778</b></div>'."\n";
 			echo "</div>\n";
 			//Get Subs names.
 			$query = "SELECT first_name, last_name, name_dup, emp_id FROM employees 
