@@ -275,11 +275,13 @@ if (isset($_POST['delete'])){
 
 <?php
 if (isset($division)){
+	$past_date = date('Y-m-d', strtotime('-1 year', strtotime($today)));
+	
 	$_SESSION['schedules_division'] = $division;
 	$query = "SELECT * from schedules as s, (SELECT specific_schedule, count(*) as count from schedules 
-		WHERE schedule_end_date >= '$today' group by specific_schedule) as t
-		WHERE division='$division' and schedule_end_date >= '$today' and s.specific_schedule=t.specific_schedule
-		ORDER BY schedule_end_date asc";
+		WHERE schedule_end_date >= '$past_date' group by specific_schedule) as t
+		WHERE division='$division' and schedule_end_date >= '$past_date' and s.specific_schedule=t.specific_schedule
+		ORDER BY schedule_end_date desc";
 	$result = mysql_query($query) or die(mysql_error());
 	if ($result){
 		$num_rows = mysql_num_rows($result);
