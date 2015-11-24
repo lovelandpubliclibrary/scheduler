@@ -16,6 +16,7 @@
 	<link rel="stylesheet" type="text/css" href="/scheduler2/style/mobile_dropdown.css" media="handheld, only screen and (max-device-width:768px)" />
 	<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
 	<link type="text/css" rel="stylesheet" href="/scheduler2/qtip/jquery.qtip.css" />
+	<link type="text/css" rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:400,500,700"/>
 	
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
@@ -127,62 +128,12 @@
 
 	<!--[if IE 9]>
 	<style type="text/css" media="screen">
-	#menu {
-	background-image: url(/scheduler2/img/menugradient.svg);
-	background-size: 100% 100%;
-	zoom:1;
-	}
-	#menu li.home:hover {
-	background-image: url(/scheduler2/img/hovergradients.svg);
-	background-size: 100% 500%;
-	background-position:0 0;
-	}
-	#menu li.divs:hover {
-	background-image: url(/scheduler2/img/hovergradients.svg);
-	background-size: 100% 500%;
-	background-position:0 25%;
-	}
-	#menu li.archives:hover {
-	background-image: url(/scheduler2/img/hovergradients.svg);
-	background-size: 100% 500%;
-	background-position:0 50%;
-	}
-	#menu li.logout:hover {
-	background-image: url(/scheduler2/img/hovergradients.svg);
-	background-size: 100% 500%;
-	background-position:0 75%;
-	}
-	#menu li.super:hover {
-	background-image: url(/scheduler2/img/hovergradients2.svg);
-	background-size: 100% 100%;
-	background-position:0 0;
-	}
-	.contacts th:first-child{
-	background-image: url(/scheduler2/img/hovergradients.svg);
-	background-size: 100% 500%;
-	background-position:0 25%;
-	}
-	.contacts th:last-child{
-	background-image: url(/scheduler2/img/hovergradients.svg);
-	background-size: 100% 500%;
-	background-position:0 25%;
-	}
 	.yr1 {
 	background-image: url(/scheduler2/img/hovergradients.svg);
 	background-size: 100% 500%;
 	background-position:0 75%;
 	}
 	.yr2 {
-	background-image: url(/scheduler2/img/hovergradients.svg);
-	background-size: 100% 500%;
-	background-position:0 50%;
-	}
-	.sub_needs_button{
-	background-image: url(/scheduler2/img/hovergradients2.svg);
-	background-size: 100% 100%;
-	background-position:0 0;
-	}
-	.sub_needs_button:hover{
 	background-image: url(/scheduler2/img/hovergradients.svg);
 	background-size: 100% 500%;
 	background-position:0 50%;
@@ -196,7 +147,7 @@
 <div id="container">
 	<div id="header">
 		<div class="logo logonorm">
-			<a href="/scheduler2"><img src="/scheduler2/img/Library_Logo_drop.png" alt="NeedToKnow" width="130"/></a>
+			<a href="/scheduler2"><img src="/scheduler2/img/iconWhiteBack.png" alt="NeedToKnow" width="70"/></a>
 		</div>
 		<div class="username">
 			Logged in as <?php if(isset($this_full_name)){echo $this_full_name;} else{echo $_SESSION['username'];} ?>

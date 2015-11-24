@@ -1,20 +1,20 @@
 body {
 margin: 0;
 padding: 0;
-font-family:Arial, Helvetica, sans-serif;
+font-family:"Roboto", Arial, Helvetica, sans-serif;
 font-size:12px;
 line-height:18px;
 background:#cccccc;
 }
 
 input, button {
-font: 1em/100% Arial, Helvetica, sans-serif;
+font: 1em/100% "Roboto", Arial, Helvetica, sans-serif;
 color: #494949;
 }
 
 textarea,
 select {
-font: 1em/160% Arial, Helvetica, sans-serif;
+font: 1em/160% "Roboto", Arial, Helvetica, sans-serif;
 color: #494949;
 }
 
@@ -93,7 +93,7 @@ clear:both;
 
 .logo {
 float:left;
-margin:10px 50px 0px 10px;
+margin:18px 50px 0px 18px;
 }
 
 .username {
@@ -252,7 +252,7 @@ line-height:21px;
 
 /*jQuery Menus*/
 #submenu .ui-widget{
-font-family:Arial,Helvetica,sans-serif !important;
+font-family:"Roboto",Arial,Helvetica,sans-serif !important;
 }
 
 #submenu .ui-accordion-header{
@@ -411,13 +411,7 @@ background:#D540D3;
 
 /* Contact Table Styling */
 table.contacts {
-	-moz-border-radius: 10px 10px 0 0;  
-	-webkit-border-radius: 10px 10px 0 0;  
-	border-radius: 10px 10px 0 0; 
 background:#ffffff;
-	-webkit-box-shadow: 0 8px 0 6px -6px #4D4D4D;
-	-moz-box-shadow: 0 8px 6px -6px #4D4D4D;
-	box-shadow: 0 8px 6px -6px #4D4D4D;
 margin-bottom:30px;
 width:179px;
 }
@@ -429,30 +423,20 @@ background:#E0EEE0;
 }
 
 .contacts th {
-background: #005901; 
+background: #2E85E7; 
 padding:5px;
-font-weight:normal;
+font-weight:500;
+font-size: 13px;
 color:white;
-text-shadow: 1px 1px 1px #000;
 text-align: left;
 }
 
 .contacts th:first-child {
-background: -moz-linear-gradient(top, #005901, #011C01) !important;  
-background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#005901), to(#011C01)) !important;
-background-image: -ms-linear-gradient(top, #005901 0%, #011C01 100%); 
-	-moz-border-radius: 10px 0 0 0;  
-	-webkit-border-radius: 10px 0 0 0;  
-	border-radius: 10px 0 0 0;
+background: #2E85E7 !important;
 }
 
 .contacts th:last-child {
-background: -moz-linear-gradient(top, #005901, #011C01) !important;  
-background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#005901), to(#011C01)) !important;
-background-image: -ms-linear-gradient(top, #005901 0%, #011C01 100%); 
-	-moz-border-radius: 0 10px 0 0;  
-	-webkit-border-radius: 0 10px 0 0;  
-	border-radius: 0 10px 0 0;
+background: #2E85E7 !important;
 }
 
 .contacts td {

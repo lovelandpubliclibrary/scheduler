@@ -4,20 +4,10 @@ width:1000px;
 margin:30px auto 0px -30px;  
 height:43px;  
 padding:0px 20px 0px 20px;  
-/* Rounded Corners */  
--moz-border-radius: 10px;  
--webkit-border-radius: 10px;  
-border-radius: 10px;  
-/* Background color and gradients */  
-background: #014464;  
-background: -moz-linear-gradient(top, #0272a7, #013953);  
-background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#0272a7), to(#013953));
-background-image: -ms-linear-gradient(top, #0272a7 0%, #013953 100%);
+/* Background */  
+background: #003149;
 /* Borders */  
-border: 1px solid #002232;  
--moz-box-shadow:inset 0px 0px 3px #013953;  
--webkit-box-shadow:inset 0px 0px 3px #013953;  
-box-shadow:inset 0px 0px 3px #013953;  
+border: 1px solid #014A6E;
 }
 #menu .gradient{
 }
@@ -32,13 +22,9 @@ height:26px;
 border: 1px solid transparent;
 }
 #menu li:hover {  
-border: 1px solid #777777;  
 padding: 11px 10px 4px 10px;  
-/* Background color and gradients */  
-background: #F4F4F4;  
-background: -moz-linear-gradient(top, #F4F4F4, #EEEEEE) !important;  
-background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#F4F4F4), to(#EEEEEE)) !important;
-background-image: -ms-linear-gradient(top, #F4F4F4 0%, #EEEEEE 100%);
+/* Background */  
+background: #014A6E;
 }
 #menu li.drop{
 width:120px;
@@ -47,103 +33,47 @@ width:120px;
 position:relative;
 top:-1px;
 height:28px;
-background: #00367D;  
-background: -moz-linear-gradient(top, #00367D, #002454) !important;  
-background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#00367D), to(#002454)) !important;  
-background-image: -ms-linear-gradient(top, #00367D 0%, #002454 100%);
-/* Borders */  
-border: 1px solid #023F5C;  
--moz-box-shadow:inset 0px 11px 3px -10px #002454,
-	inset 0px -11px 3px -10px #002454;   
--webkit-box-shadow:inset 0px 11px 3px -10px #002454,
-	inset 0px -11px 3px -10px #002454;   
-box-shadow:inset 0px 11px 3px -10px #002454,
-	inset 0px -11px 3px -10px #002454;
+background: #014A6E;
 }
 #menu li.divs:hover{
 position:relative;
 top:-1px;
 height:28px;
-background: #005901;  
-background: -moz-linear-gradient(top, #005901, #011C01) !important;  
-background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#005901), to(#011C01)) !important;  
-background-image: -ms-linear-gradient(top, #005901 0%, #011C01 100%);
-/* Borders */  
-border: 1px solid #023F5C;  
--moz-box-shadow:inset 0px 11px 3px -10px #011C01, 
-	inset 0px -11px 3px -10px #011C01;   
--webkit-box-shadow:inset 0px 11px 3px -10px #011C01, 
-	inset 0px -11px 3px -10px #011C01;   
-box-shadow:inset 0px 11px 3px -10px #011C01,
-	inset 0px -11px 3px -10px #011C01; 
+background: #014A6E;
 }
 #menu li.archives:hover{
 position:relative;
 top:-1px;
 height:28px;
-background: #45080B;  
-background: -moz-linear-gradient(top, #C1272D, #45080B) !important;  
-background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#C1272D), to(#45080B)) !important;
-background-image: -ms-linear-gradient(top, #C1272D 0%, #45080B 100%);  
-/* Borders */  
-border: 1px solid #023F5C;  
--moz-box-shadow:inset 0px 11px 3px -10px #45080B, 
-	inset 0px -11px 3px -10px #45080B;   
--webkit-box-shadow:inset 0px 11px 3px -10px #45080B, 
-	inset 0px -11px 3px -10px #45080B;   
-box-shadow:inset 0px 11px 3px -10px #45080B,
-	inset 0px -11px 3px -10px #45080B; 
+background: #014A6E;
 }
 #menu li.logout:hover{
 position:relative;
 top:-1px;
 height:28px;
-background: #6F3485;  
-background: -moz-linear-gradient(top, #6F3485, #2E033D) !important;  
-background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#6F3485), to(#2E033D)) !important; 
-background-image: -ms-linear-gradient(top, #6F3485 0%, #2E033D 100%);   
-/* Borders */  
-border: 1px solid #023F5C;  
--moz-box-shadow:inset 0px 11px 3px -10px #2E033D, 
-	inset 0px -11px 3px -10px #2E033D;   
--webkit-box-shadow:inset 0px 11px 3px -10px #2E033D, 
-	inset 0px -11px 3px -10px #2E033D;   
-box-shadow:inset 0px 11px 3px -10px #2E033D,
-	inset 0px -11px 3px -10px #2E033D; 
+background: #014A6E;
 }
 #menu li.super:hover{
 position:relative;
 top:-1px;
 height:28px;
-background: #451D08;  
-background: -moz-linear-gradient(top, #F75802, #451D08) !important;  
-background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#F75802), to(#451D08)) !important; 
-background-image: -ms-linear-gradient(top, #F75802 0%, #451D08 100%);   
-/* Borders */  
-border: 1px solid #023F5C;  
--moz-box-shadow:inset 0px 11px 3px -10px #451D08, 
-	inset 0px -11px 3px -10px #451D08;   
--webkit-box-shadow:inset 0px 11px 3px -10px #451D08, 
-	inset 0px -11px 3px -10px #451D08;   
-box-shadow:inset 0px 11px 3px -10px #451D08,
-	inset 0px -11px 3px -10px #451D08; 
+background: #014A6E;
 }
 #menu li.logout{
 float:right !important;
 margin-right:10px;
 }
 #menu li a {  
-font-family:Arial, Helvetica, sans-serif;  
+font-family:"Roboto",Arial, Helvetica, sans-serif;  
 font-size:14px;
-color: #EEEEEE;  
+color: #ffffff;  
 display:block;  
 outline:0;  
-text-decoration:none;  
-text-shadow: 1px 1px 1px #000;  
+text-decoration:none;
+font-weight:500;
 }
 #menu li:hover a {  
-color:#161616;  
-text-shadow: 1px 1px 1px #FFFFFF;  
+color:#ffffff;
 }
 #menu li.home:hover a,
 #menu li.divs:hover a,
@@ -151,8 +81,7 @@ text-shadow: 1px 1px 1px #FFFFFF;
 #menu li.super:hover a,
 #menu li.archives:hover a,
 #menu li.logout:hover a{
-color: #EEEEEE;
-text-shadow: 1px 1px 1px #000;
+color: #ffffff;
 margin-top:1px;
 }
 .dropdown_1column {
@@ -165,13 +94,6 @@ border:1px solid #777777;
 border-top:none;  
 /* Gradient background */  
 background:#F4F4F4;  
-background: -moz-linear-gradient(top, #EEEEEE, #BBBBBB);  
-background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#EEEEEE), to(#BBBBBB));  
-background-image: -ms-linear-gradient(top, #EEEEEE 0%, #BBBBBB 100%);   
-/* Rounded Corners */  
--moz-border-radius: 0px 0px 5px 5px;  
--webkit-border-radius: 0px 0px 5px 5px;  
-border-radius: 0px 0px 5px 5px;
 width:130px;
 z-index:3;
 }
@@ -211,11 +133,11 @@ font-style:italic;
 }
 #menu li:hover div.dropdown_1column a {  
 font-size:12px;  
-color:#015b86;
+color:#003149;
 text-shadow: 1px 1px 1px #FFFFFF; 
 line-height:24px;
 margin-left:20px;
 }  
 #menu li:hover div.dropdown_1column a:hover {  
-color:#029feb;  
+color:#2E85C7;  
 }
