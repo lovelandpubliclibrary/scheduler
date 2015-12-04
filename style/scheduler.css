@@ -418,7 +418,8 @@ width:179px;
 
 .contacts tr:nth-child(3),
 .contacts tr:nth-child(5),
-.contacts tr:nth-child(7) {
+.contacts tr:nth-child(7),
+.contacts tr:nth-child(9) {
 background:#E0EEE0;
 }
 
@@ -448,7 +449,8 @@ padding:0 5px;
 .contacts tr:nth-child(4) td:first-child,
 .contacts tr:nth-child(5) td:first-child,
 .contacts tr:nth-child(6) td:first-child,
-.contacts tr:nth-child(7) td:first-child{
+.contacts tr:nth-child(7) td:first-child,
+.contacts tr:nth-child(8) td:first-child{
 border-left:1px solid #BFBFBF;
 }
 
@@ -457,16 +459,17 @@ border-left:1px solid #BFBFBF;
 .contacts tr:nth-child(4) td:last-child,
 .contacts tr:nth-child(5) td:last-child,
 .contacts tr:nth-child(6) td:last-child,
-.contacts tr:nth-child(7) td:last-child{
+.contacts tr:nth-child(7) td:last-child,
+.contacts tr:nth-child(8) td:last-child{
 border-right:1px solid #BFBFBF;
 }
 
-.contacts tr:nth-child(8) td:first-child{
+.contacts tr:nth-child(9) td:first-child{
 border-left:1px solid #BFBFBF;
 border-bottom:1px solid #BFBFBF;
 }
 
-.contacts tr:nth-child(8) td:last-child{
+.contacts tr:nth-child(9) td:last-child{
 border-right:1px solid #BFBFBF;
 border-bottom:1px solid #BFBFBF;
 }
