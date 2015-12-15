@@ -33,7 +33,7 @@ echo "<div class=\"submenuhead\"><h5>Supervisors</h5></div>\n";
 	<div class="ui-corner-flat">
 	<a href="/scheduler2/approve_timesheets">Approve Timesheets</a><br/>
 	<a href="/scheduler2/payperiod_csv">Generate Pay Period CSV</a><br/>
-	<a href="/scheduler2/add_payperiods">Add Yearly Pay Periods</a>
+	<a href="/scheduler2/add_payperiods">Add Yearly Pay Periods</a><br/>
 	<a href="/scheduler2/add_closures">Add Library Closures</a>
 	</div>
 	<h3 class="ui-corner-flat">Employees</h3>
