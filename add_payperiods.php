@@ -19,6 +19,7 @@ $year = date('Y');
 $error = '';
 $m_error = '';
 
+$periods = array();
 $query = "SELECT * from pay_periods WHERE pp_year='$year'";
 $result = mysql_query($query);
 $num_rows = mysql_num_rows($result);
