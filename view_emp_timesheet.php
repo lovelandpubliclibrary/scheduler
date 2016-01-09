@@ -129,7 +129,7 @@ if (($result) && (mysql_num_rows($result)!=0)){
 		}
 	}
 $confirmed = '';
-$query = "SELECT * from timesheet_confirm WHERE emp_id='$emp_id' and pp_id = '$pp_id' and employee_confirm='Y'";
+$query = "SELECT * from timesheet_confirm WHERE emp_id='$emp_id' and pp_id = '$pp_id' and (employee_confirm='Y' or supervisor_approve='Y')";
 $result = mysql_query($query);
 if (($result) && (mysql_num_rows($result)!=0)){
 	while($row = mysql_fetch_array($result, MYSQL_ASSOC)){
