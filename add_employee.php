@@ -106,8 +106,8 @@ if (isset($_POST['submitted'])) {
 					}
 				$query4 = "INSERT INTO employees
 					(employee_number, first_name, last_name, division, exempt_status, weekly_hours, active, name_dup, 
-					home_phone, mobile_phone, employee_create) 
-					VALUES ('$empn', '$fn', '$ln', '$div', '$exs', '$hrs', 'Active', 'Y', '$safe_home_phone','$safe_mobile_phone', null)";
+					home_phone, mobile_phone) 
+					VALUES ('$empn', '$fn', '$ln', '$div', '$exs', '$hrs', 'Active', 'Y', '$safe_home_phone','$safe_mobile_phone')";
 				$result4 = mysql_query($query4);
 				if ($result4) {//If it ran okay.
 				
@@ -127,8 +127,8 @@ if (isset($_POST['submitted'])) {
 				//Make the query.
 				$query3 = "INSERT INTO employees
 					(employee_number, first_name, last_name, division, exempt_status, weekly_hours, active, 
-					home_phone, mobile_phone, employee_create) 
-					VALUES ('$empn', '$fn', '$ln', '$div', '$exs', '$hrs', 'Active', '$safe_home_phone','$safe_mobile_phone', null)";
+					home_phone, mobile_phone) 
+					VALUES ('$empn', '$fn', '$ln', '$div', '$exs', '$hrs', 'Active', '$safe_home_phone','$safe_mobile_phone')";
 				$result3 = mysql_query($query3); //Run the query.
 				if ($result3) {//If it ran okay.
 					

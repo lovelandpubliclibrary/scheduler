@@ -316,9 +316,8 @@ if (isset($_POST['submitted'])){
 		}
 	
 	if (empty($errors)) {
-	
 	$query = "INSERT into timeoff(emp_id, timeoff_start_date, timeoff_start_time, timeoff_end_date, timeoff_end_time,
-		timeoff_reason, timeoff_create) values('$emp_id', '$ts_date', '$ts_time', '$te_date', '$te_time', '$reason', null)";
+		timeoff_reason) values('$emp_id', '$ts_date', '$ts_time', '$te_date', '$te_time', '$reason')";
 	$result = mysql_query($query) or die(mysql_error($dbc));
 	if ($result) {
 		$query2 = "SELECT concat(first_name, ' ', last_name) as employee_name 

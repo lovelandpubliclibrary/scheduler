@@ -128,9 +128,9 @@ if(isset($_POST['separate'])){
 	$result = mysql_query($query);
 	
 	$separate_query2 = "INSERT into shifts (week_type, shift_day, emp_id, shift_start, shift_end, 
-		desk_start, desk_end, desk_start2, desk_end2, lunch_start, lunch_end, specific_schedule, schedule_create) 
+		desk_start, desk_end, desk_start2, desk_end2, lunch_start, lunch_end, specific_schedule) 
 		SELECT week_type, shift_day, emp_id, shift_start, shift_end, desk_start, desk_end, 
-		desk_start2, desk_end2, lunch_start, lunch_end, '$max', null from shifts WHERE specific_schedule='$specific_schedule'";
+		desk_start2, desk_end2, lunch_start, lunch_end, '$max' from shifts WHERE specific_schedule='$specific_schedule'";
 	$separate_result2 = mysql_query($separate_query2);
 	$specific_schedule = $max;
 	}
@@ -449,8 +449,8 @@ if(isset($_POST['day_submit'])){
 			
 			if (!isset($prev_def[$week_type][$day])||(count($prev_def[$week_type][$day]) == 0)){
 				if (($defs != '00:00:00') && ($defe != '00:00:00')){
-					$def_query = "INSERT into deficiencies(def_schedule, def_week, def_day, def_division, def_start, def_end, def_create) values
-						('$specific_schedule','$week_type','$day','$division','$defs','$defe', null)";
+					$def_query = "INSERT into deficiencies(def_schedule, def_week, def_day, def_division, def_start, def_end) values
+						('$specific_schedule','$week_type','$day','$division','$defs','$defe')";
 					$def_result = mysql_query($def_query) or die(mysql_error($dbc));
 					$id = mysql_insert_id();
 					if ($defs_hr > 12){$defs_hr = $defs_hr-12;}
@@ -461,8 +461,8 @@ if(isset($_POST['day_submit'])){
 					$prev_def[$week_type][$day][$id]['def_end']['minutes'] = $defe_mn;
 					}
 				if (($defs2 != '00:00:00') && ($defe2 != '00:00:00')){
-					$def_query = "INSERT into deficiencies(def_schedule, def_week, def_day, def_division, def_start, def_end, def_create) values
-						('$specific_schedule','$week_type','$day','$division','$defs2','$defe2', null)";
+					$def_query = "INSERT into deficiencies(def_schedule, def_week, def_day, def_division, def_start, def_end) values
+						('$specific_schedule','$week_type','$day','$division','$defs2','$defe2')";
 					$def_result = mysql_query($def_query) or die(mysql_error($dbc));
 					$id2 = mysql_insert_id();
 					if ($defs_hr2 > 12){$defs_hr2 = $defs_hr2-12;}
@@ -491,8 +491,8 @@ if(isset($_POST['day_submit'])){
 					unset($prev_def[$week_type][$day][$id]);
 					}
 				if (($defs2 != '00:00:00') && ($defe2 != '00:00:00')){
-					$def_query = "INSERT into deficiencies(def_schedule, def_week, def_day, def_division, def_start, def_end, def_create) values
-						('$specific_schedule','$week_type','$day','$division','$defs2','$defe2', null)";
+					$def_query = "INSERT into deficiencies(def_schedule, def_week, def_day, def_division, def_start, def_end) values
+						('$specific_schedule','$week_type','$day','$division','$defs2','$defe2')";
 					$def_result = mysql_query($def_query) or die(mysql_error($dbc));
 					$id2 = mysql_insert_id();
 					if ($defs_hr2 > 12){$defs_hr2 = $defs_hr2-12;}

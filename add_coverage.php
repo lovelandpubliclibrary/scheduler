@@ -388,8 +388,8 @@ if (isset($_POST['submitted'])){
 	
 	if (empty($errors)) {
 	$query = "INSERT into coverage(emp_id, coverage_date, coverage_start_time, coverage_end_time,
-		coverage_division, coverage_offdesk, coverage_reason, coverage_create) 
-		values('$emp_id', '$cd_date', '$cs_time', '$ce_time', '$cd_div', '$cd_onoff', '$cd_reason', null)";
+		coverage_division, coverage_offdesk, coverage_reason) 
+		values('$emp_id', '$cd_date', '$cs_time', '$ce_time', '$cd_div', '$cd_onoff', '$cd_reason')";
 	$result = mysql_query($query) or die(mysql_error($dbc));
 	if ($result) {		
 		$query2 = "SELECT concat(first_name, ' ', last_name) as employee_name 

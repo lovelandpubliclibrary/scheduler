@@ -117,8 +117,8 @@ if (($_SESSION['role'] == 'Admin')||($_SESSION['role'] == 'Supervisor')){
 			}
 
 		//Insert into db
-		$query = "INSERT into sub_needs (sub_needs_date, sub_needs_start_time, sub_needs_end_time, sub_needs_division, sub_needs_create) 
-			values ('$sn_date', '$sns_time', '$sne_time', '$sn_div', null)";
+		$query = "INSERT into sub_needs (sub_needs_date, sub_needs_start_time, sub_needs_end_time, sub_needs_division) 
+			values ('$sn_date', '$sns_time', '$sne_time', '$sn_div')";
 		$result = mysql_query($query) or die(mysql_error($dbc));
 		if ($result) {
 			echo "<div class=\"message\">Sub need shift entered for <b>$sn_div</b> on <b>$sn_date</b></div>";
@@ -166,8 +166,8 @@ if (($_SESSION['role'] == 'Admin')||($_SESSION['role'] == 'Supervisor')){
 			$query1 = "UPDATE sub_needs set sub_needs_covered='Y' WHERE sub_needs_id='$sub_needs_id'";
 			$result1 = mysql_query($query1);
 			$query2 = "INSERT into coverage (emp_id, coverage_date, coverage_start_time, coverage_end_time, coverage_division,
-				coverage_offdesk, coverage_reason, coverage_create) VALUES ('$emp_id','$sub_needs_date', '$sub_needs_start_time', 
-				'$sub_needs_end_time', '$sub_needs_division', 'On', '', null)";
+				coverage_offdesk, coverage_reason) VALUES ('$emp_id','$sub_needs_date', '$sub_needs_start_time', 
+				'$sub_needs_end_time', '$sub_needs_division', 'On', '')";
 			$result2 = mysql_query($query2);
 			echo '<div class="message"><b>'. $name . ' on ' . $short_date . '</b> has been confirmed.</div>';
 			}
