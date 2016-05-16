@@ -20,8 +20,8 @@ include('./includes/allsessionvariables.php');
 
 require_once ('../mysql_connect_sched2.php'); //Connect to the db.
 
-$query = "SELECT emp_id, employee_number, first_name, last_name, division, exempt_status, weekly_hours, home_phone, mobile_phone, employee_lastday
-	FROM employees WHERE emp_id='$emp_id'";
+$query = "SELECT employee_number, first_name, last_name, division, exempt_status, weekly_hours, home_phone, mobile_phone, employee_lastday, assignment_id
+	FROM employees, logins WHERE employees.emp_id='$emp_id' and employees.emp_id=logins.emp_id";
 $result = mysql_query($query) or die(mysql_error($dbc));
 
 
@@ -36,6 +36,7 @@ while ($row = mysql_fetch_array ($result, MYSQL_ASSOC)) {
 	$mobile_phone = $row['mobile_phone'];
 	$emp_ld = $row['employee_lastday'];
 	$emp_ld = explode("-", $emp_ld);
+	$assignment_id = $row['assignment_id'];
 
 //Check if the form has been submitted.
 if (isset($_POST['edited'])) {
@@ -48,6 +49,14 @@ if (isset($_POST['edited'])) {
 		}
 	else {
 		$empno = escape_data($_POST['employee_number']);
+		}
+	
+	//Check for Assignment ID.
+	if (empty($_POST['assignment_id'])) {
+		$errors[] = 'Please enter the Assignment ID.';
+		}
+	else {
+		$assignment_id = escape_data($_POST['assignment_id']);
 		}
 
 	//Check for First Name.
@@ -134,6 +143,9 @@ if (isset($_POST['edited'])) {
 		$query .= " WHERE emp_id = '$emp_id'";
 		$result = mysql_query($query) or die(mysql_error($dbc));
 		
+		$query_assign = "UPDATE logins SET assignment_id='$assignment_id' WHERE emp_id='$emp_id'";
+		$result_assign = mysql_query($query_assign) or die(mysql_error($dbc));
+		
 		// Switch shifts to new division, if applicable
 		if ($div != $division){
 			$today = date('Y-m-d');
@@ -155,7 +167,7 @@ if (isset($_POST['edited'])) {
 				}
 			}
 		
-		if ($result) {
+		if ($result && $result_assign) {
 			$_SESSION['success'] = TRUE;
 			header ('Location: view_employees');
 
@@ -251,6 +263,8 @@ function showMe (it, box) {
 <form action="edit_employee" method="post" name="Employee" onsubmit="return validateForm();">
 	<p><div class="label">Employee Number:</div> <input type="number" name="employee_number" size="20" maxlength="7"
 	value="<?php if (isset($empno)) echo $empno;?>" /></p>
+	<p><div class="label">Assignment ID:</div> <input type="text" name="assignment_id" size="20" maxlength="20"
+	value="<?php if (isset($assignment_id)) echo $assignment_id;?>" /></p>
 	<p><div class="label">First Name:</div> <input type="text" name="first_name" size="15" maxlength="15"
 	value="<?php if (isset($first_name)) echo $first_name;?>" /></p>
 	<p><div class="label">Last Name:</div> <input type="text" name="last_name" size="15" maxlength="30"
