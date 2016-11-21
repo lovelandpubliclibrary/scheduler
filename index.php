@@ -36,5 +36,4 @@ $now = strtotime($date);
 daily_schedule($now, $divisions);
 	
 include ('./includes/footer.html');
-phpinfo();
 ?>
