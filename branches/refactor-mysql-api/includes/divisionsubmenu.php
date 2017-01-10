@@ -8,11 +8,11 @@ $today = date('Y-m-d');
 $years = array();
 $schedules = array();
 
-$query = "SELECT * from schedules, divisions WHERE div_link = '$division' and division=div_name 
-	and schedule_end_date >= '$today' ORDER BY schedule_start_date asc";
-$result = mysql_query($query);
+$query = "SELECT * FROM schedules, divisions WHERE div_link = '$division' AND division = div_name 
+	AND schedule_end_date >= '$today' ORDER BY schedule_start_date ASC";
+$result = mysqli_query($dbc, $query);
 if($result){
-	while ($row = mysql_fetch_array($result, MYSQL_ASSOC)){
+	while ($row = mysqli_fetch_assoc($result)){
 		$schedule_id = $row['schedule_id'];
 		$schedule_start_date = $row['schedule_start_date'];
 		$schedule_end_date = $row['schedule_end_date'];

@@ -5,9 +5,9 @@ $years = array();
 $schedules = array();
 
 $query = "SELECT * from schedules WHERE division='$division' and schedule_end_date >= '$today' ORDER BY schedule_start_date asc";
-$result = mysql_query($query);
+$result = mysqli_query($dbc, $query);
 if($result){
-	while ($row = mysql_fetch_array($result, MYSQL_ASSOC)){
+	while ($row = mysqli_fetch_assoc($result)){
 		$schedule_id = $row['schedule_id'];
 		$schedule_start_date = $row['schedule_start_date'];
 		$schedule_end_date = $row['schedule_end_date'];
