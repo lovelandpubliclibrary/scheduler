@@ -21,11 +21,11 @@ $m_error = '';
 
 $periods = array();
 $query = "SELECT * from pay_periods WHERE pp_year='$year'";
-$result = mysql_query($query);
-$num_rows = mysql_num_rows($result);
+$result = mysqli_query($dbc, $query);
+$num_rows = mysqli_num_rows($result);
 if ($num_rows != 0){
 	$periods = array();
-	while ($row = mysql_fetch_array($result, MYSQL_ASSOC)){
+	while ($row = mysqli_fetch_assoc($result)){
 		$cycle = $row['pp_cycle'];
 		$start_date = $row['pp_start_date'];
 		$periods[$cycle] = $start_date;
@@ -34,15 +34,15 @@ if ($num_rows != 0){
 	
 if (isset($_POST['submitted'])){
 	$pp_year = $_POST['pp_year'];
-	mysql_query("BEGIN");
+	mysqli_query($dbc, "BEGIN");
 	
 	//Prevent duplicate data.
 	$query = "SELECT * from pay_periods WHERE pp_year='$pp_year'";
-	$result = mysql_query($query);
-	$num_rows = mysql_num_rows($result);
+	$result = mysqli_query($dbc, $query);
+	$num_rows = mysqli_num_rows($result);
 	if ($num_rows != 0){
 		$query = "DELETE from pay_periods WHERE pp_year='$pp_year'";
-		$result = mysql_query($query);
+		$result = mysqli_query($dbc, $query);
 		if(!($result)){
 			$m_error = TRUE;
 			}
@@ -59,7 +59,7 @@ if (isset($_POST['submitted'])){
 				$pp_date = "$pp_yr-$pp_mon-$pp_day";
 				$query = "INSERT into pay_periods (pp_year, pp_cycle, pp_start_date) VALUES 
 					('$pp_year','$i','$pp_date')";
-				${'result'.$i} = mysql_query($query);
+				${'result'.$i} = mysqli_query($dbc, $query);
 				if(!(${'result'.$i})){
 					$m_error = TRUE;
 					}
@@ -71,7 +71,7 @@ if (isset($_POST['submitted'])){
 				$pp_date = "$pp_yr-$pp_mon-$pp_day";
 				$query = "INSERT into pay_periods (pp_year, pp_cycle, pp_start_date) VALUES 
 					('$pp_year','$i','$pp_date')";
-				${'result'.$i} = mysql_query($query);
+				${'result'.$i} = mysqli_query($dbc, $query);
 				if(!(${'result'.$i})){
 					$m_error = TRUE;
 					}
@@ -79,11 +79,11 @@ if (isset($_POST['submitted'])){
 			}	
 		}
 	if (($error != TRUE) && ($m_error != TRUE)){
-		mysql_query("COMMIT");
+		mysqli_query($dbc, "COMMIT");
 		echo '<div class="message">Pay peroods for <b>'.$pp_year .'</b> have been added.</div>';
 		}
 	else {
-		mysql_query("ROLLBACK");
+		mysqli_query($dbc, "ROLLBACK");
 		}
 	}
 

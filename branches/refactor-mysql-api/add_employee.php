@@ -93,22 +93,22 @@ if (isset($_POST['submitted'])) {
 		//Check for previous record.
 		$query = "SELECT employee_number, first_name, last_name FROM employees 
 			WHERE employee_number='$empn' or (first_name='$fn' and last_name='$ln')";
-		$result = mysql_query($query);
-		if (mysql_num_rows($result) == 0) {
+		$result = mysqli_query($dbc, $query);
+		if (mysqli_num_rows($result) == 0) {
 			$query2 = "SELECT employee_number, first_name FROM employees where first_name='$fn'";
-			$result2 = mysql_query($query2);
+			$result2 = mysqli_query($dbc, $query2);
 			
-			if (mysql_num_rows($result2) != 0) {
-				while ($row2 = mysql_fetch_array($result2, MYSQL_ASSOC)){
+			if (mysqli_num_rows($result2) != 0) {
+				while ($row2 = mysqli_fetch_assoc($result2)){
 					$empno = $row2['employee_number'];
 					$query3 = "UPDATE employees SET name_dup='Y' WHERE employee_number='$empno'";
-					$result3 = mysql_query($query3);
+					$result3 = mysqli_query($dbc, $query3);
 					}
 				$query4 = "INSERT INTO employees
 					(employee_number, first_name, last_name, division, exempt_status, weekly_hours, active, name_dup, 
 					home_phone, mobile_phone) 
 					VALUES ('$empn', '$fn', '$ln', '$div', '$exs', '$hrs', 'Active', 'Y', '$safe_home_phone','$safe_mobile_phone')";
-				$result4 = mysql_query($query4);
+				$result4 = mysqli_query($dbc, $query4);
 				if ($result4) {//If it ran okay.
 				
 					//Print a message.
@@ -129,7 +129,7 @@ if (isset($_POST['submitted'])) {
 					(employee_number, first_name, last_name, division, exempt_status, weekly_hours, active, 
 					home_phone, mobile_phone) 
 					VALUES ('$empn', '$fn', '$ln', '$div', '$exs', '$hrs', 'Active', '$safe_home_phone','$safe_mobile_phone')";
-				$result3 = mysql_query($query3); //Run the query.
+				$result3 = mysqli_query($dbc, $query3); //Run the query.
 				if ($result3) {//If it ran okay.
 					
 					//Print a message.
@@ -149,7 +149,7 @@ if (isset($_POST['submitted'])) {
 			echo '<div class="errormessage"><h3>Error!</h3><br/>
 				There is a duplicate record.<br/>
 				The following records already exist:<p>';
-				while ($row = mysql_fetch_array ($result, MYSQL_ASSOC)) {
+				while ($row = mysqli_fetch_assoc ($result)) {
 					echo  $row['employee_number'] . ' - ' . $row['first_name'] . ' ' . $row['last_name'] . '<br/>';
 					}
 			echo '</p></div>';
@@ -210,7 +210,7 @@ include ('./includes/footer.html');
 
 exit();		
 		}
-		mysql_close();
+		mysqli_close($dbc);
 	}
 ?>
 

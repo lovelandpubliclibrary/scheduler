@@ -20,9 +20,9 @@ include ('./includes/supersidebar.html');
 foreach ($divisions as $k=>$v){
 	$query = "SELECT emp_id, first_name, last_name FROM employees WHERE active = 'Active' and 
 		(division like '%".$v."%') order by last_name asc";
-	$result = mysql_query($query) or die(mysql_error($dbc));
+	$result = mysqli_query($dbc, $query) or die(mysqli_error($dbc));
 	
-	while ($row = mysql_fetch_array ($result, MYSQL_ASSOC)) {
+	while ($row = mysqli_fetch_assoc($result)) {
 		$array[$v][]=$row;
 		}
 	}
@@ -97,10 +97,10 @@ if (isset($_POST['submitted'])){
 		and coverage_date = '$cd_date' and (('$cs_time' >= coverage_start_time and '$cs_time' < coverage_end_time) 
 		or ('$ce_time' > coverage_start_time and '$ce_time' <= coverage_end_time)
 		or ('$cs_time' <= coverage_start_time and '$ce_time' >= coverage_end_time))"; 
-	$result = mysql_query($query);
-	$num_rows = mysql_num_rows($result);
+	$result = mysqli_query($dbc, $query);
+	$num_rows = mysqli_num_rows($result);
 	if ($num_rows != 0) {
-		while ($row = mysql_fetch_array ($result, MYSQL_ASSOC)){
+		while ($row = mysqli_fetch_assoc($result)){
 			$full_name = $row['employee_name'];
 			$old_emp_id = $row['emp_id'];
 			$division = $row['division'];
@@ -188,14 +188,14 @@ if (isset($_POST['submitted'])){
 			if (isset($_POST['confirm'])){
 				foreach ($_POST['confirm'] as $key=>$value){
 					$query4 = "UPDATE sub_needs set sub_needs_covered='Y' WHERE sub_needs_id='$key'";
-					$result4 = mysql_query($query4);
+					$result4 = mysqli_query($dbc, $query4);
 					}
 				$overlap = FALSE;
 				}
 			else {
 				foreach ($_POST['sub_needs_id'] as $value){
 					$query4 = "UPDATE sub_needs set sub_needs_covered='Y' WHERE sub_needs_id='$value'";
-					$result4 = mysql_query($query4);
+					$result4 = mysqli_query($dbc, $query4);
 					}
 				}
 			if (isset($_POST['new_request'])){
@@ -207,7 +207,7 @@ if (isset($_POST['submitted'])){
 					$query = "INSERT into sub_needs (sub_needs_date, sub_needs_start_time, sub_needs_end_time,
 						sub_needs_division) VALUES ('$sub_needs_date', '$sub_needs_start_time', '$sub_needs_end_time',
 						'$sub_needs_division')";
-					$result = mysql_query($query);
+					$result = mysqli_query($dbc, $query);
 					}
 				$new_req = ' and new request(s) created';
 				}
@@ -220,7 +220,7 @@ if (isset($_POST['submitted'])){
 					$query = "INSERT into sub_needs (sub_needs_date, sub_needs_start_time, sub_needs_end_time,
 						sub_needs_division) VALUES ('$sub_needs_date', '$sub_needs_start_time', '$sub_needs_end_time',
 						'$sub_needs_division')";
-					$result = mysql_query($query);
+					$result = mysqli_query($dbc, $query);
 					}
 				$new_req = ' and new request(s) created';
 				}
@@ -233,7 +233,7 @@ if (isset($_POST['submitted'])){
 					$query = "INSERT into sub_needs (sub_needs_date, sub_needs_start_time, sub_needs_end_time,
 						sub_needs_division) VALUES ('$sub_needs_date', '$sub_needs_start_time', '$sub_needs_end_time',
 						'$sub_needs_division')";
-					$result = mysql_query($query);
+					$result = mysqli_query($dbc, $query);
 					}
 				$new_req = ' and new request(s) created';
 				}
@@ -251,13 +251,13 @@ if (isset($_POST['submitted'])){
 			time_format(sub_needs_end_time,'%i') as sub_needs_end_minutes from sub_needs 
 			WHERE sub_needs_division='$cd_div' and sub_needs_date='$cd_date' and sub_needs_covered='N' 
 			ORDER BY sub_needs_start_time asc";
-		$result = mysql_query($query);
-		$num_rows = mysql_num_rows($result);
+		$result = mysqli_query($dbc, $query);
+		$num_rows = mysqli_num_rows($result);
 		$sub_needs = array();
 		if ($num_rows != 0) {
 			$sub_message = array();
 			$change_message = array();
-			while ($row = mysql_fetch_array ($result, MYSQL_ASSOC)){
+			while ($row = mysqli_fetch_assoc ($result)){
 				$sub_needs_id = $row['sub_needs_id'];
 				$sns_hr = $row['sub_needs_start'];
 				$sns_mn = $row['sub_needs_start_minutes'];
@@ -390,12 +390,12 @@ if (isset($_POST['submitted'])){
 	$query = "INSERT into coverage(emp_id, coverage_date, coverage_start_time, coverage_end_time,
 		coverage_division, coverage_offdesk, coverage_reason) 
 		values('$emp_id', '$cd_date', '$cs_time', '$ce_time', '$cd_div', '$cd_onoff', '$cd_reason')";
-	$result = mysql_query($query) or die(mysql_error($dbc));
+	$result = mysqli_query($dbc, $query) or die(mysqli_error($dbc));
 	if ($result) {		
 		$query2 = "SELECT concat(first_name, ' ', last_name) as employee_name 
 			FROM employees where emp_id='$emp_id'";
-		$result2 = mysql_query($query2) or die(mysql_error($dbc));
-		$full_name = mysql_result($result2, 0);
+		$result2 = mysqli_query($dbc, $query2) or die(mysqli_error($dbc));
+		$full_name = mysqli_result($result2, 0);
 	
 		echo "<div class=\"message\"><b>Coverage entered for</b><br/>$full_name: <a href=\"$cd_yr/";
 		echo "$cd_mon/$cd_day\" title=\"See Schedule\">$cd_date</a>";
@@ -410,7 +410,7 @@ if (isset($_POST['submitted'])){
 			}
 		echo '</div>';
 		}
-		mysql_close();
+		mysqli_close($dbc);
 	}
 ?>
 <script>

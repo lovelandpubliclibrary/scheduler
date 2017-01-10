@@ -81,9 +81,9 @@ function validator() {
 <?php 
 $upcoming_closures = array();
 $now = date('Y-m-d');
-$query = "SELECT * from closures WHERE closure_date >= '$now' order by closure_date asc";
-$result = mysql_query($query);
-while ($row = mysql_fetch_array($result, MYSQL_ASSOC)){
+$query = "SELECT * FROM closures WHERE closure_date >= '$now' ORDER BY closure_date ASC";
+$result = mysqli_query($dbc, $query);
+while ($row = mysqli_fetch_assoc($result)){
 	$cdate = $row['closure_date'];
 	$cstime = $row['closure_start_time'];
 	$cetime = $row['closure_end_time'];
@@ -144,14 +144,14 @@ if (isset($_POST['submitted'])){
 	
 	if (empty($errors)) {
 		$query = "SELECT * from closures WHERE closure_date='$cd_date'";
-		$result = mysql_query($query);
-		$num_rows = mysql_num_rows($result);
+		$result = mysqli_query($dbc, $query);
+		$num_rows = mysqli_num_rows($result);
 
 		//Prevent duplicate data.
 		if ($num_rows == 0){
 			$query = "INSERT into closures(closure_date, closure_start_time, closure_end_time, closure_reason) 
 				values('$cd_date', '$cs_time', '$ce_time', '$cd_reason')";
-			$result = mysql_query($query) or die(mysql_error($dbc));
+			$result = mysqli_query($dbc, $query) or die(mysqli_error($dbc));
 			if ($result) {
 				echo "<div class=\"message\"><b>Closure entered:</b><br/>$cd_date";
 				if ($cd_reason != NULL){
