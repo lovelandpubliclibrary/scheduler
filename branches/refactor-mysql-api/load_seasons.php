@@ -10,17 +10,17 @@ $year_range = strtotime ('+5 years' , strtotime ( $thisyear ) ) ;
 $year_range = date('Y' , $year_range );
 
 //Query database to get last year and holidays
-require_once ('/home/teulberg/dev.lpl-repository.com/mysql_connect_sched2.php');
+require_once ('/home/teulberg/dev.lpl-repository.com/mysql_connect.php');
 $query = "SELECT year, memorial_day, labor_day FROM holidays ORDER BY year desc LIMIT 1";
-$result = mysqli_query($dbc, $query) or die(mysql_error($dbc));
+$result = mysqli_query($dbc, $query) or die(mysqli_error($dbc));
 
 if ($result){
-	while ($row = mysql_fetch_assoc($result)) {
+	while ($row = mysqli_fetch_assoc($result)) {
 		$recentyear = $row['year'];
 		}
 	}
 else{
-	echo (mysql_error());
+	echo (mysqli_error());
 }
 
 if ($recentyear == $year_range){
@@ -56,7 +56,7 @@ else {
 		echo "$year $memorial_day $labor_day<br/>";
 		$query2 = "INSERT into holidays(year, memorial_day, labor_day) 
 			values ('$year', '$memorial_day', '$labor_day')";
-		$result2 = mysqli_query($dbc, $query2) or die(mysql_error($dbc));
+		$result2 = mysqli_query($dbc, $query2) or die(mysqli_error($dbc));
 		}
 	}
 ?>

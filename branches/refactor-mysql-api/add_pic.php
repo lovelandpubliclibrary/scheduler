@@ -37,7 +37,7 @@ if (isset($_POST['submitted'])){
 				$dup_query = "SELECT * from pic where pic_schedule_id='$pic_id' and pic_day='$day' and week_type='$week_type'";
 				$dup_result = mysqli_query($dbc, $dup_query);
 				if ($dup_result){
-					$dup_num_rows = mysql_num_rows($dup_result);
+					$dup_num_rows = mysqli_num_rows($dup_result);
 					if ($dup_num_rows != 0) {
 						$query = "UPDATE pic SET emp_id='$value' WHERE pic_schedule_id='$pic_id' and pic_day='$day' and week_type='$week_type'";
 						$query2 = "UPDATE pic_schedules SET pic_start_date='$pic_start_date', pic_end_date='$pic_end_date'
@@ -65,11 +65,11 @@ if (isset($_POST['submitted'])){
 			(pic_start_date <= '$pic_end_date' and pic_end_date > '$pic_end_date')";
 		$dup_result = mysqli_query($dbc, $dup_query);
 		if ($dup_result){
-			$dup_num_rows = mysql_num_rows($dup_result);
+			$dup_num_rows = mysqli_num_rows($dup_result);
 			if ($dup_num_rows == 0) {
 				$query = "INSERT into pic_schedules (pic_start_date, pic_end_date) VALUES ('$pic_start_date','$pic_end_date')";
 				$result = mysqli_query($dbc, $query);
-				$pic_id = mysql_insert_id();
+				$pic_id = mysqli_insert_id($dbc);
 				
 				foreach ($pics as $week_type=>$day_array){
 					foreach($day_array as $day=>$value){
@@ -95,11 +95,11 @@ if (isset($_POST['submitted'])){
 			(pic_start_date <= '$pic_end_date' and pic_end_date > '$pic_end_date')";
 		$dup_result = mysqli_query($dbc, $dup_query);
 		if ($dup_result){
-			$dup_num_rows = mysql_num_rows($dup_result);
+			$dup_num_rows = mysqli_num_rows($dup_result);
 			if ($dup_num_rows == 0) {
 				$query = "INSERT into pic_schedules (pic_start_date, pic_end_date) VALUES ('$pic_start_date','$pic_end_date')";
 				$result = mysqli_query($dbc, $query);
-				$pic_id = mysql_insert_id();
+				$pic_id = mysqli_insert_id($dbc);
 				
 				foreach ($pics as $week_type=>$day_array){
 					foreach($day_array as $day=>$value){
@@ -125,9 +125,9 @@ $query = "SELECT emp_id, first_name, last_name, name_dup FROM employees WHERE ac
 	ORDER BY first_name";
 $result = mysqli_query($dbc, $query);
 if ($result){
-	$num_rows = mysql_num_rows($result);
+	$num_rows = mysqli_num_rows($result);
 	if ($num_rows != 0) {
-		while($row = mysql_fetch_array($result, MYSQL_ASSOC)){
+		while($row = mysqli_fetch_assoc($result)){
 			$emp_id = $row['emp_id'];
 			$fn = $row['first_name'];
 			$ln = $row['last_name'];
@@ -147,9 +147,9 @@ $prev_pics = array();
 $query = "SELECT * from pic_schedules where pic_end_date>='$today' order by pic_start_date asc";
 $result = mysqli_query($dbc, $query);
 if ($result){
-	$num_rows = mysql_num_rows($result);
+	$num_rows = mysqli_num_rows($result);
 	if ($num_rows != 0) {
-		while($row = mysql_fetch_array($result, MYSQL_ASSOC)){
+		while($row = mysqli_fetch_assoc($result)){
 			$pic_schedule_id = $row['pic_schedule_id'];
 			$pic_sd = $row['pic_start_date'];
 			$pic_ed = $row['pic_end_date'];
@@ -159,7 +159,7 @@ if ($result){
 			$query1 = "SELECT * from pic where pic_schedule_id='$pic_schedule_id'";
 			$result1 = mysqli_query($dbc, $query1);
 			if ($result1){
-				while($row = mysql_fetch_array($result1, MYSQL_ASSOC)){
+				while($row = mysqli_fetch_assoc($result1)){
 					$week_type = $row['week_type'];
 					$day = $row['pic_day'];
 					$pic_details[$week_type][$day] = $row['emp_id'];

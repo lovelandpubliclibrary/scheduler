@@ -20,9 +20,9 @@ $query = "SELECT emp_id, first_name, last_name FROM employees WHERE active='Acti
 	ORDER BY first_name";
 $result = mysqli_query($dbc, $query);
 if ($result){
-	$num_rows = mysql_num_rows($result);
+	$num_rows = mysqli_num_rows($result);
 	if ($num_rows != 0) {
-		while($row = mysql_fetch_array($result, MYSQL_ASSOC)){
+		while($row = mysqli_fetch_assoc($result)){
 			$emp_id = $row['emp_id'];
 			$fn = $row['first_name'];
 			$ln = $row['last_name'];
@@ -44,7 +44,7 @@ if (isset($_POST['submitted'])){
 		e.emp_id = c.emp_id and pic_coverage_date='$pic_date'";
 	$result = mysqli_query($dbc, $query);
 	if ($result){
-	$num_rows = mysql_num_rows($result);
+	$num_rows = mysqli_num_rows($result);
 		if ($num_rows != 0) {
 			$error = "There is already a PIC scheduled to cover this date.";
 			}

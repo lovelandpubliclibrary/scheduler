@@ -35,7 +35,7 @@ $query = "SELECT first_name, last_name, e.emp_id, coverage_id,
 		WHERE e.emp_id = t.emp_id and coverage_id = $coverage_id";
 $result = mysqli_query($dbc, $query);
 
-while ($row = mysql_fetch_array ($result, MYSQL_ASSOC)) {
+while ($row = mysqli_fetch_assoc ($result)) {
 	$first_name = $row['first_name'];
 	$last_name = $row['last_name'];
 	$emp_id = $row['emp_id'];
@@ -166,9 +166,9 @@ if (isset($_POST['edited'])) {
 		(('$cs_time' >= coverage_start_time and '$cs_time' < coverage_end_time) 
 		or ('$ce_time' > coverage_start_time and '$ce_time' <= coverage_end_time))";
 	$result = mysqli_query($dbc, $query);
-	$num_rows = mysql_num_rows($result);
+	$num_rows = mysqli_num_rows($result);
 	if ($num_rows != 0) {
-		while ($row = mysql_fetch_array ($result, MYSQL_ASSOC)){
+		while ($row = mysqli_fetch_array ($result)){
 			$full_name = $row['employee_name'];
 			$old_emp_id = $row['emp_id'];
 			$division = $row['division'];
@@ -188,7 +188,7 @@ if (isset($_POST['edited'])) {
 		$query = "UPDATE coverage SET coverage_division='$cd_div', coverage_date='$cd_date', coverage_start_time='$cs_time', 
 			coverage_end_time='$ce_time', coverage_offdesk='$cd_onoff', coverage_reason='$cd_reason'
 			WHERE coverage_id = '$coverage_id'";
-		$result = mysqli_query($dbc, $query) or die(mysql_error($dbc));
+		$result = mysqli_query($dbc, $query) or die(mysqli_error($dbc));
 		if ($result) {
 			if (isset($_SESSION['view_past'])){
 				$_SESSION['success'] = TRUE;
@@ -346,7 +346,7 @@ if (!empty($errors)) {
 		}
 	echo '</div>';
 	}
-mysql_close();
+mysqli_close($dbc);
 ?>
 <div class="coverform">
 	<div class="dp">Edit coverage for</div>

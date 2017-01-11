@@ -75,7 +75,7 @@ else {
 <div class="mobilewrapper_inner">
 
 <?php
-require_once ('../mysql_connect_sched2.php');
+require_once ('../mysql_connect.php');
 
 if (isset($_POST['delete'])){
 	$emp_id = $_POST['emp_id'];
@@ -106,14 +106,14 @@ if ((isset($division)) && ($division !== 'All')) {
 	$query = "SELECT emp_id, last_name, first_name, employee_number, exempt_status, weekly_hours, division, 
 		home_phone, mobile_phone FROM employees WHERE division like '%".$division."%' and active='Active'
 	ORDER BY division ASC, last_name asc";
-	$result = mysqli_query($dbc, $query) or die(mysql_error($dbc));
+	$result = mysqli_query($dbc, $query) or die(mysqli_error($dbc));
 	$num = mysql_num_rows ($result);
 
 	if ($num>0) {
 		echo '<table class="employees sortable"><thead><tr><th><b>Name</b></th><th><b>Emp. Number</b></th>
 		<th><b>Status</b></th><th><b>Weekly Hrs</b></th><th><b>Division</b></th><th></th><th></th></tr></thead><tbody>';
 	
-		while ($row = mysql_fetch_array ($result, MYSQL_ASSOC)) {
+		while ($row = mysqli_fetch_assoc($result)) {
 			echo '<tr><td class="nametip" data-name="'.$row['first_name'].' '.$row['last_name'].'" data-home_phone="'.
 			$row['home_phone'].'" data-mobile_phone="'.$row['mobile_phone'].'">' . $row['last_name'] . ', ' . $row['first_name'] . '</td><td>' . 
 			$row['employee_number'] . '</td><td>' . $row['exempt_status'] . '</td><td>' . 
@@ -133,27 +133,27 @@ if ((isset($division)) && ($division !== 'All')) {
 	
 		echo '</tbody></table></div></div>';
 	
-		mysql_free_result($result);
+		mysqli_free_result($result);
 		}
 	else {
 		echo '<p>No results.</p></div></div>';
 		}
 
-	mysql_close();
+	mysqli_close($dbc);
 	}
 
 else{
 	$query = "SELECT emp_id, last_name, first_name, employee_number, exempt_status, weekly_hours, division, 
 		home_phone, mobile_phone FROM employees WHERE active='Active'
 		ORDER BY division ASC, last_name asc";
-	$result = mysqli_query($dbc, $query) or die(mysql_error($dbc));
-	$num = mysql_num_rows ($result);
+	$result = mysqli_query($dbc, $query) or die(mysqli_error($dbc));
+	$num = mysqli_num_rows($result);
 
 	if ($num>0) {
 		echo '<table class="employees sortable"><thead><tr><th><b>Name</b></th><th><b>Emp. Number</b></th>
 		<th><b>Status</b></th><th><b>Weekly Hrs</b></th><th><b>Division</b></th><th></th><th></th></tr></thead><tbody>';
 	
-		while ($row = mysql_fetch_array ($result, MYSQL_ASSOC)) {
+		while ($row = mysqli_fetch_assoc($result)) {
 			echo '<tr><td class="nametip" data-name="'.$row['first_name'].' '.$row['last_name'].'" data-home_phone="'.
 			$row['home_phone'].'" data-mobile_phone="'.$row['mobile_phone'].'">'.$row['last_name'].', '.$row['first_name'].'</td><td>' . 
 			$row['employee_number'].'</td><td>'.$row['exempt_status'].'</td><td>'. 
@@ -173,14 +173,14 @@ else{
 	
 		echo '</tbody></table></div></div>';
 	
-		mysql_free_result($result);
+		mysqli_free_result($result);
 		}
 	else {
 		echo '<p>There are currently no employees of that type in the database.</p>';
 		echo '<p>We apologize for the inconvenience.</p></div></div>';
 		}
 
-	mysql_close();
+	mysqli_close($dbc);
 	}
 
 include ('./includes/footer.html');

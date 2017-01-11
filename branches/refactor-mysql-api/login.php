@@ -20,7 +20,7 @@ if (isset($_SESSION['role'])){
 	}
 else {
 	if (isset($_POST['submitted'])){
-		require_once('../mysql_connect_sched2.php');
+		require_once('../mysql_connect.php');
 		$errors = array();
 		if (empty($_POST['username'])){
 			$errors[] = 'You forgot to enter your username';
@@ -38,7 +38,7 @@ else {
 			$query = "SELECT login_id, username, role, emp_id, assignment_id 
 				FROM logins WHERE username ='$user' AND password=SHA('$p')";
 			$result = @mysqli_query($dbc, $query);
-			$row = mysql_fetch_array($result, MYSQL_NUM);
+			$row = mysqli_fetch_array($result, MYSQL_NUM);
 			
 			if ($row){
 				$_SESSION['role'] = $row[2];
@@ -61,7 +61,7 @@ else {
 				$errors[] = 'The user name and password <br/>do not match those on file.';
 				}
 			}
-		mysql_close();
+		mysqli_close($dbc);
 		}
 	else {
 		$errors = NULL;

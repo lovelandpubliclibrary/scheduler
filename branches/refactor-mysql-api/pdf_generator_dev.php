@@ -14,12 +14,12 @@ $year = date('Y');
 $page_title = "$day $month $year";
 include ('/home/teulberg/dev.lpl-repository.com/scheduler2/display_functions.php');
 
-require_once ('../mysql_connect_sched2.php'); //Connect to the db.
+require_once ('../mysql_connect.php'); //Connect to the db.
 $divisions = array();
-require_once ('../mysql_connect_sched2.php'); //Connect to the db.
+require_once ('../mysql_connect.php'); //Connect to the db.
 $query = "SELECT * from divisions ORDER BY div_name";
 $result = mysqli_query($dbc, $query);
-while ($row = mysql_fetch_assoc($result)) {
+while ($row = mysqli_fetch_assoc($result)) {
 	$divisions[$row['div_link']] = $row['div_name'];
 	}
 $now = strtotime("$today");

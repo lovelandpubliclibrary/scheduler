@@ -35,7 +35,7 @@ $query = "SELECT first_name, last_name, e.emp_id, timeoff_id,
 		WHERE e.emp_id = t.emp_id and timeoff_id = $timeoff_id";
 $result = mysqli_query($dbc, $query);
 
-while ($row = mysql_fetch_array ($result, MYSQL_ASSOC)) {
+while ($row = mysqli_fetch_assoc($result)) {
 	$first_name = $row['first_name'];
 	$last_name = $row['last_name'];
 	$emp_id = $row['emp_id'];
@@ -158,12 +158,12 @@ if (isset($_POST['edited'])) {
 		$query = "UPDATE timeoff SET timeoff_start_date='$ts_date', timeoff_start_time='$ts_time', 
 			timeoff_end_date='$te_date', timeoff_end_time='$te_time', timeoff_reason='$reason'
 			WHERE timeoff_id = '$timeoff_id'";
-		$result = mysqli_query($dbc, $query) or die(mysql_error($dbc));
+		$result = mysqli_query($dbc, $query) or die(mysqli_error($dbc));
 		if ($result){
 			if (isset($_SESSION['view_past'])){
 				$query = "SELECT division FROM employees WHERE emp_id='$emp_id'";
-				$result = mysqli_query($dbc, $query) or die(mysql_error($dbc));
-				while ($row = mysql_fetch_array ($result, MYSQL_ASSOC)){
+				$result = mysqli_query($dbc, $query) or die(mysqli_error($dbc));
+				while ($row = mysqli_fetch_assoc($result)){
 					$timeoff_div = $row['division'];
 					}
 
@@ -203,7 +203,7 @@ if (isset($_POST['edited'])) {
 			}
 		echo '</div>';
 		}
-	mysql_close();
+	mysqli_close($dbc);
 	}
 
 $page_title = "Edit Timeoff" ;

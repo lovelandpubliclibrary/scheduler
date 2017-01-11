@@ -23,10 +23,10 @@ if (isset($_POST['submitted'])){
 	include ('display_functions.php');
 
 	$divisions = array();
-	require_once ('../mysql_connect_sched2.php');
+	require_once ('../mysql_connect.php');
 	$query = "SELECT * from divisions ORDER BY div_name";
 	$result = mysqli_query($dbc, $query);
-	while ($row = mysql_fetch_assoc($result)) {
+	while ($row = mysqli_fetch_assoc($result)) {
 		$divisions[$row['div_link']] = $row['div_name'];
 		}
 	$now = strtotime("$today");

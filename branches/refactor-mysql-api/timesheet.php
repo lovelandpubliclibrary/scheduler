@@ -25,7 +25,7 @@ if (isset($this_emp_id)){
 		ORDER BY pp_start_date desc LIMIT 2";
 	$result = mysqli_query($dbc, $query);
 
-	while ($row = mysql_fetch_array($result, MYSQL_ASSOC)){
+	while ($row = mysqli_fetch_assoc($result)){
 		$pp_id = $row['pp_id'];
 		$pp_cycle = $row['pp_cycle'];
 		$pp_start_date = $row['pp_start_date'];
@@ -39,9 +39,9 @@ if (isset($this_emp_id)){
 		$query1 = "SELECT * from timesheet_confirm WHERE pp_id = '$pp_id' and emp_id = '$this_emp_id' 
 			and assignment_id = '$this_assignment_id'";
 		$result1 = mysqli_query($dbc, $query1);
-		if (($result1) && (mysql_num_rows($result1)!=0)){
+		if (($result1) && (mysqli_num_rows($result1)!=0)){
 			echo '<td class="scheddate confirmed">Timesheet confirmed</td>';
-			$row = mysql_fetch_array($result1, MYSQL_ASSOC);
+			$row = mysqli_fetch_assoc($result1);
 			if ($row['supervisor_approve'] == 'Y'){
 				echo '<td class="locked">Locked</td><td><form action="view_my_timesheet" method="post">
 				<input type="hidden" name="pp_id" value="'.$pp_id.'"/>

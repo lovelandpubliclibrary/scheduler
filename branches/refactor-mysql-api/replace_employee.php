@@ -209,12 +209,12 @@ if (isset($_POST['submitted'])) {
 		//Check for previous record.
 		$query = "SELECT employee_number, first_name, last_name FROM employees WHERE employee_number='$empn' or (first_name='$fn' and last_name='$ln')";
 		$result = mysqli_query($dbc, $query);
-		if (mysql_num_rows($result) == 0) {
+		if (mysqli_num_rows($result) == 0) {
 			$query2 = "SELECT emp_id, first_name FROM employees where first_name='$fn'";
 			$result2 = mysqli_query($dbc, $query2);
 			
-			if (mysql_num_rows($result2) != 0) {
-				while ($row2 = mysql_fetch_array($result2, MYSQL_ASSOC)){
+			if (mysqli_num_rows($result2) != 0) {
+				while ($row2 = mysqli_fetch_assoc($result2)){
 					$emp_id = $row2['emp_id'];
 					$query3 = "UPDATE employees SET name_dup='Y' WHERE emp_id='$emp_id'";
 					$result3 = mysqli_query($dbc, $query3);
@@ -226,14 +226,14 @@ if (isset($_POST['submitted'])) {
 					VALUES ('$empn', '$fn', '$ln', '$div', '$exs', '$hrs', 'Active', 'Y', '$safe_home_phone','$safe_mobile_phone', null)";
 				$result4 = mysqli_query($dbc, $query4);
 				if ($result4) {
-					$emp_id = mysql_insert_id();
+					$emp_id = mysqli_insert_id($dbc);
 					$query5 = "UPDATE employees SET active='Inactive' WHERE emp_id='$oldemp_id'";
 					$result5 = mysqli_query($dbc, $query5);
 					
 					$query6 = "SELECT specific_schedule from schedules WHERE schedule_end_date>'$today'";
 					$result6 = mysqli_query($dbc, $query6);
 					
-					while ($row6 = mysql_fetch_array($result6, MYSQL_ASSOC)){
+					while ($row6 = mysqli_fetch_assoc($result6)){
 						$specific_schedule = $row6['specific_schedule'];
 						$query7 = "INSERT into shifts (week_type, shift_day, emp_id, shift_start, shift_end, 
 							desk_start, desk_end, desk_start2, desk_end2, lunch_start, lunch_end, specific_schedule, schedule_create) 
@@ -265,14 +265,14 @@ if (isset($_POST['submitted'])) {
 					VALUES ('$empn', '$fn', '$ln', '$div', '$exs', '$hrs', 'Active', '$safe_home_phone','$safe_mobile_phone', null)";
 				$result3 = mysqli_query($dbc, $query3);
 				if ($result3) {
-					$emp_id = mysql_insert_id();
+					$emp_id = mysqli_insert_id($dbc);
 					$query4 = "UPDATE employees SET active='Inactive' WHERE emp_id='$oldemp_id'";
 					$result4 = mysqli_query($dbc, $query4);
 					
 					$query5 = "SELECT specific_schedule from schedules WHERE schedule_end_date>'$today'";
 					$result5 = mysqli_query($dbc, $query5);
 					
-					while ($row5 = mysql_fetch_array($result5, MYSQL_ASSOC)){
+					while ($row5 = mysqli_fetch_assoc($result5, MYSQL_ASSOC)){
 						$specific_schedule = $row5['specific_schedule'];
 						$query6 = "INSERT into shifts (week_type, shift_day, emp_id, shift_start, shift_end, 
 							desk_start, desk_end, desk_start2, desk_end2, lunch_start, lunch_end, specific_schedule, schedule_create) 
@@ -301,7 +301,7 @@ if (isset($_POST['submitted'])) {
 		else {
 			echo '<div class="message"><div class="errorhead"><h5>Error!</h5></div>
 			<div class="errortext">There is a duplicate record. <br/>The following records already exist:<br/><br/>';
-				while ($row = mysql_fetch_array ($result, MYSQL_ASSOC)) {
+				while ($row = mysqli_fetch_assoc($result)) {
 					echo  'Employee #' . $row['employee_number'] . ', ' . $row['first_name'] . ' ' . $row['last_name'] . '<br/>';
 					}
 				echo '</div></div>';
@@ -320,9 +320,9 @@ if (isset($_POST['submitted'])) {
 //Get employee info for dynamic selects
 $query = "SELECT division, emp_id, first_name, last_name FROM employees WHERE active='Active'
 	ORDER BY division asc, last_name asc";
-$result = mysqli_query($dbc, $query) or die(mysql_error($dbc));
+$result = mysqli_query($dbc, $query) or die(mysqli_error($dbc));
 
-while ($row = mysql_fetch_array ($result, MYSQL_ASSOC)) {
+while ($row = mysqli_fetch_assoc($result)) {
 	$array[]=$row;
 	}
 ?>

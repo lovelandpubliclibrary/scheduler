@@ -16,7 +16,7 @@ $pps = array();
 $query = "SELECT * from pay_periods where pp_start_date<='$today' ORDER BY pp_start_date desc LIMIT 4";
 $result = mysqli_query($dbc, $query);
 
-while ($row = mysql_fetch_array($result, MYSQL_ASSOC)){
+while ($row = mysqli_fetch_assoc($result)){
 	$pp_id = $row['pp_id'];
 	$pp_date = $row['pp_start_date'];
 	$pps[$pp_id] = $pp_date;
@@ -30,7 +30,7 @@ if (isset($_POST['submitted'])){
 	$query = "SELECT * from time_entry t, pay_periods p, employees e WHERE p.pp_id = t.pp_id and p.pp_id='$pp_id'
 		and e.emp_id = t.emp_id order by e.last_name asc, entry_date asc";
 	$result = mysqli_query($dbc, $query);
-	while($row = mysql_fetch_array($result, MYSQL_ASSOC)){
+	while($row = mysqli_fetch_assoc($result)){
 		$fn = $row['first_name'];
 		$ln = $row['last_name'];
 		$empno = $row['employee_number'];

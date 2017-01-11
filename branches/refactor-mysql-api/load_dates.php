@@ -10,11 +10,11 @@ $month6 = strtotime ('+2 years' , strtotime ( $today ) ) ;
 $month6 = date('Y-m-d' , $month6 );
 
 //Query database to get most recent date and week
-require_once ('/home/teulberg/dev.lpl-repository.com/mysql_connect_sched2.php');
+require_once ('/home/teulberg/dev.lpl-repository.com/mysql_connect.php');
 $query = "SELECT date, week_type FROM dates ORDER BY date_id desc LIMIT 1";
-$result = mysqli_query($dbc, $query) or die(mysql_error($dbc));
+$result = mysqli_query($dbc, $query) or die(mysqli_error($dbc));
 
-while ($row = mysql_fetch_assoc($result)) {
+while ($row = mysqli_fetch_assoc($result)) {
 	$recentdate = $row['date'];
 	$recentweek_type = $row['week_type'];
 	}
@@ -72,7 +72,7 @@ else {
 			}
 		
 		$query = "INSERT into dates values (null, '$d', '$recentweek_type')";
-		$result = mysql_query ($query) or die(mysql_error($dbc));
+		$result = mysqli_query($dbc, $query) or die(mysqli_error($dbc));
 		echo $d .' added as '. ucwords($recentweek_type).' Week<br/>';
 		echo "\n";
 		}

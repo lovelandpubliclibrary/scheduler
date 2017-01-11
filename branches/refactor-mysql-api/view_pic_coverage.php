@@ -49,10 +49,10 @@ $query = "SELECT pic_coverage_id, pic_coverage_date, first_name, e.emp_id
 	and pic_coverage_date >= '$today' ORDER BY pic_coverage_date asc";
 $result = mysqli_query($dbc, $query);
 if ($result){
-	$num_rows = mysql_num_rows($result);
+	$num_rows = mysqli_num_rows($result);
 	if ($num_rows != 0) {
 		echo '<div class="divboxes"><table class="coverage">';
-		while ($row = mysql_fetch_array($result, MYSQL_ASSOC)){
+		while ($row = mysqli_fetch_assoc($result)){
 			$pic_coverage_id = $row['pic_coverage_id'];
 			$pic_coverage_date = $row['pic_coverage_date'];
 			$first_name = $row['first_name'];

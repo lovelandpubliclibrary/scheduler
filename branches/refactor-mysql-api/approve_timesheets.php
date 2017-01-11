@@ -25,7 +25,7 @@ $query = "SELECT pp_id, pp_start_date from pay_periods where pp_start_date<='$to
 	ORDER BY pp_start_date desc LIMIT 2";
 $result = mysqli_query($dbc, $query);
 
-while ($row = mysql_fetch_array($result, MYSQL_ASSOC)){
+while ($row = mysqli_fetch_assoc($result)){
 	$pp_id = $row['pp_id'];
 	$pp_start_date = $row['pp_start_date'];
 	
@@ -63,13 +63,13 @@ if ((isset($division)) && ($division != 'All')) {
 	
 	$query = "SELECT last_name, first_name, e.emp_id, assignment_id FROM employees e, logins l WHERE active='Active'
 		and e.emp_id = l.emp_id and division like '%".$division."%' ORDER BY last_name asc";
-	$result = mysqli_query($dbc, $query) or die(mysql_error($dbc));
-	$num = mysql_num_rows ($result);
+	$result = mysqli_query($dbc, $query) or die(mysqli_error($dbc));
+	$num = mysqli_num_rows($result);
 
 	if ($num>0) {
 		echo '<div class="divboxes"><table class="approve_timesheets"><tr><th><b>Name</b></th><th><b>Timesheet Start</b></th>
 			<th><b>Timesheet End</b></th><th><b>Employee Confirmed</b></th><th><b>Supervisor Approved</b></th><th></th></tr>';
-		while($row = mysql_fetch_array($result, MYSQL_ASSOC)){
+		while($row = mysqli_fetch_assoc($result)){
 			$ln = $row['last_name'];
 			$fn = $row['first_name'];
 			$emp_id = $row['emp_id'];
@@ -79,8 +79,8 @@ if ((isset($division)) && ($division != 'All')) {
 			foreach ($payperiods as $pp_id=>$dates){
 				$query1 = "SELECT * from timesheet_confirm WHERE emp_id='$emp_id' and pp_id='$pp_id'";
 				$result1 = mysqli_query($dbc, $query1);
-				if (($result1)&&(mysql_num_rows($result1) == 1)){
-					while($row1 = mysql_fetch_array($result1, MYSQL_ASSOC)){
+				if (($result1)&&(mysqli_num_rows($result1) == 1)){
+					while($row1 = mysqli_fetch_assoc($result1)){
 						$emp_confirm = $row1['employee_confirm'];
 						$sup_approve = $row1['supervisor_approve'];
 						}
@@ -127,14 +127,14 @@ else{
 	unset($_SESSION['timesheet_view_div']);
 	$query = "SELECT last_name, first_name, e.emp_id, assignment_id FROM employees e, logins l WHERE active='Active'
 		and e.emp_id = l.emp_id ORDER BY last_name asc";
-	$result = mysqli_query($dbc, $query) or die(mysql_error($dbc));
-	$num = mysql_num_rows ($result);
+	$result = mysqli_query($dbc, $query) or die(mysqli_error($dbc));
+	$num = mysqli_num_rows($result);
 
 	if ($num>0) {
 		
 		echo '<div class="divboxes"><table class="approve_timesheets"><tr><th><b>Name</b></th><th><b>Timesheet Start</b></th>
 			<th><b>Timesheet End</b></th><th><b>Employee Confirmed</b></th><th><b>Supervisor Approved</b></th><th></th></tr>';
-		while($row = mysql_fetch_array($result, MYSQL_ASSOC)){
+		while($row = mysqli_fetch_assoc($result)){
 			$ln = $row['last_name'];
 			$fn = $row['first_name'];
 			$emp_id = $row['emp_id'];
@@ -144,8 +144,8 @@ else{
 			foreach ($payperiods as $pp_id=>$dates){
 				$query1 = "SELECT * from timesheet_confirm WHERE emp_id='$emp_id' and pp_id='$pp_id' and assignment_id = '$assignment_id'";
 				$result1 = mysqli_query($dbc, $query1);
-				if (($result1)&&(mysql_num_rows($result1) == 1)){
-					while($row1 = mysql_fetch_array($result1, MYSQL_ASSOC)){
+				if (($result1)&&(mysqli_num_rows($result1) == 1)){
+					while($row1 = mysqli_fetch_assoc($result1)){
 						$emp_confirm = $row1['employee_confirm'];
 						$sup_approve = $row1['supervisor_approve'];
 						}

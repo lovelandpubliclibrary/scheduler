@@ -28,7 +28,7 @@ $year = date('Y', $oneweek);
 $page_title = "$day $month $year";
 include ('/home/teulberg/lpl-repository.com/scheduler2/display_functions.php');
 
-require_once ('/home/teulberg/lpl-repository.com/mysql_connect_sched2.php'); //Connect to the db.
+require_once ('/home/teulberg/lpl-repository.com/mysql_connect.php'); //Connect to the db.
 
 $dom = date('j', $oneweek);
 $day_long = date('l', $oneweek);

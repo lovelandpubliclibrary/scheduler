@@ -16,7 +16,7 @@ function subs(){
 	$query = "SELECT emp_id, concat(first_name, ' ', last_name) as employee_name FROM employees 
 		WHERE division = 'Subs' and active = 'Active' ORDER BY last_name asc";
 	$result = mysqli_query($dbc, $query);
-	while ($row = mysql_fetch_array ($result, MYSQL_ASSOC)){
+	while ($row = mysqli_fetch_assoc($result)){
 		$emp_id = $row['emp_id'];
 		$name = $row['employee_name'];
 		$subs[$emp_id] = $name;
@@ -119,7 +119,7 @@ if (($_SESSION['role'] == 'Admin')||($_SESSION['role'] == 'Supervisor')){
 		//Insert into db
 		$query = "INSERT into sub_needs (sub_needs_date, sub_needs_start_time, sub_needs_end_time, sub_needs_division) 
 			values ('$sn_date', '$sns_time', '$sne_time', '$sn_div')";
-		$result = mysqli_query($dbc, $query) or die(mysql_error($dbc));
+		$result = mysqli_query($dbc, $query) or die(mysqli_error($dbc));
 		if ($result) {
 			echo "<div class=\"message\">Sub need shift entered for <b>$sn_div</b> on <b>$sn_date</b></div>";
 			}
@@ -146,9 +146,9 @@ if (($_SESSION['role'] == 'Admin')||($_SESSION['role'] == 'Supervisor')){
 			or ('$sub_needs_end_time' > coverage_start_time and '$sub_needs_end_time' <= coverage_end_time) 
 			or ('$sub_needs_start_time' <= coverage_start_time and '$sub_needs_end_time' >= coverage_end_time))"; 
 		$result = mysqli_query($dbc, $query);
-		$num_rows = mysql_num_rows($result);
+		$num_rows = mysqli_num_rows($result);
 		if ($num_rows != 0) {
-			while ($row = mysql_fetch_array ($result, MYSQL_ASSOC)){
+			while ($row = mysqli_fetch_assoc($result)){
 				$full_name = $row['employee_name'];
 				$old_emp_id = $row['emp_id'];
 				$division = $row['division'];
@@ -230,12 +230,12 @@ if (($_SESSION['role'] == 'Admin')||($_SESSION['role'] == 'Supervisor')){
 		}
 	$result = mysqli_query($dbc, $query);
 	if ($result){
-		$num_rows = mysql_num_rows($result);
+		$num_rows = mysqli_num_rows($result);
 		if ($num_rows != 0) {
 			echo '<div class="divboxes">'."\n".'<table class="sub_needs sort">'."\n";
 			echo '<tr class="headrow"><th class="division">Division</th><th class="datetime">Shift</th>
 				<th class="assign">Assign</th><th class="confirm"></th><th></th></tr>';
-			while ($row = mysql_fetch_array($result, MYSQL_ASSOC)){
+			while ($row = mysqli_fetch_assoc($result)){
 				$sub_needs_id = $row['sub_needs_id'];
 				$sub_needs_division = $row['sub_needs_division'];
 				$sub_needs_date = $row['sub_needs_date'];
@@ -318,7 +318,7 @@ if (($_SESSION['role'] == 'Admin')||($_SESSION['role'] == 'Supervisor')){
 				$declined_ordered = array();
 				$query2 = "SELECT emp_id from sub_needs_declined WHERE sub_needs_id='$sub_needs_id'";
 				$result2 = mysqli_query($dbc, $query2);
-				while ($row2 = mysql_fetch_array($result2, MYSQL_ASSOC)){
+				while ($row2 = mysqli_fetch_assoc($result2)){
 					$emp_id = $row2['emp_id'];
 					$declined[] = $emp_id;
 					}
@@ -483,10 +483,10 @@ elseif ($_SESSION['role'] == 'Subs'){
 		ORDER by sub_needs_date asc, sub_needs_start_time asc, sub_needs_division asc";
 	$result = mysqli_query($dbc, $query);
 	if ($result){
-		$num_rows = mysql_num_rows($result);
+		$num_rows = mysqli_num_rows($result);
 		if ($num_rows != 0) {
 			echo '<div class="divboxes">'."\n".'<table class="sub_needs">'."\n";
-			while ($row = mysql_fetch_array($result, MYSQL_ASSOC)){
+			while ($row = mysqli_fetch_assoc($result)){
 				$sub_needs_id = $row['sub_needs_id'];
 				$sub_needs_division = $row['sub_needs_division'];
 				$sub_needs_date = $row['sub_needs_date'];
@@ -559,7 +559,7 @@ elseif ($_SESSION['role'] == 'Subs'){
 				$declined = array();
 				$query2 = "SELECT * from sub_needs_declined WHERE sub_needs_id='$sub_needs_id'";
 				$result2 = mysqli_query($dbc, $query2);
-				while ($row2 = mysql_fetch_array($result2, MYSQL_ASSOC)){
+				while ($row2 = mysqli_fetch_assoc($result2)){
 					$sub_needs_declined_id = $row2['sub_needs_declined_id'];
 					$emp_id = $row2['emp_id'];
 					$comment = $row2['comment'];
@@ -570,7 +570,7 @@ elseif ($_SESSION['role'] == 'Subs'){
 				$available = array();
 				$query3 = "SELECT * from sub_needs_available WHERE sub_needs_id='$sub_needs_id'";
 				$result3 = mysqli_query($dbc, $query3);
-				while ($row3 = mysql_fetch_array($result3, MYSQL_ASSOC)){
+				while ($row3 = mysqli_fetch_assoc($result3)){
 					$sub_needs_available_id = $row3['sub_needs_available_id'];
 					$emp_id = $row3['emp_id'];
 					$comment2 = $row3['comment'];

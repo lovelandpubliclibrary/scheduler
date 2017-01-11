@@ -33,7 +33,7 @@ $employee_query = "SELECT emp_id, first_name, last_name FROM employees where (di
 	order by exempt_status asc, weekly_hours desc, first_name asc";
 $employee_result = mysqli_query($dbc, $employee_query);
 
-while ($row = mysql_fetch_array ($employee_result, MYSQL_ASSOC)) {
+while ($row = mysqli_fetch_assoc($employee_result)) {
 	$employees[] = array('emp_id'=>$row['emp_id'],'first_name'=>$row['first_name'],'last_name'=>$row['last_name']);
 	}
 	
@@ -48,9 +48,9 @@ if(isset($_POST['init'])){
 	$query = "SELECT * from schedules WHERE division='$division' and (schedule_start_date >= '$schedstart') 
 		and (schedule_end_date <= '$schedend')";
 	$result = mysqli_query($dbc, $query);
-	$num_rows = mysql_num_rows($result);
+	$num_rows = mysqli_num_rows($result);
 	if ($num_rows != 0){
-		while ($row = mysql_fetch_array ($result, MYSQL_ASSOC)) {
+		while ($row = mysqli_fetch_assoc($result)) {
 			$schedule_id = $row['schedule_id'];
 			}
 		$query = "DELETE from schedules WHERE schedule_id='$schedule_id'";
@@ -59,9 +59,9 @@ if(isset($_POST['init'])){
 	$query = "SELECT * from schedules WHERE division='$division' and 
 		(schedule_start_date < '$schedstart') and (schedule_end_date > '$schedend')";
 	$result = mysqli_query($dbc, $query);
-	$num_rows = mysql_num_rows($result);
+	$num_rows = mysqli_num_rows($result);
 	if ($num_rows != 0){
-		while ($row = mysql_fetch_array ($result, MYSQL_ASSOC)) {
+		while ($row = mysqli_fetch_assoc($result)) {
 			$schedule_id = $row['schedule_id'];
 			$oldschedstart = $row['schedule_start_date'];
 			$oldschedend = $row['schedule_end_date'];
@@ -78,9 +78,9 @@ if(isset($_POST['init'])){
 	$query = "SELECT * from schedules WHERE division='$division' and (schedule_start_date >= '$schedstart') 
 		and (schedule_start_date < '$schedend') and (schedule_end_date > '$schedend')";
 	$result = mysqli_query($dbc, $query);
-	$num_rows = mysql_num_rows($result);
+	$num_rows = mysqli_num_rows($result);
 	if ($num_rows != 0){
-		while ($row = mysql_fetch_array ($result, MYSQL_ASSOC)) {
+		while ($row = mysqli_fetch_assoc($result)) {
 			$schedule_id = $row['schedule_id'];
 			}
 		$newstart = date('Y-m-d', strtotime($schedend.'+1days'));
@@ -90,9 +90,9 @@ if(isset($_POST['init'])){
 	$query = "SELECT * from schedules WHERE division='$division' and (schedule_end_date <= '$schedend') and 
 		(schedule_end_date > '$schedstart') and (schedule_start_date < '$schedstart')";
 	$result = mysqli_query($dbc, $query);
-	$num_rows = mysql_num_rows($result);
+	$num_rows = mysqli_num_rows($result);
 	if ($num_rows != 0){
-		while ($row = mysql_fetch_array ($result, MYSQL_ASSOC)) {
+		while ($row = mysqli_fetch_assoc($result)) {
 			$schedule_id = $row['schedule_id'];
 			}
 		$newend = date('Y-m-d', strtotime($schedstart.'-1days'));
@@ -103,7 +103,7 @@ if(isset($_POST['init'])){
 	$max = 0;
 	$query = "SELECT MAX(specific_schedule) FROM schedules";
 	$result = mysqli_query($dbc, $query);
-	while ($row = mysql_fetch_array ($result, MYSQL_NUM)) {
+	while ($row = mysqli_fetch_array ($result, MYSQL_NUM)) {
 		$max = $row[0];
 		}
 	$max += 1;
@@ -119,7 +119,7 @@ if(isset($_POST['separate'])){
 	$max = 0;
 	$query = "SELECT MAX(specific_schedule) FROM schedules";
 	$result = mysqli_query($dbc, $query);
-	while ($row = mysql_fetch_array ($result, MYSQL_NUM)) {
+	while ($row = mysqli_fetch_array ($result, MYSQL_NUM)) {
 		$max = $row[0];
 		}
 	$max += 1;
@@ -142,9 +142,9 @@ $date_query = "SELECT * from schedules WHERE specific_schedule='$specific_schedu
 	and schedule_start_date != '$schedstart' ORDER BY schedule_end_date asc";
 $date_result = mysqli_query($dbc, $date_query);
 if ($date_result){
-	$num_rows = mysql_num_rows($date_result);
+	$num_rows = mysqli_num_rows($date_result);
 	if ($num_rows != 0) {
-		while ($row = mysql_fetch_array ($date_result, MYSQL_ASSOC)) {
+		while ($row = mysqli_fetch_assoc($date_result)) {
 			$start = $row['schedule_start_date'];
 			$end = $row['schedule_end_date'];
 			$start = date('n', strtotime($start)).'/'.date('j', strtotime($start)).'/'.date('Y', strtotime($start));
@@ -170,7 +170,7 @@ foreach ($employees as $key=>$employeearray){
 	$query = "SELECT * from shifts where specific_schedule='$specific_schedule'and emp_id='$emp_id'";
 	$result = mysqli_query($dbc, $query);
 	if ($result){
-		while ($row = mysql_fetch_array ($result, MYSQL_ASSOC)) {
+		while ($row = mysqli_fetch_assoc($result)) {
 			$wt = $row['week_type'];
 			$d = $row['shift_day'];
 			$ss = explode(":",$row['shift_start']);
@@ -247,7 +247,7 @@ $query = "SELECT * from deficiencies WHERE def_division='$division' and def_sche
 	ORDER BY def_week asc, def_day asc, def_start asc";
 $result = mysqli_query($dbc, $query);
 if ($result){
-	while ($row = mysql_fetch_array ($result, MYSQL_ASSOC)) {
+	while ($row = mysqli_fetch_assoc($result)) {
 		$def_id = $row['def_id'];
 		$wt = $row['def_week'];
 		$d = $row['def_day'];
@@ -275,7 +275,7 @@ if(isset($_POST['day_submit'])){
 	
 	$emp_id_str = implode(",",$emp_id_arr);
 	$deleteold_query = "DELETE from shifts WHERE emp_id not in ($emp_id_str) and specific_schedule='$specific_schedule'";
-	$deleteold_result = mysqli_query($dbc, $deleteold_query) or die(mysql_error());
+	$deleteold_result = mysqli_query($dbc, $deleteold_query) or die(mysqli_error());
 	
 	foreach ($schedule_array as $emp_id=>$weekarray){
 		foreach ($weekarray as $week_type=>$dayarray){
@@ -388,13 +388,13 @@ if(isset($_POST['day_submit'])){
 					$update_query = "UPDATE shifts SET shift_start='$ss', shift_end='$se', desk_start='$ds', desk_end='$de', 
 						desk_start2='$ds2', desk_end2='$de2',lunch_start='$ls', lunch_end='$le'
 						WHERE week_type='$week_type' and shift_day='$day' and specific_schedule='$specific_schedule' and emp_id='$emp_id'";
-					$update_result = mysqli_query($dbc, $update_query) or die(mysql_error());
+					$update_result = mysqli_query($dbc, $update_query) or die(mysqli_error());
 					}
 				else{
 					$insert_query = "INSERT into shifts (week_type, shift_day, emp_id, shift_start, shift_end, desk_start, desk_end, 
 						desk_start2, desk_end2, lunch_start, lunch_end, specific_schedule) 
 						values ('$week_type','$day','$emp_id','$ss', '$se', '$ds', '$de', '$ds2', '$de2', '$ls', '$le', '$specific_schedule')";
-					$insert_result = mysqli_query($dbc, $insert_query) or die(mysql_error());
+					$insert_result = mysqli_query($dbc, $insert_query) or die(mysqli_error());
 					}
 					
 				$prev_schedules[$emp_id][$week_type][$day] = $schedule_array[$emp_id][$week_type][$day];
@@ -451,8 +451,8 @@ if(isset($_POST['day_submit'])){
 				if (($defs != '00:00:00') && ($defe != '00:00:00')){
 					$def_query = "INSERT into deficiencies(def_schedule, def_week, def_day, def_division, def_start, def_end) values
 						('$specific_schedule','$week_type','$day','$division','$defs','$defe')";
-					$def_result = mysqli_query($dbc, $def_query) or die(mysql_error($dbc));
-					$id = mysql_insert_id();
+					$def_result = mysqli_query($dbc, $def_query) or die(mysqli_error($dbc));
+					$id = mysqli_insert_id($dbc);
 					if ($defs_hr > 12){$defs_hr = $defs_hr-12;}
 					$prev_def[$week_type][$day][$id]['def_start']['hours'] = $defs_hr;
 					$prev_def[$week_type][$day][$id]['def_start']['minutes'] = $defs_mn;
@@ -463,8 +463,8 @@ if(isset($_POST['day_submit'])){
 				if (($defs2 != '00:00:00') && ($defe2 != '00:00:00')){
 					$def_query = "INSERT into deficiencies(def_schedule, def_week, def_day, def_division, def_start, def_end) values
 						('$specific_schedule','$week_type','$day','$division','$defs2','$defe2')";
-					$def_result = mysqli_query($dbc, $def_query) or die(mysql_error($dbc));
-					$id2 = mysql_insert_id();
+					$def_result = mysqli_query($dbc, $def_query) or die(mysqli_error($dbc));
+					$id2 = mysqli_insert_id($dbc);
 					if ($defs_hr2 > 12){$defs_hr2 = $defs_hr2-12;}
 					$prev_def[$week_type][$day][$id2]['def_start']['hours'] = $defs_hr2;
 					$prev_def[$week_type][$day][$id2]['def_start']['minutes'] = $defs_mn2;
@@ -477,7 +477,7 @@ if(isset($_POST['day_submit'])){
 				$id = key($prev_def[$week_type][$day]);
 				if (($defs != '00:00:00') && ($defe != '00:00:00')){
 					$def_query = "UPDATE deficiencies set def_start='$defs', def_end='$defe' WHERE def_id='$id'";
-					$def_result = mysqli_query($dbc, $def_query) or die(mysql_error($dbc));
+					$def_result = mysqli_query($dbc, $def_query) or die(mysqli_error($dbc));
 					if ($defs_hr > 12){$defs_hr = $defs_hr-12;}
 					$prev_def[$week_type][$day][$id]['def_start']['hours'] = $defs_hr;
 					$prev_def[$week_type][$day][$id]['def_start']['minutes'] = $defs_mn;
@@ -487,14 +487,14 @@ if(isset($_POST['day_submit'])){
 					}
 				else{
 					$def_query = "DELETE from deficiencies WHERE def_id='$id'";
-					$def_result = mysqli_query($dbc, $def_query) or die(mysql_error($dbc));
+					$def_result = mysqli_query($dbc, $def_query) or die(mysqli_error($dbc));
 					unset($prev_def[$week_type][$day][$id]);
 					}
 				if (($defs2 != '00:00:00') && ($defe2 != '00:00:00')){
 					$def_query = "INSERT into deficiencies(def_schedule, def_week, def_day, def_division, def_start, def_end) values
 						('$specific_schedule','$week_type','$day','$division','$defs2','$defe2')";
-					$def_result = mysqli_query($dbc, $def_query) or die(mysql_error($dbc));
-					$id2 = mysql_insert_id();
+					$def_result = mysqli_query($dbc, $def_query) or die(mysqli_error($dbc));
+					$id2 = mysqli_insert_id($dbc);
 					if ($defs_hr2 > 12){$defs_hr2 = $defs_hr2-12;}
 					$prev_def[$week_type][$day][$id2]['def_start']['hours'] = $defs_hr2;
 					$prev_def[$week_type][$day][$id2]['def_start']['minutes'] = $defs_mn2;
@@ -510,7 +510,7 @@ if(isset($_POST['day_submit'])){
 					}
 				if (($defs != '00:00:00') && ($defe != '00:00:00')){
 					$def_query = "UPDATE deficiencies set def_start='$defs', def_end='$defe' WHERE def_id='$keys[0]'";
-					$def_result = mysqli_query($dbc, $def_query) or die(mysql_error($dbc));
+					$def_result = mysqli_query($dbc, $def_query) or die(mysqli_error($dbc));
 					if ($defs_hr > 12){$defs_hr = $defs_hr-12;}
 					$prev_def[$week_type][$day][$keys[0]]['def_start']['hours'] = $defs_hr;
 					$prev_def[$week_type][$day][$keys[0]]['def_start']['minutes'] = $defs_mn;
@@ -520,12 +520,12 @@ if(isset($_POST['day_submit'])){
 					}
 				else{
 					$def_query = "DELETE from deficiencies WHERE def_id='$keys[0]'";
-					$def_result = mysqli_query($dbc, $def_query) or die(mysql_error($dbc));
+					$def_result = mysqli_query($dbc, $def_query) or die(mysqli_error($dbc));
 					unset($prev_def[$week_type][$day][$keys[0]]);
 					}
 				if (($defs2 != '00:00:00') && ($defe2 != '00:00:00')){
 					$def_query = "UPDATE deficiencies set def_start='$defs2', def_end='$defe2' WHERE def_id='$keys[1]'";
-					$def_result = mysqli_query($dbc, $def_query) or die(mysql_error($dbc));
+					$def_result = mysqli_query($dbc, $def_query) or die(mysqli_error($dbc));
 					if ($defs_hr2 > 12){$defs_hr2 = $defs_hr2-12;}
 					$prev_def[$week_type][$day][$keys[1]]['def_start']['hours'] = $defs_hr2;
 					$prev_def[$week_type][$day][$keys[1]]['def_start']['minutes'] = $defs_mn2;
@@ -535,7 +535,7 @@ if(isset($_POST['day_submit'])){
 					}
 				else{
 					$def_query = "DELETE from deficiencies WHERE def_id='$keys[1]'";
-					$def_result = mysqli_query($dbc, $def_query) or die(mysql_error($dbc));
+					$def_result = mysqli_query($dbc, $def_query) or die(mysqli_error($dbc));
 					unset($prev_def[$week_type][$day][$keys[1]]);
 					}
 				}

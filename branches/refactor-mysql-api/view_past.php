@@ -110,7 +110,7 @@ if (isset($_POST['timeoff_delete'])){
 	
 	$query = "SELECT division FROM employees WHERE emp_id='$emp_id'";
 	$result = mysqli_query($dbc, $query);
-	while ($row = mysql_fetch_array ($result, MYSQL_ASSOC)){
+	while ($row = mysqli_fetch_assoc($result)){
 		$timeoff_div = $row['division'];
 		}
 	$query1 = "DELETE from timeoff WHERE timeoff_id='$timeoff_id'";
@@ -152,10 +152,10 @@ if (((isset($_POST['submitted'])) && (isset($_POST['timeoff'])) && ($_POST['time
 		ORDER by timeoff_start_date desc, first_name asc";
 	$result = mysqli_query($dbc, $query);
 	if ($result){
-		$num_rows = mysql_num_rows($result);
+		$num_rows = mysqli_num_rows($result);
 		if ($num_rows != 0) {
 			echo '<div class="divboxes"><table class="timeoff">';
-			while ($row = mysql_fetch_array($result, MYSQL_ASSOC)){
+			while ($row = mysqli_fetch_assoc($result)){
 				$first_name = $row['first_name'];
 				$last_name = $row['last_name'];
 				$emp_id = $row['emp_id'];
@@ -350,10 +350,10 @@ else {
 		ORDER by timeoff_start_date desc, first_name asc";
 	$result = mysqli_query($dbc, $query);
 	if ($result){
-		$num_rows = mysql_num_rows($result);
+		$num_rows = mysqli_num_rows($result);
 		if ($num_rows != 0) {
 			echo '<div class="divboxes"><table class="timeoff">';
-			while ($row = mysql_fetch_array($result, MYSQL_ASSOC)){
+			while ($row = mysqli_fetch_assoc($result)){
 				$first_name = $row['first_name'];
 				$last_name = $row['last_name'];
 				$emp_id = $row['emp_id'];
@@ -594,10 +594,10 @@ if ((isset($_POST['submitted'])) && (isset($_POST['coverage'])) && ($_POST['cove
 		ORDER by coverage_date desc, first_name asc";
 	$result = mysqli_query($dbc, $query);
 	if ($result){
-		$num_rows = mysql_num_rows($result);
+		$num_rows = mysqli_num_rows($result);
 		if ($num_rows != 0) {
 			echo '<div class="divboxes"><table class="coverage">';
-			while ($row = mysql_fetch_array($result, MYSQL_ASSOC)){
+			while ($row = mysqli_fetch_assoc($result)){
 				$first_name = $row['first_name'];
 				$last_name = $row['last_name'];
 				$emp_id = $row['emp_id'];
@@ -741,10 +741,10 @@ else {
 		ORDER by coverage_date desc, first_name asc";
 	$result = mysqli_query($dbc, $query);
 	if ($result){
-		$num_rows = mysql_num_rows($result);
+		$num_rows = mysqli_num_rows($result);
 		if ($num_rows != 0) {
 			echo '<div class="divboxes"><table class="coverage">';
-			while ($row = mysql_fetch_array($result, MYSQL_ASSOC)){
+			while ($row = mysqli_fetch_assoc($result)){
 				$first_name = $row['first_name'];
 				$last_name = $row['last_name'];
 				$emp_id = $row['emp_id'];

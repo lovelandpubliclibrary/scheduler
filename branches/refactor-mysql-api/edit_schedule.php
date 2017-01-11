@@ -32,9 +32,9 @@ if (isset($_POST['edit_dates'])){
 	$query = "SELECT * from schedules WHERE division='$division' and 
 		(schedule_start_date < '$schedstart') and (schedule_end_date > '$schedend')";
 	$result = mysqli_query($dbc, $query);
-	$num_rows = mysql_num_rows($result);
+	$num_rows = mysqli_num_rows($result);
 	if ($num_rows != 0){
-		while ($row = mysql_fetch_array ($result, MYSQL_ASSOC)) {
+		while ($row = mysqli_fetch_assoc($result)) {
 			$schedule_id = $row['schedule_id'];
 			$oldschedstart = $row['schedule_start_date'];
 			$oldschedend = $row['schedule_end_date'];
@@ -51,9 +51,9 @@ if (isset($_POST['edit_dates'])){
 	$query = "SELECT * from schedules WHERE division='$division' and (schedule_start_date >= '$schedstart') 
 		and (schedule_start_date < '$schedend') and (schedule_end_date > '$schedend')";
 	$result = mysqli_query($dbc, $query);
-	$num_rows = mysql_num_rows($result);
+	$num_rows = mysqli_num_rows($result);
 	if ($num_rows != 0){
-		while ($row = mysql_fetch_array ($result, MYSQL_ASSOC)) {
+		while ($row = mysqli_fetch_assoc ($result)) {
 			$schedule_id = $row['schedule_id'];
 			}
 		$newstart = date('Y-m-d', strtotime($schedend.'+1days'));
@@ -63,9 +63,9 @@ if (isset($_POST['edit_dates'])){
 	$query = "SELECT * from schedules WHERE division='$division' and (schedule_end_date <= '$schedend') and 
 		(schedule_end_date > '$schedstart') and (schedule_start_date < '$schedstart')";
 	$result = mysqli_query($dbc, $query);
-	$num_rows = mysql_num_rows($result);
+	$num_rows = mysqli_num_rows($result);
 	if ($num_rows != 0){
-		while ($row = mysql_fetch_array ($result, MYSQL_ASSOC)) {
+		while ($row = mysqli_fetch_assoc ($result)) {
 			$schedule_id = $row['schedule_id'];
 			}
 		$newend = date('Y-m-d', strtotime($schedstart.'-1days'));
@@ -88,9 +88,9 @@ if(isset($_POST['init'])){
 	$query = "SELECT * from schedules WHERE division='$division' and (schedule_start_date >= '$schedstart') 
 		and (schedule_end_date <= '$schedend')";
 	$result = mysqli_query($dbc, $query);
-	$num_rows = mysql_num_rows($result);
+	$num_rows = mysqli_num_rows($result);
 	if ($num_rows != 0){
-		while ($row = mysql_fetch_array ($result, MYSQL_ASSOC)) {
+		while ($row = mysqli_fetch_assoc ($result)) {
 			$schedule_id = $row['schedule_id'];
 			}
 		$query = "DELETE from schedules WHERE schedule_id='$schedule_id'";
@@ -99,9 +99,9 @@ if(isset($_POST['init'])){
 	$query = "SELECT * from schedules WHERE division='$division' and 
 		(schedule_start_date < '$schedstart') and (schedule_end_date > '$schedend')";
 	$result = mysqli_query($dbc, $query);
-	$num_rows = mysql_num_rows($result);
+	$num_rows = mysqli_num_rows($result);
 	if ($num_rows != 0){
-		while ($row = mysql_fetch_array ($result, MYSQL_ASSOC)) {
+		while ($row = mysqli_fetch_assoc($result)) {
 			$schedule_id = $row['schedule_id'];
 			$oldschedstart = $row['schedule_start_date'];
 			$oldschedend = $row['schedule_end_date'];
@@ -118,9 +118,9 @@ if(isset($_POST['init'])){
 	$query = "SELECT * from schedules WHERE division='$division' and (schedule_start_date >= '$schedstart') 
 		and (schedule_start_date < '$schedend') and (schedule_end_date > '$schedend')";
 	$result = mysqli_query($dbc, $query);
-	$num_rows = mysql_num_rows($result);
+	$num_rows = mysqli_num_rows($result);
 	if ($num_rows != 0){
-		while ($row = mysql_fetch_array ($result, MYSQL_ASSOC)) {
+		while ($row = mysqli_fetch_assoc($result)) {
 			$schedule_id = $row['schedule_id'];
 			}
 		$newstart = date('Y-m-d', strtotime($schedend.'+1days'));
@@ -130,9 +130,9 @@ if(isset($_POST['init'])){
 	$query = "SELECT * from schedules WHERE division='$division' and (schedule_end_date <= '$schedend') and 
 		(schedule_end_date > '$schedstart') and (schedule_start_date < '$schedstart')";
 	$result = mysqli_query($dbc, $query);
-	$num_rows = mysql_num_rows($result);
+	$num_rows = mysqli_num_rows($result);
 	if ($num_rows != 0){
-		while ($row = mysql_fetch_array ($result, MYSQL_ASSOC)) {
+		while ($row = mysqli_fetch_assoc($result)) {
 			$schedule_id = $row['schedule_id'];
 			}
 		$newend = date('Y-m-d', strtotime($schedstart.'-1days'));
@@ -143,7 +143,7 @@ if(isset($_POST['init'])){
 	$max = 0;
 	$query = "SELECT MAX(specific_schedule) FROM schedules";
 	$result = mysqli_query($dbc, $query);
-	while ($row = mysql_fetch_array ($result, MYSQL_NUM)) {
+	while ($row = mysqli_fetch_array($result, MYSQL_NUM)) {
 		$max = $row[0];
 		}
 	$max += 1;
@@ -247,7 +247,7 @@ if (isset($_POST['delete'])){
 	$query2 = "SELECT * from schedules WHERE specific_schedule='$specific_schedule'";
 	$result2 = mysqli_query($dbc, $query2);
 	if ($result2){
-		$num_rows = mysql_num_rows($result2);
+		$num_rows = mysqli_num_rows($result2);
 		if ($num_rows == 0) {
 			$query3 = "DELETE from shifts WHERE specific_schedule='$specific_schedule'";
 			$result3 = mysqli_query($dbc, $query3);
@@ -282,13 +282,13 @@ if (isset($division)){
 		WHERE schedule_end_date >= '$past_date' group by specific_schedule) as t
 		WHERE division='$division' and schedule_end_date >= '$past_date' and s.specific_schedule=t.specific_schedule
 		ORDER BY schedule_end_date desc";
-	$result = mysqli_query($dbc, $query) or die(mysql_error());
+	$result = mysqli_query($dbc, $query) or die(mysqli_error());
 	if ($result){
-		$num_rows = mysql_num_rows($result);
+		$num_rows = mysqli_num_rows($result);
 		if ($num_rows != 0) {
 			echo '<div class="divboxes"><table class="timeoff editschedule">
 				<tr class="headrow"><th>Schedule ID</th><th>Start</th><th>End</th><th></th><th></th><th></th><th></th></tr>';
-			while ($row = mysql_fetch_array($result, MYSQL_ASSOC)){
+			while ($row = mysqli_fetch_assoc($result)){
 				$schedule_id = $row['schedule_id'];
 				$schedule_start_date = $row['schedule_start_date'];
 				$schedule_start = date('M', strtotime($schedule_start_date)).' '.date('j', strtotime($schedule_start_date)).', '.date('Y', strtotime($schedule_start_date));
