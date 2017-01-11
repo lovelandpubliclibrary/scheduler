@@ -33,7 +33,7 @@ $query = "SELECT first_name, last_name, e.emp_id, timeoff_id,
 		timeoff_start_date, timeoff_end_date, timeoff_reason
 		FROM employees as e, timeoff as t
 		WHERE e.emp_id = t.emp_id and timeoff_id = $timeoff_id";
-$result = mysql_query($query);
+$result = mysqli_query($dbc, $query);
 
 while ($row = mysql_fetch_array ($result, MYSQL_ASSOC)) {
 	$first_name = $row['first_name'];
@@ -158,11 +158,11 @@ if (isset($_POST['edited'])) {
 		$query = "UPDATE timeoff SET timeoff_start_date='$ts_date', timeoff_start_time='$ts_time', 
 			timeoff_end_date='$te_date', timeoff_end_time='$te_time', timeoff_reason='$reason'
 			WHERE timeoff_id = '$timeoff_id'";
-		$result = mysql_query($query) or die(mysql_error($dbc));
+		$result = mysqli_query($dbc, $query) or die(mysql_error($dbc));
 		if ($result){
 			if (isset($_SESSION['view_past'])){
 				$query = "SELECT division FROM employees WHERE emp_id='$emp_id'";
-				$result = mysql_query($query) or die(mysql_error($dbc));
+				$result = mysqli_query($dbc, $query) or die(mysql_error($dbc));
 				while ($row = mysql_fetch_array ($result, MYSQL_ASSOC)){
 					$timeoff_div = $row['division'];
 					}

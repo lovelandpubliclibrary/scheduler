@@ -57,7 +57,7 @@ if (isset($_POST['delete'])){
 	$coverage_id = $_POST['coverage_id'];
 	$date = $_POST['date'];
 	$query1 = "DELETE from coverage WHERE coverage_id='$coverage_id'";
-	$result1 = mysql_query($query1);
+	$result1 = mysqli_query($dbc, $query1);
 	echo '<div class="message"><b>Coverage by</b> '. $name . ' on ' . $date . ' has been deleted.</div>';
 	}	
 	
@@ -87,7 +87,7 @@ if ((isset($division)) && ($division !== 'All')) {
 		WHERE coverage_division = '$division' and e.emp_id = t.emp_id and e.active = 'Active' 
 		and coverage_date >= '$today'
 		ORDER by coverage_date asc, first_name asc";
-	$result = mysql_query($query);
+	$result = mysqli_query($dbc, $query);
 	if ($result){
 		$num_rows = mysql_num_rows($result);
 		if ($num_rows != 0) {
@@ -232,7 +232,7 @@ else {
 		WHERE e.emp_id = t.emp_id and e.active = 'Active' 
 		and coverage_date >= '$today'
 		ORDER by coverage_date asc, first_name asc";
-	$result = mysql_query($query);
+	$result = mysqli_query($dbc, $query);
 	if ($result){
 		$num_rows = mysql_num_rows($result);
 		if ($num_rows != 0) {

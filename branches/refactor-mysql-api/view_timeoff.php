@@ -57,7 +57,7 @@ if (isset($_POST['delete'])){
 	$timeoff_id = $_POST['timeoff_id'];
 	$date = $_POST['date'];
 	$query1 = "DELETE from timeoff WHERE timeoff_id='$timeoff_id'";
-	$result1 = mysql_query($query1);
+	$result1 = mysqli_query($dbc, $query1);
 	echo '<div class="message"><b>Timeoff for</b> '. $name . ' starting ' . $date . ' has been deleted.</div>';
 	}	
 	
@@ -87,7 +87,7 @@ if ((isset($division)) && ($division !== 'All')) {
 		WHERE e.division = '$division' and e.emp_id = t.emp_id and e.active = 'Active' and 
 		(timeoff_start_date >= '$today' OR (timeoff_start_date < '$today' AND timeoff_end_date >= '$today'))
 		ORDER by timeoff_start_date asc, first_name asc";
-	$result = mysql_query($query);
+	$result = mysqli_query($dbc, $query);
 	if ($result){
 		$num_rows = mysql_num_rows($result);
 		if ($num_rows != 0) {
@@ -284,7 +284,7 @@ else {
 		WHERE e.emp_id = t.emp_id and e.active = 'Active' and 
 		(timeoff_start_date >= '$today' OR (timeoff_start_date < '$today' AND timeoff_end_date >= '$today'))
 		ORDER by timeoff_start_date asc, first_name asc";
-	$result = mysql_query($query);
+	$result = mysqli_query($dbc, $query);
 	if ($result){
 		$num_rows = mysql_num_rows($result);
 		if ($num_rows != 0) {

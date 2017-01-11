@@ -109,12 +109,12 @@ if (isset($_POST['timeoff_delete'])){
 	$ts_date = $_POST['ts_date'];
 	
 	$query = "SELECT division FROM employees WHERE emp_id='$emp_id'";
-	$result = mysql_query($query);
+	$result = mysqli_query($dbc, $query);
 	while ($row = mysql_fetch_array ($result, MYSQL_ASSOC)){
 		$timeoff_div = $row['division'];
 		}
 	$query1 = "DELETE from timeoff WHERE timeoff_id='$timeoff_id'";
-	$result1 = mysql_query($query1);
+	$result1 = mysqli_query($dbc, $query1);
 	echo '<div class="message"><b>Timeoff for</b> '. $name . ' starting ' . $date . ' has been deleted.</div>';
 	}
 
@@ -150,7 +150,7 @@ if (((isset($_POST['submitted'])) && (isset($_POST['timeoff'])) && ($_POST['time
 		WHERE e.division = '$timeoff_div' and e.emp_id = t.emp_id and e.active = 'Active' 
 		and timeoff_start_date > '$minus_21days' and timeoff_start_date <= '$today'
 		ORDER by timeoff_start_date desc, first_name asc";
-	$result = mysql_query($query);
+	$result = mysqli_query($dbc, $query);
 	if ($result){
 		$num_rows = mysql_num_rows($result);
 		if ($num_rows != 0) {
@@ -348,7 +348,7 @@ else {
 		WHERE e.emp_id = t.emp_id and e.active = 'Active' 
 		and timeoff_start_date between '$minus_21days' and '$today'
 		ORDER by timeoff_start_date desc, first_name asc";
-	$result = mysql_query($query);
+	$result = mysqli_query($dbc, $query);
 	if ($result){
 		$num_rows = mysql_num_rows($result);
 		if ($num_rows != 0) {
@@ -556,7 +556,7 @@ if (isset($_POST['coverage_delete'])){
 	$cd_date = $_POST['cd_date'];
 	
 	$query1 = "DELETE from coverage WHERE coverage_id='$coverage_id'";
-	$result1 = mysql_query($query1);
+	$result1 = mysqli_query($dbc, $query1);
 	echo '<div class="message"><b>Coverage by</b> '. $name . ' starting ' . $date . ' has been deleted.</div>';
 	}	
 	
@@ -592,7 +592,7 @@ if ((isset($_POST['submitted'])) && (isset($_POST['coverage'])) && ($_POST['cove
 		WHERE coverage_division = '$coverage_div' and e.emp_id = t.emp_id and e.active = 'Active' 
 		and coverage_date > '$minus_21days' and coverage_date <= '$today'
 		ORDER by coverage_date desc, first_name asc";
-	$result = mysql_query($query);
+	$result = mysqli_query($dbc, $query);
 	if ($result){
 		$num_rows = mysql_num_rows($result);
 		if ($num_rows != 0) {
@@ -739,7 +739,7 @@ else {
 		WHERE e.emp_id = t.emp_id and e.active = 'Active' 
 		and coverage_date between '$minus_21days' and '$today'
 		ORDER by coverage_date desc, first_name asc";
-	$result = mysql_query($query);
+	$result = mysqli_query($dbc, $query);
 	if ($result){
 		$num_rows = mysql_num_rows($result);
 		if ($num_rows != 0) {

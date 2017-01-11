@@ -62,12 +62,12 @@ function validatePassword() {
 if (isset($_POST['submitted'])){
 	$old_pw = $_POST['old_pw'];
 	$query = "SELECT * from logins WHERE emp_id='$this_emp_id' and password=sha('$old_pw')";
-	$result = mysql_query($query);
+	$result = mysqli_query($dbc, $query);
 	if (mysql_num_rows($result) == 1) {
 		if($_POST['new_pw1'] == $_POST['new_pw2']){
 			$password = escape_data($_POST['new_pw1']);
 			$query1 = "UPDATE logins set password = sha('$password') WHERE emp_id='$this_emp_id'";
-			$result1 = mysql_query($query1);
+			$result1 = mysqli_query($dbc, $query1);
 			if($result1){
 				echo '<div class="message"><b>Your password has been updated successfully!</b></div>';
 				}

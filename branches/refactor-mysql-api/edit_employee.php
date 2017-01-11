@@ -22,7 +22,7 @@ require_once ('../mysql_connect_sched2.php'); //Connect to the db.
 
 $query = "SELECT employee_number, first_name, last_name, division, exempt_status, weekly_hours, home_phone, mobile_phone, employee_lastday, assignment_id
 	FROM employees, logins WHERE employees.emp_id='$emp_id' and employees.emp_id=logins.emp_id";
-$result = mysql_query($query) or die(mysql_error($dbc));
+$result = mysqli_query($dbc, $query) or die(mysql_error($dbc));
 
 
 while ($row = mysql_fetch_array ($result, MYSQL_ASSOC)) {
@@ -141,29 +141,29 @@ if (isset($_POST['edited'])) {
 			$query .= "'$emp_lastday'";
 			}
 		$query .= " WHERE emp_id = '$emp_id'";
-		$result = mysql_query($query) or die(mysql_error($dbc));
+		$result = mysqli_query($dbc, $query) or die(mysql_error($dbc));
 		
 		$query_assign = "UPDATE logins SET assignment_id='$assignment_id' WHERE emp_id='$emp_id'";
-		$result_assign = mysql_query($query_assign) or die(mysql_error($dbc));
+		$result_assign = mysqli_query($dbc, $query_assign) or die(mysql_error($dbc));
 		
 		// Switch shifts to new division, if applicable
 		if ($div != $division){
 			$today = date('Y-m-d');
 			$query1 = "SELECT specific_schedule from schedules WHERE division='$division'
 				and schedule_start_date <= '$today' and schedule_end_date >= '$today'";
-			$result1 = mysql_query($query1);
+			$result1 = mysqli_query($dbc, $query1);
 			while ($row1 = mysql_fetch_array($result1, MYSQL_ASSOC)){
 				$old_specific_schedule = $row1['specific_schedule'];
 				}
 			$query2 = "SELECT specific_schedule from schedules WHERE division='$div'
 				and schedule_start_date <= '$today' and schedule_end_date >= '$today'";
-			$result2 = mysql_query($query2);
+			$result2 = mysqli_query($dbc, $query2);
 			while ($row2 = mysql_fetch_array($result2, MYSQL_ASSOC)){
 				$new_specific_schedule = $row2['specific_schedule'];
 				}
 			if (isset($new_specific_schedule)){
 				$query3	= "UPDATE shifts SET specific_schedule = $new_specific_schedule WHERE emp_id='$emp_id' and specific_schedule='$old_specific_schedule'";
-				$result3 = mysql_query($query3) or die(mysql_error());
+				$result3 = mysqli_query($dbc, $query3) or die(mysql_error());
 				}
 			}
 		

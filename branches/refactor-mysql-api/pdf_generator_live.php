@@ -18,7 +18,7 @@ require_once ('../mysql_connect_sched2.php'); //Connect to the db.
 $divisions = array();
 require_once ('../mysql_connect_sched2.php'); //Connect to the db.
 $query = "SELECT * from divisions ORDER BY div_name";
-$result = mysql_query($query);
+$result = mysqli_query($dbc, $query);
 while ($row = mysql_fetch_assoc($result)) {
 	$divisions[$row['div_link']] = $row['div_name'];
 	}

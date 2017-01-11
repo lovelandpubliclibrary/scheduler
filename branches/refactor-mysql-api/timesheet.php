@@ -23,7 +23,7 @@ if (isset($this_emp_id)){
 	$today = date('Y-m-d');
 	$query = "SELECT * from pay_periods where pp_start_date<='$today' 
 		ORDER BY pp_start_date desc LIMIT 2";
-	$result = mysql_query($query);
+	$result = mysqli_query($dbc, $query);
 
 	while ($row = mysql_fetch_array($result, MYSQL_ASSOC)){
 		$pp_id = $row['pp_id'];
@@ -38,7 +38,7 @@ if (isset($this_emp_id)){
 		
 		$query1 = "SELECT * from timesheet_confirm WHERE pp_id = '$pp_id' and emp_id = '$this_emp_id' 
 			and assignment_id = '$this_assignment_id'";
-		$result1 = mysql_query($query1);
+		$result1 = mysqli_query($dbc, $query1);
 		if (($result1) && (mysql_num_rows($result1)!=0)){
 			echo '<td class="scheddate confirmed">Timesheet confirmed</td>';
 			$row = mysql_fetch_array($result1, MYSQL_ASSOC);

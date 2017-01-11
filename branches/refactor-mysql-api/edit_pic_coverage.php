@@ -26,7 +26,7 @@ $pic_poss = array();
 
 $query = "SELECT emp_id, first_name, last_name FROM employees WHERE active='Active' and pic_status='Y'
 	ORDER BY last_name";
-$result = mysql_query($query);
+$result = mysqli_query($dbc, $query);
 if ($result){
 	$num_rows = mysql_num_rows($result);
 	if ($num_rows != 0) {
@@ -49,7 +49,7 @@ if (isset($_POST['edited'])) {
 	$_SESSION['pic_coverage_name'] = $pic_poss[$new_pic][0];
 		
 	$query = "UPDATE pic_coverage SET emp_id='$new_pic' WHERE pic_coverage_id = '$pid'";
-	$result = mysql_query($query) or die(mysql_error($dbc));
+	$result = mysqli_query($dbc, $query) or die(mysql_error($dbc));
 	if ($result) {//If it ran okay.
 		$_SESSION['success'] = TRUE;
 		header ('Location: view_pic_coverage');

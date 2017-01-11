@@ -42,7 +42,7 @@ if (($came_from != 'timesheet')&&($came_from != 'view_my_timesheet')){
 include('./includes/allsessionvariables.php');
 
 $query = "SELECT weekly_hours, division from employees WHERE emp_id='$this_emp_id'";
-$result = mysql_query($query);
+$result = mysqli_query($dbc, $query);
 while ($row = mysql_fetch_array($result, MYSQL_ASSOC)){
 	$weekly_hours = $row['weekly_hours'];
 	$emp_division = $row['division'];
@@ -73,7 +73,7 @@ include ('./includes/sidebar.html');
 
 $other_hours = array();
 $query = "SELECT * from hour_codes WHERE hour_code not in ('02','28','26','24','48')";
-$result = mysql_query($query);
+$result = mysqli_query($dbc, $query);
 while ($row = mysql_fetch_assoc($result)) {
 	$hour_code = $row['hour_code'];
 	$other_hours[$hour_code] = $row['description'];
@@ -83,7 +83,7 @@ while ($row = mysql_fetch_assoc($result)) {
 $previous = array();
 $query = "SELECT * from time_entry WHERE emp_id='$this_emp_id' and entry_date>='$pp_start_date'
 	and entry_date<='$pp_end_date' and assignment_id = '$this_assignment_id'";
-$result = mysql_query($query);
+$result = mysqli_query($dbc, $query);
 if (($result) && (mysql_num_rows($result)!=0)){
 	while($row = mysql_fetch_array($result, MYSQL_ASSOC)){
 		$entry_date = $row['entry_date'];
@@ -94,7 +94,7 @@ if (($result) && (mysql_num_rows($result)!=0)){
 	}
 $confirmed = '';
 $query = "SELECT * from timesheet_confirm WHERE emp_id='$this_emp_id' and pp_id = '$pp_id' and employee_confirm='Y'";
-$result = mysql_query($query);
+$result = mysqli_query($dbc, $query);
 if (($result) && (mysql_num_rows($result)!=0)){
 	while($row = mysql_fetch_array($result, MYSQL_ASSOC)){
 		$confirmed = TRUE;
@@ -150,7 +150,7 @@ echo '<tr class="scheduled"><td class="hours_type">Scheduled</td>';
 foreach ($array as $k=>$v){
 	echo '<td class="shift">';	
 	$query = "SELECT date, week_type FROM dates where date = '$v'";
-	$result = mysql_query($query);
+	$result = mysqli_query($dbc, $query);
 	while ($row = mysql_fetch_assoc($result)) {
 		$week_type = $row['week_type'];
 		}
@@ -164,7 +164,7 @@ foreach ($array as $k=>$v){
 		schedule_start_date <= '$v' and schedule_end_date >= '$v' 
 		and week_type='$week_type' and shift_day='$day' and a.specific_schedule=s.specific_schedule 
 		and e.active = 'Active' and (e.employee_lastday >= '$v' or e.employee_lastday is null)";
-	$result2 = mysql_query($query2);
+	$result2 = mysqli_query($dbc, $query2);
 	if($result2){
 		$shift_array = array();
 		while ($row2 = mysql_fetch_array($result2, MYSQL_ASSOC)){
@@ -228,7 +228,7 @@ foreach ($array as $k=>$v){
 			time_format(coverage_end_time,'%i') as cov_end_minutes from coverage c, employees e
 			WHERE coverage_date = '$v' and c.emp_id = '$this_emp_id' and c.emp_id=e.emp_id 
 			ORDER BY coverage_start_time asc";
-		$sub_result = mysql_query($sub_query);
+		$sub_result = mysqli_query($dbc, $sub_query);
 		if ($sub_result){
 			$num = mysql_num_rows($sub_result);
 			if ($num>0) {
@@ -309,7 +309,7 @@ foreach ($array as $k=>$v){
 		}
 	else{
 		$query = "SELECT date, week_type FROM dates where date = '$v'";
-		$result = mysql_query($query);
+		$result = mysqli_query($dbc, $query);
 		while ($row = mysql_fetch_assoc($result)) {
 			$week_type = $row['week_type'];
 			}
@@ -325,7 +325,7 @@ foreach ($array as $k=>$v){
 			schedule_start_date <= '$v' and schedule_end_date >= '$v' 
 			and week_type='$week_type' and shift_day='$day' and a.specific_schedule=s.specific_schedule 
 			and e.active = 'Active' and (e.employee_lastday >= '$v' or e.employee_lastday is null)";
-		$result2 = mysql_query($query2);
+		$result2 = mysqli_query($dbc, $query2);
 		if($result2){
 			while ($row2 = mysql_fetch_array($result2, MYSQL_ASSOC)){
 				$shift_start = $row2['shift_start'];
@@ -359,7 +359,7 @@ foreach ($array as $k=>$v){
 					}
 					
 				$query3 = "SELECT * from closures where closure_date='$v'";
-				$result3 = mysql_query($query3);
+				$result3 = mysqli_query($dbc, $query3);
 				if(mysql_num_rows($result3)!=0){
 					while($row3 = mysql_fetch_assoc($result3)){
 						if(($row3['closure_start_time'] == '00:01:00')&&($row3['closure_end_time'] == '23:59:00')){
@@ -415,7 +415,7 @@ foreach ($array as $k=>$v){
 				time_format(coverage_start_time,'%i') as cov_start_minutes, time_format(coverage_end_time,'%k') as cov_end, 
 				time_format(coverage_end_time,'%i') as cov_end_minutes from coverage 
 				WHERE coverage_date = '$v' and emp_id = '$this_emp_id' ORDER BY coverage_start_time asc";
-			$sub_result = mysql_query($sub_query);
+			$sub_result = mysqli_query($dbc, $sub_query);
 			if ($sub_result){
 				$num = mysql_num_rows($sub_result);
 				if ($num>0) {
@@ -528,7 +528,7 @@ echo '<tr class="scheduled"><td class="hours_type">Scheduled</td>';
 foreach ($array as $k=>$v){
 	echo '<td class="shift">';	
 	$query = "SELECT date, week_type FROM dates where date = '$v'";
-	$result = mysql_query($query);
+	$result = mysqli_query($dbc, $query);
 	while ($row = mysql_fetch_assoc($result)) {
 		$week_type = $row['week_type'];
 		}
@@ -542,7 +542,7 @@ foreach ($array as $k=>$v){
 		schedule_start_date <= '$v' and schedule_end_date >= '$v' 
 		and week_type='$week_type' and shift_day='$day' and a.specific_schedule=s.specific_schedule 
 		and e.active = 'Active' and (e.employee_lastday >= '$v' or e.employee_lastday is null)";
-	$result2 = mysql_query($query2);
+	$result2 = mysqli_query($dbc, $query2);
 	if($result2){
 		$shift_array = array();
 		while ($row2 = mysql_fetch_array($result2, MYSQL_ASSOC)){
@@ -606,7 +606,7 @@ foreach ($array as $k=>$v){
 			time_format(coverage_end_time,'%i') as cov_end_minutes from coverage c, employees e
 			WHERE coverage_date = '$v' and c.emp_id = '$this_emp_id' and c.emp_id=e.emp_id 
 			ORDER BY coverage_start_time asc";
-		$sub_result = mysql_query($sub_query);
+		$sub_result = mysqli_query($dbc, $sub_query);
 		if ($sub_result){
 			$num = mysql_num_rows($sub_result);
 			if ($num>0) {
@@ -687,7 +687,7 @@ foreach ($array as $k=>$v){
 		}
 	else{
 		$query = "SELECT date, week_type FROM dates where date = '$v'";
-		$result = mysql_query($query);
+		$result = mysqli_query($dbc, $query);
 		while ($row = mysql_fetch_assoc($result)) {
 			$week_type = $row['week_type'];
 			}
@@ -703,7 +703,7 @@ foreach ($array as $k=>$v){
 			schedule_start_date <= '$v' and schedule_end_date >= '$v' 
 			and week_type='$week_type' and shift_day='$day' and a.specific_schedule=s.specific_schedule 
 			and e.active = 'Active' and (e.employee_lastday >= '$v' or e.employee_lastday is null)";
-		$result2 = mysql_query($query2);
+		$result2 = mysqli_query($dbc, $query2);
 		if($result2){
 			while ($row2 = mysql_fetch_array($result2, MYSQL_ASSOC)){
 				$shift_start = $row2['shift_start'];
@@ -737,7 +737,7 @@ foreach ($array as $k=>$v){
 					}
 					
 				$query3 = "SELECT * from closures where closure_date='$v'";
-				$result3 = mysql_query($query3);
+				$result3 = mysqli_query($dbc, $query3);
 				if(mysql_num_rows($result3)!=0){
 					while($row3 = mysql_fetch_assoc($result3)){
 						if(($row3['closure_start_time'] == '00:01:00')&&($row3['closure_end_time'] == '23:59:00')){
@@ -793,7 +793,7 @@ foreach ($array as $k=>$v){
 				time_format(coverage_start_time,'%i') as cov_start_minutes, time_format(coverage_end_time,'%k') as cov_end, 
 				time_format(coverage_end_time,'%i') as cov_end_minutes from coverage 
 				WHERE coverage_date = '$v' and emp_id = '$this_emp_id' ORDER BY coverage_start_time asc";
-			$sub_result = mysql_query($sub_query);
+			$sub_result = mysqli_query($dbc, $sub_query);
 			if ($sub_result){
 				$num = mysql_num_rows($sub_result);
 				if ($num>0) {

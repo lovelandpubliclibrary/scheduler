@@ -23,7 +23,7 @@ $today= date('Y-m-d');
 $payperiods = array();
 $query = "SELECT pp_id, pp_start_date from pay_periods where pp_start_date<='$today' 
 	ORDER BY pp_start_date desc LIMIT 2";
-$result = mysql_query($query);
+$result = mysqli_query($dbc, $query);
 
 while ($row = mysql_fetch_array($result, MYSQL_ASSOC)){
 	$pp_id = $row['pp_id'];
@@ -63,7 +63,7 @@ if ((isset($division)) && ($division != 'All')) {
 	
 	$query = "SELECT last_name, first_name, e.emp_id, assignment_id FROM employees e, logins l WHERE active='Active'
 		and e.emp_id = l.emp_id and division like '%".$division."%' ORDER BY last_name asc";
-	$result = mysql_query($query) or die(mysql_error($dbc));
+	$result = mysqli_query($dbc, $query) or die(mysql_error($dbc));
 	$num = mysql_num_rows ($result);
 
 	if ($num>0) {
@@ -78,7 +78,7 @@ if ((isset($division)) && ($division != 'All')) {
 			$counter = 0;
 			foreach ($payperiods as $pp_id=>$dates){
 				$query1 = "SELECT * from timesheet_confirm WHERE emp_id='$emp_id' and pp_id='$pp_id'";
-				$result1 = mysql_query($query1);
+				$result1 = mysqli_query($dbc, $query1);
 				if (($result1)&&(mysql_num_rows($result1) == 1)){
 					while($row1 = mysql_fetch_array($result1, MYSQL_ASSOC)){
 						$emp_confirm = $row1['employee_confirm'];
@@ -127,7 +127,7 @@ else{
 	unset($_SESSION['timesheet_view_div']);
 	$query = "SELECT last_name, first_name, e.emp_id, assignment_id FROM employees e, logins l WHERE active='Active'
 		and e.emp_id = l.emp_id ORDER BY last_name asc";
-	$result = mysql_query($query) or die(mysql_error($dbc));
+	$result = mysqli_query($dbc, $query) or die(mysql_error($dbc));
 	$num = mysql_num_rows ($result);
 
 	if ($num>0) {
@@ -143,7 +143,7 @@ else{
 			$counter = 0;
 			foreach ($payperiods as $pp_id=>$dates){
 				$query1 = "SELECT * from timesheet_confirm WHERE emp_id='$emp_id' and pp_id='$pp_id' and assignment_id = '$assignment_id'";
-				$result1 = mysql_query($query1);
+				$result1 = mysqli_query($dbc, $query1);
 				if (($result1)&&(mysql_num_rows($result1) == 1)){
 					while($row1 = mysql_fetch_array($result1, MYSQL_ASSOC)){
 						$emp_confirm = $row1['employee_confirm'];

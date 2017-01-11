@@ -26,12 +26,12 @@ if (isset($_POST['edit_dates'])){
 	$schedend = "$se_yr-$se_mon-$se_day";
 	
 	$query = "UPDATE schedules set schedule_start_date='$schedstart', schedule_end_date='$schedend' WHERE schedule_id='$schedule_id'";
-	$result = mysql_query($query);
+	$result = mysqli_query($dbc, $query);
 	
 	//Check for previous schedule overlaps
 	$query = "SELECT * from schedules WHERE division='$division' and 
 		(schedule_start_date < '$schedstart') and (schedule_end_date > '$schedend')";
-	$result = mysql_query($query);
+	$result = mysqli_query($dbc, $query);
 	$num_rows = mysql_num_rows($result);
 	if ($num_rows != 0){
 		while ($row = mysql_fetch_array ($result, MYSQL_ASSOC)) {
@@ -43,14 +43,14 @@ if (isset($_POST['edit_dates'])){
 		$newstart = date('Y-m-d', strtotime($schedend.'+1days'));
 		$newend = date('Y-m-d', strtotime($schedstart.'-1days'));
 		$query1 = "UPDATE schedules set schedule_end_date='$newend' WHERE schedule_id='$schedule_id'";
-		$result1 = mysql_query($query1);
+		$result1 = mysqli_query($dbc, $query1);
 		$query2 = "INSERT into schedules (division, schedule_start_date, schedule_end_date, specific_schedule) 
 			values ('$division', '$newstart', '$oldschedend', '$specific_schedule')";
-		$result2 = mysql_query($query2);
+		$result2 = mysqli_query($dbc, $query2);
 		}
 	$query = "SELECT * from schedules WHERE division='$division' and (schedule_start_date >= '$schedstart') 
 		and (schedule_start_date < '$schedend') and (schedule_end_date > '$schedend')";
-	$result = mysql_query($query);
+	$result = mysqli_query($dbc, $query);
 	$num_rows = mysql_num_rows($result);
 	if ($num_rows != 0){
 		while ($row = mysql_fetch_array ($result, MYSQL_ASSOC)) {
@@ -58,11 +58,11 @@ if (isset($_POST['edit_dates'])){
 			}
 		$newstart = date('Y-m-d', strtotime($schedend.'+1days'));
 		$query1 = "UPDATE schedules set schedule_start_date='$newstart' WHERE schedule_id='$schedule_id'";
-		$result1 = mysql_query($query1);
+		$result1 = mysqli_query($dbc, $query1);
 		}
 	$query = "SELECT * from schedules WHERE division='$division' and (schedule_end_date <= '$schedend') and 
 		(schedule_end_date > '$schedstart') and (schedule_start_date < '$schedstart')";
-	$result = mysql_query($query);
+	$result = mysqli_query($dbc, $query);
 	$num_rows = mysql_num_rows($result);
 	if ($num_rows != 0){
 		while ($row = mysql_fetch_array ($result, MYSQL_ASSOC)) {
@@ -70,7 +70,7 @@ if (isset($_POST['edit_dates'])){
 			}
 		$newend = date('Y-m-d', strtotime($schedstart.'-1days'));
 		$query1 = "UPDATE schedules set schedule_end_date='$newend' WHERE schedule_id='$schedule_id'";
-		$result1 = mysql_query($query1);
+		$result1 = mysqli_query($dbc, $query1);
 		}
 	$_SESSION['schedules_division'] = $division;
 	header ('Location: edit_schedule');
@@ -87,18 +87,18 @@ if(isset($_POST['init'])){
 	//Check for previous schedule overlaps
 	$query = "SELECT * from schedules WHERE division='$division' and (schedule_start_date >= '$schedstart') 
 		and (schedule_end_date <= '$schedend')";
-	$result = mysql_query($query);
+	$result = mysqli_query($dbc, $query);
 	$num_rows = mysql_num_rows($result);
 	if ($num_rows != 0){
 		while ($row = mysql_fetch_array ($result, MYSQL_ASSOC)) {
 			$schedule_id = $row['schedule_id'];
 			}
 		$query = "DELETE from schedules WHERE schedule_id='$schedule_id'";
-		$result = mysql_query($query);
+		$result = mysqli_query($dbc, $query);
 		}
 	$query = "SELECT * from schedules WHERE division='$division' and 
 		(schedule_start_date < '$schedstart') and (schedule_end_date > '$schedend')";
-	$result = mysql_query($query);
+	$result = mysqli_query($dbc, $query);
 	$num_rows = mysql_num_rows($result);
 	if ($num_rows != 0){
 		while ($row = mysql_fetch_array ($result, MYSQL_ASSOC)) {
@@ -110,14 +110,14 @@ if(isset($_POST['init'])){
 		$newstart = date('Y-m-d', strtotime($schedend.'+1days'));
 		$newend = date('Y-m-d', strtotime($schedstart.'-1days'));
 		$query1 = "UPDATE schedules set schedule_end_date='$newend' WHERE schedule_id='$schedule_id'";
-		$result1 = mysql_query($query1);
+		$result1 = mysqli_query($dbc, $query1);
 		$query2 = "INSERT into schedules (division, schedule_start_date, schedule_end_date, specific_schedule) 
 			values ('$division', '$newstart', '$oldschedend', '$oldspecific_schedule')";
-		$result2 = mysql_query($query2);
+		$result2 = mysqli_query($dbc, $query2);
 		}
 	$query = "SELECT * from schedules WHERE division='$division' and (schedule_start_date >= '$schedstart') 
 		and (schedule_start_date < '$schedend') and (schedule_end_date > '$schedend')";
-	$result = mysql_query($query);
+	$result = mysqli_query($dbc, $query);
 	$num_rows = mysql_num_rows($result);
 	if ($num_rows != 0){
 		while ($row = mysql_fetch_array ($result, MYSQL_ASSOC)) {
@@ -125,11 +125,11 @@ if(isset($_POST['init'])){
 			}
 		$newstart = date('Y-m-d', strtotime($schedend.'+1days'));
 		$query1 = "UPDATE schedules set schedule_start_date='$newstart' WHERE schedule_id='$schedule_id'";
-		$result1 = mysql_query($query1);
+		$result1 = mysqli_query($dbc, $query1);
 		}
 	$query = "SELECT * from schedules WHERE division='$division' and (schedule_end_date <= '$schedend') and 
 		(schedule_end_date > '$schedstart') and (schedule_start_date < '$schedstart')";
-	$result = mysql_query($query);
+	$result = mysqli_query($dbc, $query);
 	$num_rows = mysql_num_rows($result);
 	if ($num_rows != 0){
 		while ($row = mysql_fetch_array ($result, MYSQL_ASSOC)) {
@@ -137,12 +137,12 @@ if(isset($_POST['init'])){
 			}
 		$newend = date('Y-m-d', strtotime($schedstart.'-1days'));
 		$query1 = "UPDATE schedules set schedule_end_date='$newend' WHERE schedule_id='$schedule_id'";
-		$result1 = mysql_query($query1);
+		$result1 = mysqli_query($dbc, $query1);
 		}
 	
 	$max = 0;
 	$query = "SELECT MAX(specific_schedule) FROM schedules";
-	$result = mysql_query($query);
+	$result = mysqli_query($dbc, $query);
 	while ($row = mysql_fetch_array ($result, MYSQL_NUM)) {
 		$max = $row[0];
 		}
@@ -150,17 +150,17 @@ if(isset($_POST['init'])){
 	
 	$query = "INSERT into schedules (division, schedule_start_date, schedule_end_date, specific_schedule) 
 		values ('$division', '$schedstart', '$schedend', '$max')";
-	$result = mysql_query($query);
+	$result = mysqli_query($dbc, $query);
 	
 	$query = "INSERT into shifts (week_type, shift_day, emp_id, shift_start, shift_end, desk_start, desk_end, 
 				desk_start2, desk_end2, lunch_start, lunch_end, specific_schedule) 
 				SELECT week_type, shift_day, emp_id, shift_start, shift_end, desk_start, desk_end, 
 				desk_start2, desk_end2, lunch_start, lunch_end, '$max' from shifts where specific_schedule='$specific_schedule'";
-	$result = mysql_query($query);
+	$result = mysqli_query($dbc, $query);
 	
 	$query = "INSERT into deficiencies (def_schedule, def_week, def_day, def_division, def_start, def_end)
 		SELECT '$max', def_week, def_day, def_division, def_start, def_end from deficiencies where def_schedule='$specific_schedule'";
-	$result = mysql_query($query);
+	$result = mysqli_query($dbc, $query);
 	
 	$_SESSION['schedules_division'] = $division;
 	header ('Location: edit_schedule');
@@ -243,14 +243,14 @@ if (isset($_POST['delete'])){
 	$schedstart = $_POST['schedstart'];
 	$schedend = $_POST['schedend'];
 	$query1 = "DELETE from schedules WHERE schedule_id='$schedule_id'";
-	$result1 = mysql_query($query1);
+	$result1 = mysqli_query($dbc, $query1);
 	$query2 = "SELECT * from schedules WHERE specific_schedule='$specific_schedule'";
-	$result2 = mysql_query($query2);
+	$result2 = mysqli_query($dbc, $query2);
 	if ($result2){
 		$num_rows = mysql_num_rows($result2);
 		if ($num_rows == 0) {
 			$query3 = "DELETE from shifts WHERE specific_schedule='$specific_schedule'";
-			$result3 = mysql_query($query3);
+			$result3 = mysqli_query($dbc, $query3);
 			}
 		}
 	echo '<div class="message">Schedule for '.$schedstart.' to '.$schedend.' has been deleted.</div>';
@@ -282,7 +282,7 @@ if (isset($division)){
 		WHERE schedule_end_date >= '$past_date' group by specific_schedule) as t
 		WHERE division='$division' and schedule_end_date >= '$past_date' and s.specific_schedule=t.specific_schedule
 		ORDER BY schedule_end_date desc";
-	$result = mysql_query($query) or die(mysql_error());
+	$result = mysqli_query($dbc, $query) or die(mysql_error());
 	if ($result){
 		$num_rows = mysql_num_rows($result);
 		if ($num_rows != 0) {

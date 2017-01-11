@@ -81,7 +81,7 @@ if (isset($_POST['delete'])){
 	$emp_id = $_POST['emp_id'];
 	$name = $_POST['employee_name'];
 	$query1 = "UPDATE employees set active='Inactive' WHERE emp_id='$emp_id'";
-	$result1 = mysql_query($query1);
+	$result1 = mysqli_query($dbc, $query1);
 	echo '<div class="message"><b>'. $name . '</b> has been deleted.</div>';
 	}
 
@@ -106,7 +106,7 @@ if ((isset($division)) && ($division !== 'All')) {
 	$query = "SELECT emp_id, last_name, first_name, employee_number, exempt_status, weekly_hours, division, 
 		home_phone, mobile_phone FROM employees WHERE division like '%".$division."%' and active='Active'
 	ORDER BY division ASC, last_name asc";
-	$result = mysql_query($query) or die(mysql_error($dbc));
+	$result = mysqli_query($dbc, $query) or die(mysql_error($dbc));
 	$num = mysql_num_rows ($result);
 
 	if ($num>0) {
@@ -146,7 +146,7 @@ else{
 	$query = "SELECT emp_id, last_name, first_name, employee_number, exempt_status, weekly_hours, division, 
 		home_phone, mobile_phone FROM employees WHERE active='Active'
 		ORDER BY division ASC, last_name asc";
-	$result = mysql_query($query) or die(mysql_error($dbc));
+	$result = mysqli_query($dbc, $query) or die(mysql_error($dbc));
 	$num = mysql_num_rows ($result);
 
 	if ($num>0) {

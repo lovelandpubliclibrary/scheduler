@@ -18,7 +18,7 @@ $pic_poss = array();
 
 $query = "SELECT emp_id, first_name, last_name FROM employees WHERE active='Active' and pic_status='Y'
 	ORDER BY first_name";
-$result = mysql_query($query);
+$result = mysqli_query($dbc, $query);
 if ($result){
 	$num_rows = mysql_num_rows($result);
 	if ($num_rows != 0) {
@@ -42,7 +42,7 @@ if (isset($_POST['submitted'])){
 	//Check for overlaps
 	$query = "SELECT e.emp_id, first_name FROM employees e, pic_coverage c WHERE 
 		e.emp_id = c.emp_id and pic_coverage_date='$pic_date'";
-	$result = mysql_query($query);
+	$result = mysqli_query($dbc, $query);
 	if ($result){
 	$num_rows = mysql_num_rows($result);
 		if ($num_rows != 0) {
@@ -52,7 +52,7 @@ if (isset($_POST['submitted'])){
 	
 	if(!isset($error)){
 		$query = "INSERT into pic_coverage (pic_coverage_date, emp_id) values ('$pic_date', '$pic')";
-		$result = mysql_query($query);
+		$result = mysqli_query($dbc, $query);
 		
 		//Echo change success message
 		echo "<div class=\"message\"><b>PIC Coverage entered for</b> <a href=\"$pic_yr/";

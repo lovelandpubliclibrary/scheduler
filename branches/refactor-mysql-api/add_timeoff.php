@@ -249,7 +249,7 @@ function validator() {
 foreach ($divisions as $k=>$v){
 	$query = "SELECT emp_id, first_name, last_name FROM employees WHERE active = 'Active' and 
 		(division like '%".$v."%') order by last_name asc";
-	$result = mysql_query($query) or die(mysql_error($dbc));
+	$result = mysqli_query($dbc, $query) or die(mysql_error($dbc));
 	
 	while ($row = mysql_fetch_array ($result, MYSQL_ASSOC)) {
 		$array[$v][]=$row;
@@ -318,11 +318,11 @@ if (isset($_POST['submitted'])){
 	if (empty($errors)) {
 	$query = "INSERT into timeoff(emp_id, timeoff_start_date, timeoff_start_time, timeoff_end_date, timeoff_end_time,
 		timeoff_reason) values('$emp_id', '$ts_date', '$ts_time', '$te_date', '$te_time', '$reason')";
-	$result = mysql_query($query) or die(mysql_error($dbc));
+	$result = mysqli_query($dbc, $query) or die(mysql_error($dbc));
 	if ($result) {
 		$query2 = "SELECT concat(first_name, ' ', last_name) as employee_name 
 			FROM employees where emp_id='$emp_id'";
-		$result2 = mysql_query($query2) or die(mysql_error($dbc));
+		$result2 = mysqli_query($dbc, $query2) or die(mysql_error($dbc));
 		$full_name = mysql_result($result2, 0);
 	
 	//Echo change success message

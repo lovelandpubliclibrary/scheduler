@@ -33,7 +33,7 @@ $query = "SELECT first_name, last_name, e.emp_id, coverage_id,
 		coverage_date, coverage_division, coverage_offdesk, coverage_reason
 		FROM employees as e, coverage as t 
 		WHERE e.emp_id = t.emp_id and coverage_id = $coverage_id";
-$result = mysql_query($query);
+$result = mysqli_query($dbc, $query);
 
 while ($row = mysql_fetch_array ($result, MYSQL_ASSOC)) {
 	$first_name = $row['first_name'];
@@ -165,7 +165,7 @@ if (isset($_POST['edited'])) {
 		and coverage_id != '$coverage_id' and coverage_date = '$cd_date' and 
 		(('$cs_time' >= coverage_start_time and '$cs_time' < coverage_end_time) 
 		or ('$ce_time' > coverage_start_time and '$ce_time' <= coverage_end_time))";
-	$result = mysql_query($query);
+	$result = mysqli_query($dbc, $query);
 	$num_rows = mysql_num_rows($result);
 	if ($num_rows != 0) {
 		while ($row = mysql_fetch_array ($result, MYSQL_ASSOC)){
@@ -188,7 +188,7 @@ if (isset($_POST['edited'])) {
 		$query = "UPDATE coverage SET coverage_division='$cd_div', coverage_date='$cd_date', coverage_start_time='$cs_time', 
 			coverage_end_time='$ce_time', coverage_offdesk='$cd_onoff', coverage_reason='$cd_reason'
 			WHERE coverage_id = '$coverage_id'";
-		$result = mysql_query($query) or die(mysql_error($dbc));
+		$result = mysqli_query($dbc, $query) or die(mysql_error($dbc));
 		if ($result) {
 			if (isset($_SESSION['view_past'])){
 				$_SESSION['success'] = TRUE;

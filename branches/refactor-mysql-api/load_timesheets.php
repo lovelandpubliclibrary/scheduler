@@ -12,7 +12,7 @@ $year5 = date('Y-m-d' , $year5 );
 
 require_once ('/home/teulberg/dev.lpl-repository.com/mysql_connect_sched2.php');
 $query = "SELECT timesheets_start, timesheets_end from timesheet_alerts ORDER BY timesheets_id desc LIMIT 1";
-$result = mysql_query($query);
+$result = mysqli_query($dbc, $query);
 
 while ($row = mysql_fetch_assoc($result)) {
 	$tss = $row['timesheets_start'];
@@ -29,7 +29,7 @@ if (isset($array)){
 		$tss = $dates[0];
 		$tse = $dates[1];
 		$query2 = "INSERT into timesheet_alerts (timesheets_start, timesheets_end) values ('$tss', '$tse')";
-		$result2 = mysql_query($query2);
+		$result2 = mysqli_query($dbc, $query2);
 		echo "Timesheet period loaded: $tss - $tse.<br/>\n";
 		}
 	}

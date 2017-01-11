@@ -12,7 +12,7 @@ $month6 = date('Y-m-d' , $month6 );
 //Query database to get most recent date and week
 require_once ('/home/teulberg/dev.lpl-repository.com/mysql_connect_sched2.php');
 $query = "SELECT date, week_type FROM dates ORDER BY date_id desc LIMIT 1";
-$result = mysql_query($query) or die(mysql_error($dbc));
+$result = mysqli_query($dbc, $query) or die(mysql_error($dbc));
 
 while ($row = mysql_fetch_assoc($result)) {
 	$recentdate = $row['date'];

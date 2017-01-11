@@ -15,7 +15,7 @@ function daily_schedule($now, $divisions) {
 	//Get week type.
 	$today = date('Y-m-d' , $now);
 	$query = "SELECT date, week_type FROM dates where date = '$today'";
-	$result = @mysql_query($query);
+	$result = @mysqli_query($dbc, $query);
 
 	while ($row = mysql_fetch_assoc($result)) {
 		$week_type = $row['week_type'];
@@ -26,7 +26,7 @@ function daily_schedule($now, $divisions) {
 
 	//Get season.
 	$query2 = "SELECT memorial_day, labor_day FROM holidays where year='$year'";
-	$result2 = @mysql_query($query2);
+	$result2 = @mysqli_query($dbc, $query2);
 
 	while ($row2 = mysql_fetch_assoc($result2)) {
 		$memorial_day = $row2['memorial_day'];
@@ -76,7 +76,7 @@ function daily_schedule($now, $divisions) {
 			and p.emp_id=e.emp_id and e.emp_id not in
 			(SELECT emp_id from timeoff WHERE timeoff_start_date <= '$today' and timeoff_end_date >= '$today')";
 		}
-	$result_pic = mysql_query($query_pic);
+	$result_pic = mysqli_query($dbc, $query_pic);
 	if($result_pic){
 		while ($row = mysql_fetch_array($result_pic, MYSQL_ASSOC)){
 			$pic_name = $row['first_name'];
@@ -88,7 +88,7 @@ function daily_schedule($now, $divisions) {
 
 	$query_pic_cover = "SELECT first_name from employees e, pic_coverage c WHERE pic_coverage_date='$today' and
 		e.emp_id=c.emp_id";
-	$result_pic_cover = mysql_query($query_pic_cover);
+	$result_pic_cover = mysqli_query($dbc, $query_pic_cover);
 	if($result_pic_cover){
 		while ($row = mysql_fetch_array($result_pic_cover, MYSQL_ASSOC)){
 			$pic_name = $row['first_name'];
@@ -104,7 +104,7 @@ function daily_schedule($now, $divisions) {
 
 	//See if library closed.
 	$query_closure = "SELECT * from closures WHERE closure_date='$today' limit 1";
-	$result_closure = mysql_query($query_closure);
+	$result_closure = mysqli_query($dbc, $query_closure);
 	if ($result_closure){
 		$num_rows = mysql_num_rows($result_closure);
 		if ($num_rows != 0){
@@ -237,7 +237,7 @@ function daily_schedule($now, $divisions) {
 				from employees as e, shifts as a, schedules as s
 				WHERE e.emp_id = a.emp_id and schedule_start_date <= '$today' and schedule_end_date >= '$today'
 				and week_type='$week_type' and shift_day='$day' and a.specific_schedule=s.specific_schedule";
-			$result20 = mysql_query($query20);
+			$result20 = mysqli_query($dbc, $query20);
 			if ($result20) {
 				$num_rows = mysql_num_rows($result20);
 				if ($num_rows != 0) {
@@ -249,7 +249,7 @@ function daily_schedule($now, $divisions) {
 						//Get schedule data.
 						$query1 = "SELECT specific_schedule from schedules WHERE division='$divrow'
 							and schedule_start_date <= '$today' and schedule_end_date >= '$today'";
-						$result1 = mysql_query($query1);
+						$result1 = mysqli_query($dbc, $query1);
 						while ($row1 = mysql_fetch_array($result1, MYSQL_ASSOC)){
 							$specific_schedule = $row1['specific_schedule'];
 							}
@@ -266,7 +266,7 @@ function daily_schedule($now, $divisions) {
 							and week_type='$week_type' and shift_day='$day'
 							and e.active = 'Active' and (e.employee_lastday >= '$today' or e.employee_lastday is null)
 							order by exempt_status asc, weekly_hours desc, first_name asc";
-						$result2 = mysql_query($query2);
+						$result2 = mysqli_query($dbc, $query2);
 
 						echo '<div class="divrow"><h3><a href="/scheduler/' . $division . '/daily">' . $divrow . '</a>';
 						if ($divrow == 'Admin'){
@@ -452,7 +452,7 @@ function daily_schedule($now, $divisions) {
 									time_format(timeoff_end_time,'%k') as timeoff_end, time_format(timeoff_end_time,'%i') as timeoff_end_minutes,
 									timeoff_reason from timeoff as t where emp_id='$emp_id' and
 									timeoff_start_date <= '$today' and timeoff_end_date >= '$today'";
-								$result3 = mysql_query($query3) or die(mysql_error($dbc));
+								$result3 = mysqli_query($dbc, $query3) or die(mysql_error($dbc));
 
 									$array = array();
 									while ($row3 = mysql_fetch_array ($result3, MYSQL_ASSOC)){
@@ -487,7 +487,7 @@ function daily_schedule($now, $divisions) {
 									FROM coverage as c
 									where emp_id='$emp_id' and coverage_date = '$today'
 									and c.coverage_division= '$divrow'";
-								$result4 = mysql_query($query4) or die(mysql_error($dbc));
+								$result4 = mysqli_query($dbc, $query4) or die(mysql_error($dbc));
 								if (mysql_num_rows($result) != 0) {
 									$cov_array = array();
 									while ($row4 = mysql_fetch_array ($result4, MYSQL_ASSOC)){
@@ -625,7 +625,7 @@ function daily_schedule($now, $divisions) {
 								WHERE (division not like '%".$divrow."%') and c.coverage_division = '$divrow' and
 								coverage_date='$today' and e.emp_id = c.emp_id and e.active = 'Active'
 								ORDER BY last_name asc, cet asc";
-							$result5 = mysql_query($query5) or die(mysql_error($dbc));
+							$result5 = mysqli_query($dbc, $query5) or die(mysql_error($dbc));
 
 							while ($row5 = mysql_fetch_array ($result5, MYSQL_ASSOC)) {
 								$emp_id = $row5['emp_id'];
@@ -738,7 +738,7 @@ function daily_schedule($now, $divisions) {
 								time_format(def_end,'%k') as def_end, time_format(def_end,'%i') as def_end_minutes
 								FROM deficiencies WHERE def_schedule='$specific_schedule'
 								and def_week='$week_type' and def_day='$day' and def_division='$divrow'";
-							$result6 = mysql_query($query6) or die(mysql_error($dbc));
+							$result6 = mysqli_query($dbc, $query6) or die(mysql_error($dbc));
 							if (mysql_num_rows($result6) != 0) {
 								while ($row6 = mysql_fetch_array ($result6, MYSQL_ASSOC)){
 									$def_start = $row6['def_start'];
@@ -930,7 +930,7 @@ function daily_schedule($now, $divisions) {
 								//Get Subs employee data.
 								$query2 = "SELECT first_name, last_name, name_dup, emp_id from employees as e
 									where division = 'Subs' and active = 'Active' order by first_name asc";
-								$result2 = mysql_query($query2) or die(mysql_error($dbc));
+								$result2 = mysqli_query($dbc, $query2) or die(mysql_error($dbc));
 
 								//Create and display employee rows.
 								while ($row2 = mysql_fetch_array($result2, MYSQL_ASSOC)){
@@ -946,7 +946,7 @@ function daily_schedule($now, $divisions) {
 										time_format(timeoff_end_time,'%k') as timeoff_end, time_format(timeoff_end_time,'%i') as timeoff_end_minutes,
 										timeoff_reason from timeoff as t where emp_id='$emp_id' and
 										timeoff_start_date <= '$today' and timeoff_end_date >= '$today'";
-									$result3 = mysql_query($query3) or die(mysql_error($dbc));
+									$result3 = mysqli_query($dbc, $query3) or die(mysql_error($dbc));
 
 										$array = array();
 										while ($row3 = mysql_fetch_array ($result3, MYSQL_ASSOC)){
@@ -981,7 +981,7 @@ function daily_schedule($now, $divisions) {
 											time_format(coverage_end_time,'%i') as coverage_end_minutes, coverage_offdesk, coverage_reason from coverage as c
 											where emp_id='$emp_id' and coverage_date = '$today'
 											ORDER BY cet asc";
-										$result4 = mysql_query($query4) or die(mysql_error($dbc));
+										$result4 = mysqli_query($dbc, $query4) or die(mysql_error($dbc));
 										if (mysql_num_rows($result) != 0) {
 											$cov_array = array();
 											while ($row4 = mysql_fetch_array ($result4, MYSQL_ASSOC)){
@@ -1120,7 +1120,7 @@ function division_daily($division, $now) {
 	//Get week type.
 	$today = date('Y-m-d' , $now);
 	$query = "SELECT date, week_type FROM dates where date = '$today'";
-	$result = @mysql_query($query);
+	$result = @mysqli_query($dbc, $query);
 
 	while ($row = mysql_fetch_assoc($result)) {
 		$week_type = $row['week_type'];
@@ -1131,7 +1131,7 @@ function division_daily($division, $now) {
 
 	//Get season.
 	$query2 = "SELECT memorial_day, labor_day FROM holidays where year='$year'";
-	$result2 = @mysql_query($query2);
+	$result2 = @mysqli_query($dbc, $query2);
 
 	while ($row2 = mysql_fetch_assoc($result2)) {
 		$memorial_day = $row2['memorial_day'];
@@ -1181,7 +1181,7 @@ function division_daily($division, $now) {
 			and p.emp_id=e.emp_id and e.emp_id not in
 			(SELECT emp_id from timeoff WHERE timeoff_start_date <= '$today' and timeoff_end_date >= '$today')";
 		}
-	$result_pic = mysql_query($query_pic);
+	$result_pic = mysqli_query($dbc, $query_pic);
 	if($result_pic){
 		while ($row = mysql_fetch_array($result_pic, MYSQL_ASSOC)){
 			$pic_name = $row['first_name'];
@@ -1193,7 +1193,7 @@ function division_daily($division, $now) {
 
 	$query_pic_cover = "SELECT first_name from employees e, pic_coverage c WHERE pic_coverage_date='$today' and
 		e.emp_id=c.emp_id";
-	$result_pic_cover = mysql_query($query_pic_cover);
+	$result_pic_cover = mysqli_query($dbc, $query_pic_cover);
 	if($result_pic_cover){
 		while ($row = mysql_fetch_array($result_pic_cover, MYSQL_ASSOC)){
 			$pic_name = $row['first_name'];
@@ -1225,7 +1225,7 @@ function division_daily($division, $now) {
 
 	//See if library closed.
 	$query_closure = "SELECT * from closures WHERE closure_date='$today' limit 1";
-	$result_closure = mysql_query($query_closure);
+	$result_closure = mysqli_query($dbc, $query_closure);
 	if ($result_closure){
 		$num_rows = mysql_num_rows($result_closure);
 		if ($num_rows != 0){
@@ -1358,7 +1358,7 @@ function division_daily($division, $now) {
 				where e.emp_id = a.emp_id and schedule_start_date <= '$today' and schedule_end_date >= '$today'
 				and week_type='$week_type' and shift_day='$day' and e.division = '$division'
 				and a.specific_schedule=s.specific_schedule";
-			$result20 = mysql_query($query20);
+			$result20 = mysqli_query($dbc, $query20);
 			if ($result20){
 				$num_rows = mysql_num_rows($result20);
 				if ($num_rows != 0) {
@@ -1367,7 +1367,7 @@ function division_daily($division, $now) {
 					//Get schedule data.
 					$query1 = "SELECT specific_schedule from schedules WHERE division='$divrow'
 						and schedule_start_date <= '$today' and schedule_end_date >= '$today'";
-					$result1 = mysql_query($query1);
+					$result1 = mysqli_query($dbc, $query1);
 					while ($row1 = mysql_fetch_array($result1, MYSQL_ASSOC)){
 						$specific_schedule = $row1['specific_schedule'];
 						}
@@ -1384,7 +1384,7 @@ function division_daily($division, $now) {
 						and week_type='$week_type' and shift_day='$day'
 						and e.active = 'Active' and (e.employee_lastday >= '$today' or e.employee_lastday is null)
 						order by exempt_status asc, weekly_hours desc, first_name asc";
-					$result2 = mysql_query($query2);
+					$result2 = mysqli_query($dbc, $query2);
 
 					//Initialize alert arrays.
 					if ($day == 'Sat'){
@@ -1561,7 +1561,7 @@ function division_daily($division, $now) {
 							time_format(timeoff_end_time,'%k') as timeoff_end, time_format(timeoff_end_time,'%i') as timeoff_end_minutes,
 							timeoff_reason from timeoff as t where emp_id='$emp_id' and
 							timeoff_start_date <= '$today' and timeoff_end_date >= '$today'";
-						$result3 = mysql_query($query3) or die(mysql_error($dbc));
+						$result3 = mysqli_query($dbc, $query3) or die(mysql_error($dbc));
 
 						$array = array();
 						while ($row3 = mysql_fetch_array ($result3, MYSQL_ASSOC)){
@@ -1596,7 +1596,7 @@ function division_daily($division, $now) {
 							FROM coverage as c
 							where emp_id='$emp_id' and coverage_date = '$today'
 							and c.coverage_division= '$divrow'";
-						$result4 = mysql_query($query4) or die(mysql_error($dbc));
+						$result4 = mysqli_query($dbc, $query4) or die(mysql_error($dbc));
 						if (mysql_num_rows($result) != 0) {
 							$cov_array = array();
 							while ($row4 = mysql_fetch_array ($result4, MYSQL_ASSOC)){
@@ -1735,7 +1735,7 @@ function division_daily($division, $now) {
 						WHERE (division not like '%".$divrow."%') and c.coverage_division = '$divrow' and
 						coverage_date='$today' and e.emp_id = c.emp_id and e.active = 'Active'
 						ORDER BY last_name asc, cet asc";
-					$result5 = mysql_query($query5) or die(mysql_error($dbc));
+					$result5 = mysqli_query($dbc, $query5) or die(mysql_error($dbc));
 					while ($row5 = mysql_fetch_array ($result5, MYSQL_ASSOC)) {
 						$emp_id = $row5['emp_id'];
 						$first_name = $row5['first_name'];
@@ -1848,7 +1848,7 @@ function division_daily($division, $now) {
 						time_format(def_end,'%k') as def_end, time_format(def_end,'%i') as def_end_minutes
 						FROM deficiencies WHERE def_schedule=$specific_schedule
 						and def_week='$week_type' and def_day='$day' and def_division='$divrow'";
-					$result6 = mysql_query($query6) or die(mysql_error($dbc));
+					$result6 = mysqli_query($dbc, $query6) or die(mysql_error($dbc));
 					if (mysql_num_rows($result6) != 0) {
 						while ($row6 = mysql_fetch_array ($result6, MYSQL_ASSOC)){
 							$def_start = $row6['def_start'];
@@ -2049,7 +2049,7 @@ function subs_specific($division, $now) {
 	//Get week type.
 	$today = date('Y-m-d' , $now);
 	$query = "SELECT date, week_type FROM dates where date = '$today'";
-	$result = @mysql_query($query);
+	$result = @mysqli_query($dbc, $query);
 
 	while ($row = mysql_fetch_assoc($result)) {
 		$week_type = $row['week_type'];
@@ -2060,7 +2060,7 @@ function subs_specific($division, $now) {
 
 	//Get season.
 	$query2 = "SELECT memorial_day, labor_day FROM holidays where year='$year'";
-	$result2 = @mysql_query($query2);
+	$result2 = @mysqli_query($dbc, $query2);
 
 	while ($row2 = mysql_fetch_assoc($result2)) {
 		$memorial_day = $row2['memorial_day'];
@@ -2115,7 +2115,7 @@ function subs_specific($division, $now) {
 			and p.emp_id=e.emp_id and e.emp_id not in
 			(SELECT emp_id from timeoff WHERE timeoff_start_date <= '$today' and timeoff_end_date >= '$today')";
 		}
-	$result_pic = mysql_query($query_pic);
+	$result_pic = mysqli_query($dbc, $query_pic);
 	if($result_pic){
 		while ($row = mysql_fetch_array($result_pic, MYSQL_ASSOC)){
 			$pic_name = $row['first_name'];
@@ -2127,7 +2127,7 @@ function subs_specific($division, $now) {
 
 	$query_pic_cover = "SELECT first_name from employees e, pic_coverage c WHERE pic_coverage_date='$today' and
 		e.emp_id=c.emp_id";
-	$result_pic_cover = mysql_query($query_pic_cover);
+	$result_pic_cover = mysqli_query($dbc, $query_pic_cover);
 	if($result_pic_cover){
 		while ($row = mysql_fetch_array($result_pic_cover, MYSQL_ASSOC)){
 			$pic_name = $row['first_name'];
@@ -2143,7 +2143,7 @@ function subs_specific($division, $now) {
 
 	//See if library closed.
 	$query_closure = "SELECT * from closures WHERE closure_date='$today' limit 1";
-	$result_closure = mysql_query($query_closure);
+	$result_closure = mysqli_query($dbc, $query_closure);
 	if ($result_closure){
 		$num_rows = mysql_num_rows($result_closure);
 		if ($num_rows != 0){
@@ -2274,7 +2274,7 @@ function subs_specific($division, $now) {
 			$query = "SELECT first_name, last_name, name_dup, emp_id FROM employees
 				WHERE division = 'Subs' and active = 'Active'
 				and (employee_lastday >= '$today' or employee_lastday is null) ORDER BY first_name asc";
-			$result = mysql_query($query);
+			$result = mysqli_query($dbc, $query);
 			if ($result){
 				$num_rows = mysql_num_rows($result);
 				if ($num_rows != 0){
@@ -2310,7 +2310,7 @@ function subs_specific($division, $now) {
 							FROM coverage as c
 							WHERE emp_id='$emp_id' and coverage_date = '$today'
 							ORDER BY cet asc";
-						$result2 = mysql_query($query2);
+						$result2 = mysqli_query($dbc, $query2);
 
 						if (mysql_num_rows($result2) != 0) {
 							while ($row2 = mysql_fetch_array ($result2, MYSQL_ASSOC)){
@@ -2443,7 +2443,7 @@ function division_timeoff($division, $today){
 		and (e.employee_lastday >= '$today' or e.employee_lastday is null)
 		and (timeoff_start_date >= '$today' OR (timeoff_start_date < '$today' AND timeoff_end_date >= '$today'))
 		ORDER by timeoff_start_date asc, first_name asc";
-	$result = mysql_query($query);
+	$result = mysqli_query($dbc, $query);
 	if ($result){
 		$num_rows = mysql_num_rows($result);
 		if ($num_rows != 0) {
@@ -2668,7 +2668,7 @@ function subs_weekly($division, $now) {
 	//Get week type.
 	$today = date('Y-m-d' , $now);
 	$query = "SELECT date, week_type FROM dates where date = '$today'";
-	$result = @mysql_query($query);
+	$result = @mysqli_query($dbc, $query);
 
 	while ($row = mysql_fetch_assoc($result)) {
 		$week_type = $row['week_type'];
@@ -2679,7 +2679,7 @@ function subs_weekly($division, $now) {
 
 	//Get season.
 	$query2 = "SELECT memorial_day, labor_day FROM holidays where year='$year'";
-	$result2 = @mysql_query($query2);
+	$result2 = @mysqli_query($dbc, $query2);
 
 	while ($row2 = mysql_fetch_assoc($result2)) {
 		$memorial_day = $row2['memorial_day'];
@@ -2703,7 +2703,7 @@ function subs_weekly($division, $now) {
 	$query = "SELECT first_name, last_name, name_dup, emp_id FROM employees, divisions
 		WHERE div_link = '$division' and division=div_name and active = 'Active'
 		and (employee_lastday >= '$today' or employee_lastday is null) ORDER BY first_name asc";
-	$result = mysql_query($query);
+	$result = mysqli_query($dbc, $query);
 	if ($result){
 		$num_rows = mysql_num_rows($result);
 		if ($num_rows != 0){
@@ -2753,7 +2753,7 @@ function subs_weekly($division, $now) {
 						FROM coverage as c
 						WHERE emp_id='$emp_id' and coverage_date = '$v'
 						ORDER BY cet asc";
-					$result2 = mysql_query($query2);
+					$result2 = mysqli_query($dbc, $query2);
 
 					if (mysql_num_rows($result2) != 0) {
 						while ($row2 = mysql_fetch_array ($result2, MYSQL_ASSOC)){
@@ -2873,7 +2873,7 @@ function division_weekly($division, $now) {
 	//Get week type.
 	$today = date('Y-m-d' , $now);
 	$query = "SELECT date, week_type FROM dates where date = '$today'";
-	$result = @mysql_query($query);
+	$result = @mysqli_query($dbc, $query);
 
 	while ($row = mysql_fetch_assoc($result)) {
 		$week_type = $row['week_type'];
@@ -2884,7 +2884,7 @@ function division_weekly($division, $now) {
 
 	//Get season.
 	$query2 = "SELECT memorial_day, labor_day FROM holidays where year='$year'";
-	$result2 = @mysql_query($query2);
+	$result2 = @mysqli_query($dbc, $query2);
 
 	while ($row2 = mysql_fetch_assoc($result2)) {
 		$memorial_day = $row2['memorial_day'];
@@ -2905,14 +2905,14 @@ function division_weekly($division, $now) {
 		}
 	//Get division names.
 	$div_query = "SELECT div_name from divisions WHERE div_link = '$division'";
-	$div_result = mysql_query($div_query);
+	$div_result = mysqli_query($dbc, $div_query);
 	while ($div_row = mysql_fetch_array($div_result, MYSQL_ASSOC)){
 		$div_name = $div_row['div_name'];
 		}
 	$query = "SELECT first_name, last_name, name_dup, emp_id, division FROM employees, divisions
 		WHERE div_link = '$division' and division like concat('%',div_name,'%') and active = 'Active'
 		and (employee_lastday >= '$today' or employee_lastday is null) ORDER BY exempt_status asc, weekly_hours desc, first_name asc";
-	$result = mysql_query($query);
+	$result = mysqli_query($dbc, $query);
 	if ($result){
 		$num_rows = mysql_num_rows($result);
 		if ($num_rows != 0){
@@ -2958,7 +2958,7 @@ function division_weekly($division, $now) {
 					$day = date('D', strtotime($v));
 					$query1 = "SELECT specific_schedule from schedules WHERE division='$div_name'
 						and schedule_start_date <= '$v' and schedule_end_date >= '$v'";
-					$result1 = mysql_query($query1);
+					$result1 = mysqli_query($dbc, $query1);
 					while ($row1 = mysql_fetch_array($result1, MYSQL_ASSOC)){
 						$specific_schedule = $row1['specific_schedule'];
 						}
@@ -2976,7 +2976,7 @@ function division_weekly($division, $now) {
 						and e.emp_id = a.emp_id
 						and week_type='$week_type' and shift_day='$day'
 						and e.active = 'Active' and (e.employee_lastday >= '$v' or e.employee_lastday is null)";
-					$result2 = mysql_query($query2);
+					$result2 = mysqli_query($dbc, $query2);
 					if($result2){
 						while ($row2 = mysql_fetch_array($result2, MYSQL_ASSOC)){
 							$working_start = 0;
@@ -3058,7 +3058,7 @@ function division_weekly($division, $now) {
 								time_format(timeoff_end_time,'%k') as timeoff_end, time_format(timeoff_end_time,'%i') as timeoff_end_minutes
 								from timeoff as t where emp_id='$emp_id' and
 								timeoff_start_date <= '$v' and timeoff_end_date >= '$v' order by timeoff_start_date asc, timeoff_start asc";
-							$result3 = mysql_query($query3);
+							$result3 = mysqli_query($dbc, $query3);
 
 							$timeoff_array = array();
 							while ($row3 = mysql_fetch_array ($result3, MYSQL_ASSOC)){
@@ -3091,7 +3091,7 @@ function division_weekly($division, $now) {
 								time_format(closure_end_time,'%k') as closure_end,
 								time_format(closure_end_time,'%i') as closure_end_minutes
 								from closures WHERE closure_date='$v' limit 1";
-							$result5 = mysql_query($query5);
+							$result5 = mysqli_query($dbc, $query5);
 
 							while ($row5 = mysql_fetch_array ($result5, MYSQL_ASSOC)){
 								$cd_start = $row5['closure_start'];
@@ -3115,7 +3115,7 @@ function division_weekly($division, $now) {
 								FROM coverage as c
 								where emp_id='$emp_id' and coverage_date = '$v'
 								and c.coverage_division= '$division'";
-							$result4 = mysql_query($query4);
+							$result4 = mysqli_query($dbc, $query4);
 							if (mysql_num_rows($result) != 0) {
 								$cov_array = array();
 								while ($row4 = mysql_fetch_array ($result4, MYSQL_ASSOC)){
@@ -3368,7 +3368,7 @@ function division_master($sched_id){
 	$shifts = array();
 
 	$query = "SELECT * from schedules, divisions WHERE schedule_id='$sched_id' and division=div_name";
-	$result = mysql_query($query);
+	$result = mysqli_query($dbc, $query);
 
 	while ($row = mysql_fetch_array($result, MYSQL_ASSOC)){
 		$division = $row['div_link'];
@@ -3416,7 +3416,7 @@ function division_master($sched_id){
 	echo "<div class=\"div_week\" data-week=\"c\">C</div><div class=\"div_week\" data-week=\"d\">D</div></div>\n";
 
 	$query1 = "SELECT * from shifts WHERE specific_schedule='$specific_schedule'";
-	$result1 = mysql_query($query1);
+	$result1 = mysqli_query($dbc, $query1);
 	if($result1){
 		while ($row1 = mysql_fetch_array($result1, MYSQL_ASSOC)){
 			$week_type = $row1['week_type'];
@@ -3443,7 +3443,7 @@ function division_master($sched_id){
 			WHERE div_link = '$division' and division like concat('%',div_name,'%') and active = 'Active'
 			and (employee_lastday >= '$today' or employee_lastday is null)
 			ORDER BY division asc, exempt_status asc, weekly_hours desc, first_name asc";
-		$result = mysql_query($query);
+		$result = mysqli_query($dbc, $query);
 		while ($row = mysql_fetch_array($result, MYSQL_ASSOC)){
 			$first_name = $row['first_name'];
 			if ($row['name_dup'] == 'Y'){

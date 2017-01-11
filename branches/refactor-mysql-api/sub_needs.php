@@ -15,7 +15,7 @@ $today = date('Y-m-d');
 function subs(){
 	$query = "SELECT emp_id, concat(first_name, ' ', last_name) as employee_name FROM employees 
 		WHERE division = 'Subs' and active = 'Active' ORDER BY last_name asc";
-	$result = mysql_query($query);
+	$result = mysqli_query($dbc, $query);
 	while ($row = mysql_fetch_array ($result, MYSQL_ASSOC)){
 		$emp_id = $row['emp_id'];
 		$name = $row['employee_name'];
@@ -119,7 +119,7 @@ if (($_SESSION['role'] == 'Admin')||($_SESSION['role'] == 'Supervisor')){
 		//Insert into db
 		$query = "INSERT into sub_needs (sub_needs_date, sub_needs_start_time, sub_needs_end_time, sub_needs_division) 
 			values ('$sn_date', '$sns_time', '$sne_time', '$sn_div')";
-		$result = mysql_query($query) or die(mysql_error($dbc));
+		$result = mysqli_query($dbc, $query) or die(mysql_error($dbc));
 		if ($result) {
 			echo "<div class=\"message\">Sub need shift entered for <b>$sn_div</b> on <b>$sn_date</b></div>";
 			}
@@ -145,7 +145,7 @@ if (($_SESSION['role'] == 'Admin')||($_SESSION['role'] == 'Supervisor')){
 			'$sub_needs_start_time' < coverage_end_time) 
 			or ('$sub_needs_end_time' > coverage_start_time and '$sub_needs_end_time' <= coverage_end_time) 
 			or ('$sub_needs_start_time' <= coverage_start_time and '$sub_needs_end_time' >= coverage_end_time))"; 
-		$result = mysql_query($query);
+		$result = mysqli_query($dbc, $query);
 		$num_rows = mysql_num_rows($result);
 		if ($num_rows != 0) {
 			while ($row = mysql_fetch_array ($result, MYSQL_ASSOC)){
@@ -164,11 +164,11 @@ if (($_SESSION['role'] == 'Admin')||($_SESSION['role'] == 'Supervisor')){
 		
 		if (empty($errors)) {
 			$query1 = "UPDATE sub_needs set sub_needs_covered='Y' WHERE sub_needs_id='$sub_needs_id'";
-			$result1 = mysql_query($query1);
+			$result1 = mysqli_query($dbc, $query1);
 			$query2 = "INSERT into coverage (emp_id, coverage_date, coverage_start_time, coverage_end_time, coverage_division,
 				coverage_offdesk, coverage_reason) VALUES ('$emp_id','$sub_needs_date', '$sub_needs_start_time', 
 				'$sub_needs_end_time', '$sub_needs_division', 'On', '')";
-			$result2 = mysql_query($query2);
+			$result2 = mysqli_query($dbc, $query2);
 			echo '<div class="message"><b>'. $name . ' on ' . $short_date . '</b> has been confirmed.</div>';
 			}
 		else{
@@ -187,7 +187,7 @@ if (($_SESSION['role'] == 'Admin')||($_SESSION['role'] == 'Supervisor')){
 		$sub_needs_id = $_POST['sub_needs_id'];
 		$short_date = $_POST['short_date'];
 		$query = "DELETE from sub_needs WHERE sub_needs_id='$sub_needs_id'";
-		$result = mysql_query($query);
+		$result = mysqli_query($dbc, $query);
 		echo '<div class="message">Sub shift on <b>' . $short_date . '</b> has been deleted.</div>';
 		}
 		
@@ -228,7 +228,7 @@ if (($_SESSION['role'] == 'Admin')||($_SESSION['role'] == 'Supervisor')){
 			WHERE sub_needs_date >= '$today' and sub_needs_covered = 'N'
 			ORDER by sub_needs_date asc, sub_needs_start_time asc, sub_needs_division asc";
 		}
-	$result = mysql_query($query);
+	$result = mysqli_query($dbc, $query);
 	if ($result){
 		$num_rows = mysql_num_rows($result);
 		if ($num_rows != 0) {
@@ -317,7 +317,7 @@ if (($_SESSION['role'] == 'Admin')||($_SESSION['role'] == 'Supervisor')){
 				$declined = array();
 				$declined_ordered = array();
 				$query2 = "SELECT emp_id from sub_needs_declined WHERE sub_needs_id='$sub_needs_id'";
-				$result2 = mysql_query($query2);
+				$result2 = mysqli_query($dbc, $query2);
 				while ($row2 = mysql_fetch_array($result2, MYSQL_ASSOC)){
 					$emp_id = $row2['emp_id'];
 					$declined[] = $emp_id;
@@ -433,46 +433,46 @@ elseif ($_SESSION['role'] == 'Subs'){
 		
 		if ($sub_needs_emp_id == 'cancel'){
 			$query = "UPDATE sub_needs set sub_needs_emp_id=NULL WHERE sub_needs_id='$sub_needs_id'";
-			$result = mysql_query($query);
+			$result = mysqli_query($dbc, $query);
 			}
 		else {
 			$query1 = "UPDATE sub_needs set sub_needs_emp_id='$sub_needs_emp_id' WHERE sub_needs_id='$sub_needs_id'";
-			$result1 = mysql_query($query1);
+			$result1 = mysqli_query($dbc, $query1);
 			}
 		}
 	if (isset($_POST['decline'])){
 		$sub_needs_id = $_POST['sub_needs_id'];
 		$emp_id = $_POST['declined'];
 		$query2 = "INSERT into sub_needs_declined (sub_needs_id, emp_id) VALUES ('$sub_needs_id', '$emp_id')";
-		$result2 = mysql_query($query2);
+		$result2 = mysqli_query($dbc, $query2);
 		}
 	if (isset($_POST['decline_comment'])){
 		$sub_needs_declined_id = $_POST['sub_needs_declined_id'];
 		$comment = escape_data($_POST['declined_comment']);
 		$query6 = "UPDATE sub_needs_declined SET comment='$comment' WHERE sub_needs_declined_id = '$sub_needs_declined_id'";
-		$result6 = mysql_query($query6);
+		$result6 = mysqli_query($dbc, $query6);
 		}
 	if (isset($_POST['undecline'])){
 		$sub_needs_declined_id = $_POST['sub_needs_declined_id'];
 		$query3 = "DELETE from sub_needs_declined WHERE sub_needs_declined_id='$sub_needs_declined_id'";
-		$result3 = mysql_query($query3);
+		$result3 = mysqli_query($dbc, $query3);
 		}
 	if (isset($_POST['available'])){
 		$sub_needs_id = $_POST['sub_needs_id'];
 		$emp_id = $_POST['availability'];
 		$query4 = "INSERT into sub_needs_available (sub_needs_id, emp_id) VALUES ('$sub_needs_id', '$emp_id')";
-		$result4 = mysql_query($query4);
+		$result4 = mysqli_query($dbc, $query4);
 		}
 	if (isset($_POST['available_comment'])){
 		$sub_needs_available_id = $_POST['sub_needs_available_id'];
 		$comment2 = escape_data($_POST['available_comment']);
 		$query7 = "UPDATE sub_needs_available SET comment='$comment2' WHERE sub_needs_available_id = '$sub_needs_available_id'";
-		$result7 = mysql_query($query7);
+		$result7 = mysqli_query($dbc, $query7);
 		}
 	if (isset($_POST['unavailable'])){
 		$sub_needs_available_id = $_POST['sub_needs_available_id'];
 		$query5 = "DELETE from sub_needs_available WHERE sub_needs_available_id='$sub_needs_available_id'";
-		$result5 = mysql_query($query5);
+		$result5 = mysqli_query($dbc, $query5);
 		}
 		
 	$query = "SELECT sub_needs_id, sub_needs_division, sub_needs_date, time_format(sub_needs_start_time,'%k') as sub_needs_start, 
@@ -481,7 +481,7 @@ elseif ($_SESSION['role'] == 'Subs'){
 		FROM sub_needs
 		WHERE sub_needs_date >= '$today' and sub_needs_covered = 'N'
 		ORDER by sub_needs_date asc, sub_needs_start_time asc, sub_needs_division asc";
-	$result = mysql_query($query);
+	$result = mysqli_query($dbc, $query);
 	if ($result){
 		$num_rows = mysql_num_rows($result);
 		if ($num_rows != 0) {
@@ -558,7 +558,7 @@ elseif ($_SESSION['role'] == 'Subs'){
 				//Find Declines
 				$declined = array();
 				$query2 = "SELECT * from sub_needs_declined WHERE sub_needs_id='$sub_needs_id'";
-				$result2 = mysql_query($query2);
+				$result2 = mysqli_query($dbc, $query2);
 				while ($row2 = mysql_fetch_array($result2, MYSQL_ASSOC)){
 					$sub_needs_declined_id = $row2['sub_needs_declined_id'];
 					$emp_id = $row2['emp_id'];
@@ -569,7 +569,7 @@ elseif ($_SESSION['role'] == 'Subs'){
 				//Find Availables
 				$available = array();
 				$query3 = "SELECT * from sub_needs_available WHERE sub_needs_id='$sub_needs_id'";
-				$result3 = mysql_query($query3);
+				$result3 = mysqli_query($dbc, $query3);
 				while ($row3 = mysql_fetch_array($result3, MYSQL_ASSOC)){
 					$sub_needs_available_id = $row3['sub_needs_available_id'];
 					$emp_id = $row3['emp_id'];

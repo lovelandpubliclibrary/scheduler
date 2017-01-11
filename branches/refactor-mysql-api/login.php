@@ -37,7 +37,7 @@ else {
 		if (empty($errors)){
 			$query = "SELECT login_id, username, role, emp_id, assignment_id 
 				FROM logins WHERE username ='$user' AND password=SHA('$p')";
-			$result = @mysql_query($query);
+			$result = @mysqli_query($dbc, $query);
 			$row = mysql_fetch_array($result, MYSQL_NUM);
 			
 			if ($row){

@@ -40,14 +40,14 @@ if (isset($_POST['delete'])){
 	$pic_coverage_id = $_POST['pic_coverage_id'];
 	$date = $_POST['date'];
 	$query1 = "DELETE from pic_coverage WHERE pic_coverage_id='$pic_coverage_id'";
-	$result1 = mysql_query($query1);
+	$result1 = mysqli_query($dbc, $query1);
 	echo '<div class="message"><b>PIC coverage by</b> '. $first_name . ' on ' . $date . ' has been deleted.</div>';
 	}
 
 $query = "SELECT pic_coverage_id, pic_coverage_date, first_name, e.emp_id
 	FROM employees e, pic_coverage as c WHERE e.emp_id = c.emp_id
 	and pic_coverage_date >= '$today' ORDER BY pic_coverage_date asc";
-$result = mysql_query($query);
+$result = mysqli_query($dbc, $query);
 if ($result){
 	$num_rows = mysql_num_rows($result);
 	if ($num_rows != 0) {
