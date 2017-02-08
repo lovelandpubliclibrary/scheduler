@@ -1,0 +1,33 @@
+RewriteEngine On
+#RewriteBase /scheduler/branches/refactor-mysql-api/
+
+#RewriteRule ^scheduler[/]?$ index.php [NC,L]
+#RewriteRule ^scheduler/([\w]+)$ $1.php [NC,L]
+RewriteRule ^scheduler/([a-zA-Z0-9_]+)/$ /scheduler/$1 [L]
+RewriteRule ^scheduler/([a-zA-Z0-9_]+)$ /scheduler/$1.php [L]
+RewriteRule ^scheduler/subs/daily$ /scheduler/subs.php [L]
+RewriteRule ^scheduler/subs/weekly$ /scheduler/subs.php?weekly=true [L]
+RewriteRule ^scheduler/([a-zA-Z0-9_]+)/([0-9]+)$ /scheduler/division.php?div=$1&schedule_id=$2 [L]
+RewriteRule ^scheduler/([a-zA-Z0-9_]+)/weekly$ /scheduler/division.php?div=$1&weekly=true [L]
+RewriteRule ^scheduler/([a-zA-Z0-9_]+)/daily$ /scheduler/division.php?div=$1&daily=true [L]
+RewriteRule ^scheduler/([a-zA-Z0-9_]+)/([0-9]{4})/([0-9]{2})/([0-9]{2})$ /scheduler/$1.php?year=$2&mon=$3&dom=$4 [L]
+RewriteRule ^scheduler/([0-9]{4})/([0-9]{2})/([0-9]{2})$ /scheduler/index.php?year=$1&mon=$2&dom=$3 [L]
+#RewriteRule ^lovelandlibraryvalue$ /libraryvalue/lovelandlibraryvalue.php
+
+#RewriteRule ^threed/([a-zA-Z0-9_]+)/$ /threed/$1 [L]
+#RewriteRule ^threed/([a-zA-Z0-9_]+)$ /threed/$1.php [L]
+#RewriteRule ^threed/design/([a-zA-Z0-9_]+)$ /threed/design.php?design_id=$1 [L]
+
+#RewriteRule ^litlog/([a-zA-Z0-9_]+)/$ /litlog/$1 [L]
+#RewriteRule ^litlog/([a-zA-Z0-9_]+)$ /litlog/$1.php [L]
+#RewriteRule ^litlog/([a-zA-Z0-9_]+)/([0-9]+)$ /litlog/$1.php?season_id=$2 [L]
+
+#RewriteRule ^teensummer/([a-zA-Z0-9_]+)/$ /teensummer/$1 [L]
+#RewriteRule ^teensummer/([a-zA-Z0-9_]+)$ /teensummer/$1.html [L]
+
+#RewriteRule ^scheduler_old/([a-zA-Z0-9_]+)/$ /scheduler_old/$1 [L]
+#RewriteRule ^scheduler_old/([a-zA-Z0-9_]+)$ /scheduler_old/$1.php [L]
+#RewriteRule ^scheduler_old/([a-zA-Z0-9_]+)/([a-zA-Z]+)/([a-z]{3})/([a-z]{1})/([a-z]+)/([0-9]{4})$ /scheduler_old/$1.php?division=$2&day=$3&week_type=$4&season=$5&year=$6 [L]
+#RewriteRule ^scheduler_old/([a-zA-Z0-9_]+)/([a-zA-Z]+)/([0-9]{4})/([a-z]+)/([a-z]{1})$ /scheduler_old/$1.php?division=$2&year=$3&season=$4&week_type=$5 [L]
+#RewriteRule ^scheduler_old/([a-zA-Z0-9_]+)/([0-9]{4})/([a-zA-Z]+)/([a-z]{1})/([a-z]{3})$ /scheduler_old/$1.php?year=$2&season=$3&week_type=$4&day=$5 [L]
+#RewriteRule ^scheduler_old/([a-zA-Z0-9_]+)/([0-9]{4})/([0-9]{2})/([0-9]{2})$ /scheduler_old/$1.php?year=$2&mon=$3&dom=$4 [L]

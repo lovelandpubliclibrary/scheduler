@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+	<meta name="viewport" content="width=device-width, initial-scale=1.0,minimum-scale=1.0, user-scalable=no">
+	<meta name="MobileOptimized" content="width" />
+	<meta name="HandheldFriendly" content="true" />
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+   
+	<link rel="stylesheet" type="text/css" href="/scheduler/style/dropdown.css" />
+	<link rel="stylesheet" type="text/css" href="/scheduler/style/scheduler.css" />
+	<link rel="stylesheet" type="text/css" href="/scheduler/style/scheduler_tables.css" />
+	<link rel="stylesheet" type="text/css" href="/scheduler/style/mobile.css" media="handheld, only screen and (max-device-width:640px)" />
+	<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+	<link type="text/css" rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:400,500,700"/>
+	<script type="text/javascript">var division  = '<?php if(isset($division)){echo $division;} ?>'</script>
+	<script type="text/javascript">
+		window.scrollTo(0,1);
+		var phpyear  = '<?php if(isset($year)){echo $year;} ?>';
+		var phpmon  = '<?php if(isset($phpmon)){echo $phpmon;} ?>';
+		var phpdom  = '<?php if(isset($dom)){echo $dom ;} ?>';
+	</script>
+	<script type="text/javascript" src="/scheduler/js/division_dates.js"></script>
+  
+	<script type="text/javascript">
+	$(document).ready(function() {
+		$("#datepicker").datepicker();
+		});
+	</script>
+
+	<title><?php echo $page_title; ?> | Loveland Public Library</title>
+	
+	<!--[if IE 6]>  
+	<style>  
+	body {behavior: url("csshover3.htc");}  
+	#menu li .drop {background:url("img/drop.gif") no-repeat right 8px;   
+	</style>  
+	<![endif]-->
+
+	<!--[if IE 9]>
+	<style type="text/css" media="screen">
+	.yr1 {
+	background-image: url(/scheduler/img/hovergradients.svg);
+	background-size: 100% 500%;
+	background-position:0 75%;
+	}
+	.yr2 {
+	background-image: url(/scheduler/img/hovergradients.svg);
+	background-size: 100% 500%;
+	background-position:0 50%;
+	}
+	</style>
+	<![endif]-->
+
+</head>
+
+<body>
+<div id="logincontainer">
+	<div id="header">
+		<div class="logo logologin">
+			<a href="/scheduler"><img src="/scheduler/img/iconWhiteBack.png" alt="NeedToKnow" width="70"/></a>
+		</div>
+		<div class="todaysdate">
+			Today is <?php include('./includes/todaysdate.php');?>
+		</div>
+		<ul id="menu" class="loginmenu">  
+			<li class="single logout"><a href="">Login</a></li>  
+		</ul>
+	</div>
+		
+<!-- loginheader.html -->
