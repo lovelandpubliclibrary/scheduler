@@ -1,4 +1,4 @@
-s<?php #add_pic.php
+<?php #add_pic.php
 
 $page_title = 'Person In Charge';
 include('./includes/supersessionstart.php');
