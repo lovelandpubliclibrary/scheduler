@@ -107,7 +107,7 @@ if ((isset($division)) && ($division !== 'All')) {
 		home_phone, mobile_phone FROM employees WHERE division like '%".$division."%' and active='Active'
 	ORDER BY division ASC, last_name asc";
 	$result = mysqli_query($dbc, $query) or die(mysqli_error($dbc));
-	$num = mysql_num_rows ($result);
+	$num = mysqli_num_rows ($result);
 
 	if ($num>0) {
 		echo '<table class="employees sortable"><thead><tr><th><b>Name</b></th><th><b>Emp. Number</b></th>
@@ -180,7 +180,7 @@ else{
 		echo '<p>We apologize for the inconvenience.</p></div></div>';
 		}
 
-	mysqli_close($dbc);
+	$dbc->close();
 	}
 
 include ('./includes/footer.html');

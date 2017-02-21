@@ -1,4 +1,8 @@
-<?php if (isset($dbc)){mysqli_close($dbc);} ?>
+<?php
+	if (isset($dbc)) {
+		@$dbc->close();		// suppress error messages in case $dbc has already been closed
+	}
+?>
 
 <!-- footer.html -->
 </div>	<!--content -->
