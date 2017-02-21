@@ -3367,6 +3367,7 @@ function division_weekly($division, $now) {
 	}
 
 function division_master($sched_id){
+	global $dbc;
 	$today = date('Y-m-d');
 	$week_types = array('a','b','c','d');
 	$daysofweek = array('sat','sun','mon','tue','wed','thu','fri');
