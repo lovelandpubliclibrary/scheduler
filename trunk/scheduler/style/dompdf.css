@@ -1,0 +1,153 @@
+#wrapper{
+width:626px;
+}
+
+#schedDiv{
+margin:0 auto;
+width:626px;
+}
+
+table.dptsched{
+width:auto !important;
+font-size:10px;
+border-collapse:collapse;
+font-family:Arial, Helvetica, sans-serif;
+margin-left:30px;
+	-webkit-box-shadow: 0;
+	-moz-box-shadow: 0;
+	box-shadow: 0;
+}
+
+#header, #footer{
+display:none;
+}
+
+h1,h3{
+margin:0;
+}
+
+h1{
+color:#013953;
+font-family:Arial, Helvetica, sans-serif;
+text-align:center;
+font-size:18px;
+margin-bottom:20px;
+}
+
+h3{
+color:#013953;
+font-family:Arial, Helvetica, sans-serif;
+font-size:14px;
+margin:0 0 -5px 55px;
+}
+
+.dptsched td.first_name{
+width:45px;
+padding-left:5px;
+}
+
+.dptsched td.shift{
+width:45px;
+padding-left:5px;
+}
+
+.hr{
+position:relative;
+left:-3px !important;
+top:2px;
+font-size:10px;
+}
+
+.shift .hr{
+left:-7px !important;
+}
+
+tr.emps td.first_name,
+tr.emps td.shift,
+tr.emps td.timeoff_reason,
+tr.emps td.empty{
+border:.5px solid black !important;
+}
+
+tr.emps td.on,
+tr.emps td.off,
+tr.emps td.here,
+tr.emps td.alert,
+tr.emps td.def{
+border-left:.5px solid black !important;
+border-top:.5px solid black !important;
+border-bottom:.5px solid black !important;
+width:8px;
+}
+
+tr.emps td.decimal{
+border-left:.5px dashed gray !important;
+border-top:.5px solid black !important;
+border-bottom:.5px solid black !important;
+}
+
+tr.emps td.on.decimal,
+tr.emps td.here.decimal,
+tr.emps td.alert.decimal{
+border-left:hidden !important;
+}
+
+.date {
+display:none;
+}
+
+.pdf_head{
+margin:-20px auto;
+}
+
+.week_type{
+font-family:Arial, Helvetica, sans-serif;
+font-weight:bold;
+color:#013953;
+font-size:14px;
+line-height:16px;
+text-align:center;
+margin:-20px 0;
+}
+
+.dompdf {
+color:#013953;
+font-size:12px !important;
+line-height:14px;
+margin-bottom:-15px;
+}
+
+.divrow{
+display:none;
+}
+
+.pic {
+margin-left:30px;
+background: none repeat scroll 0 0 #e0eee0;
+border: 1px solid #bfbfbf;
+color: #013953;
+margin-bottom: 10px;
+padding: 4px 0;
+text-align: center;
+font-family: Arial,Helvetica,sans-serif;
+font-size: 12px;
+line-height: 18px;
+}
+
+.diverror, .error{
+font-family: Arial,Helvetica,sans-serif;
+font-size: 12px;
+line-height: 18px;
+}
+
+.diverror{
+margin:5px 0 15px 42px;
+}
+
+.error{
+margin-left: 28px;
+margin-right: 68px;
+margin-top: 40px;
+text-align: center;
+width: 530px;
+}
