@@ -252,21 +252,48 @@ function daily_schedule($now, $divisions) {
 						$result1 = mysql_query($query1);
 						while ($row1 = mysql_fetch_array($result1, MYSQL_ASSOC)){
 							$specific_schedule = $row1['specific_schedule'];
+							/*echo "<tt><pre>";
+							var_dump($specific_schedule);
+							echo "</pre></tt>";*/
 							}
-						$query2 = "SELECT first_name, last_name, name_dup, e.emp_id, time_format(shift_start,'%k') as shift_start,
-							time_format(shift_start,'%i') as shift_start_minutes, time_format(shift_end,'%k') as shift_end,
-							time_format(shift_end,'%i') as shift_end_minutes, time_format(desk_start,'%k') as desk_start,
-							time_format(desk_start,'%i') as desk_start_minutes, time_format(desk_end,'%k') as desk_end,
-							time_format(desk_end,'%i') as desk_end_minutes, time_format(desk_start2,'%k') as desk_start2,
-							time_format(desk_start2,'%i') as desk_start2_minutes, time_format(desk_end2,'%k') as desk_end2,
-							time_format(desk_end2,'%i') as desk_end2_minutes, time_format(lunch_start,'%k') as lunch_start,
-							time_format(lunch_start,'%i') as lunch_start_minutes, time_format(lunch_end,'%k') as lunch_end,
-							time_format(lunch_end,'%i') as lunch_end_minutes from employees as e, shifts as a
-							WHERE a.specific_schedule = '$specific_schedule' and e.emp_id = a.emp_id
-							and week_type='$week_type' and shift_day='$day'
-							and e.active = 'Active' and (e.employee_lastday >= '$today' or e.employee_lastday is null)
-							order by exempt_status asc, weekly_hours desc, first_name asc";
+						$query2 = "SELECT first_name, last_name, name_dup, e.emp_id,
+										  time_format(shift_start,'%k') AS shift_start,
+										  time_format(shift_start,'%i') AS shift_start_minutes,
+										  time_format(shift_end,'%k') AS shift_end,
+										  time_format(shift_end,'%i') AS shift_end_minutes,
+										  time_format(desk_start,'%k') AS desk_start,
+										  time_format(desk_start,'%i') AS desk_start_minutes,
+										  time_format(desk_end,'%k') AS desk_end,
+										  time_format(desk_end,'%i') AS desk_end_minutes,
+										  time_format(desk_start2,'%k') AS desk_start2,
+										  time_format(desk_start2,'%i') AS desk_start2_minutes,
+										  time_format(desk_end2,'%k') AS desk_end2,
+										  time_format(desk_end2,'%i') AS desk_end2_minutes,
+										  time_format(lunch_start,'%k') AS lunch_start,
+										  time_format(lunch_start,'%i') AS lunch_start_minutes,
+										  time_format(lunch_end,'%k') AS lunch_end,
+										  time_format(lunch_end,'%i') AS lunch_end_minutes
+								FROM employees AS e,
+									 shifts AS a
+								WHERE a.specific_schedule = '$specific_schedule'
+									  AND e.emp_id = a.emp_id
+									  AND week_type = '$week_type'
+									  AND shift_day = '$day'
+									  AND e.active = 'Active'
+									  AND (e.employee_lastday >= '$today' OR e.employee_lastday is null)
+								ORDER BY exempt_status ASC,
+										 weekly_hours DESC,
+										 first_name ASC";
+
 						$result2 = mysql_query($query2);
+						/*while ($test = mysql_fetch_assoc($result2)) {
+							if ($specific_schedule == 52) {
+								echo "<tt><pre>";
+								var_dump($test);
+								echo "</pre></tt>";
+							}
+						}
+						mysql_data_seek($result2, 0);*/
 
 						echo '<div class="divrow"><h3><a href="/scheduler/' . $division . '/daily">' . $divrow . '</a>';
 						if ($divrow == 'Admin'){
