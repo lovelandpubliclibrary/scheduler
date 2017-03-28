@@ -4,6 +4,14 @@
 		"selected_items":
 		[
 			[
+				"spec",
+				"specific_schedule"
+			],
+			[
+				"mysql",
+				"mysql_fetch_array"
+			],
+			[
 				"emp",
 				"emp_id"
 			],
@@ -231,6 +239,40 @@
 	},
 	"buffers":
 	[
+		{
+			"file": "trunk/scheduler/display_functions.php",
+			"settings":
+			{
+				"buffer_size": 129244,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "trunk/scheduler/schedule_days.php",
+			"settings":
+			{
+				"buffer_size": 38077,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "trunk/scheduler/includes/allsessionvariables.php",
+			"settings":
+			{
+				"buffer_size": 835,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "trunk/scheduler/index.php",
+			"settings":
+			{
+				"buffer_size": 746,
+				"line_ending": "Unix"
+			}
+		}
 	],
 	"build_system": "",
 	"build_system_choices":
@@ -301,7 +343,9 @@
 	},
 	"expanded_folders":
 	[
-		"/Users/kevin/Sites/lpl-repository.com"
+		"/Users/kevin/Sites/lpl-repository.com",
+		"/Users/kevin/Sites/lpl-repository.com/trunk",
+		"/Users/kevin/Sites/lpl-repository.com/trunk/scheduler"
 	],
 	"file_history":
 	[
@@ -436,7 +480,7 @@
 	],
 	"find":
 	{
-		"height": 23.0
+		"height": 35.0
 	},
 	"find_in_files":
 	{
@@ -453,6 +497,10 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"var_dump",
+			"\\$result2",
+			"\\$first_name",
+			"emps",
 			"var_dump",
 			"\\$result2",
 			"\\$divrow",
@@ -503,8 +551,125 @@
 	"groups":
 	[
 		{
+			"selected": 0,
 			"sheets":
 			[
+				{
+					"buffer": 0,
+					"file": "trunk/scheduler/display_functions.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 129244,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								10326,
+								10326
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 4088.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "trunk/scheduler/schedule_days.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 38077,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								651,
+								651
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 14.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "trunk/scheduler/includes/allsessionvariables.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 835,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "trunk/scheduler/index.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 746,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				}
 			]
 		}
 	],
@@ -584,6 +749,10 @@
 	"selected_group": 0,
 	"settings":
 	{
+		"xdebug":
+		{
+			"hide_conflict": false
+		}
 	},
 	"show_minimap": false,
 	"show_open_files": false,
