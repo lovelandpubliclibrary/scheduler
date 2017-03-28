@@ -6,7 +6,7 @@
 
 // Set the database access information on constants
 DEFINE ('DB_USER', 'lpl_scheduler');
-DEFINE ('DB_PASSWORD', 'KAEtxNFZf0AEqjFC');
+DEFINE ('DB_PASSWORD', 'LGM8FrJ9i977rGI3');
 DEFINE ('DB_HOST', 'localhost');
 DEFINE ('DB_NAME', 'dev_scheduler');
 
