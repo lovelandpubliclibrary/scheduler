@@ -5,10 +5,10 @@
 // This file should be used for all connections to the database (not mysql_connect_sched2.php for example)
 
 // Set the database access information on constants
-DEFINE ('DB_USER', 'lpl_scheduler');
-DEFINE ('DB_PASSWORD', 'LGM8FrJ9i977rGI3');
-DEFINE ('DB_HOST', 'localhost');
-DEFINE ('DB_NAME', 'dev_scheduler');
+DEFINE ('DB_USER', 'lpl_scheduler');		// dev environment credentials
+DEFINE ('DB_PASSWORD', 'hqJfb4XOQdWhITWR');		// dev environment credentials
+DEFINE ('DB_HOST', 'localhost');			// dev environment credentials
+DEFINE ('DB_NAME', 'dev_scheduler');		// dev environment credentials
 
 //Make the connection
 $dbc = @mysqli_connect (DB_HOST, DB_USER, DB_PASSWORD, DB_NAME) OR die ('Could not connect to MySQL: ' . mysqli_connect_error());
