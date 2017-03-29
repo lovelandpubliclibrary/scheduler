@@ -1,5 +1,5 @@
 RewriteEngine On
-#RewriteBase /scheduler/trunk/
+#RewriteBase /scheduler/branches/refactor-mysql-api/
 
 #RewriteRule ^scheduler[/]?$ index.php [NC,L]
 #RewriteRule ^scheduler/([\w]+)$ $1.php [NC,L]
