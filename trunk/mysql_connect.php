@@ -6,7 +6,7 @@
 
 // Set the database access information on constants
 DEFINE ('DB_USER', 'lpl_scheduler');		// dev environment credentials
-DEFINE ('DB_PASSWORD', 'l0v31and!');		// dev environment credentials
+DEFINE ('DB_PASSWORD', 'hqJfb4XOQdWhITWR');		// dev environment credentials
 DEFINE ('DB_HOST', 'localhost');			// dev environment credentials
 DEFINE ('DB_NAME', 'dev_scheduler');		// dev environment credentials
 
