@@ -1,7 +1,7 @@
 <?php #sess_clean.php
 
 /** define the directory **/
-$dir = "/home/teulberg/lpl-repository.com/sess_tmp/";
+$dir = "/Users/kevin/Sites/lpl-repository.com/sess_tmp/";
 
 /*** cycle through all files in the directory ***/
 foreach (glob($dir."*") as $file) {
