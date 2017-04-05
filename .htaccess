@@ -1,4 +1,9 @@
 RewriteEngine On
+
+# Uncomment for Production
+#RewriteCond %{HTTPS} !=on
+#RewriteRule ^/?(.*) https://%{SERVER_NAME}/$1 [R=301,L]
+
 #RewriteBase /scheduler/
 
 #RewriteRule ^scheduler[/]?$ index.php [NC,L]

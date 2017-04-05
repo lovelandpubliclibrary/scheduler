@@ -239,15 +239,6 @@
 	},
 	"buffers":
 	[
-		{
-			"file": "scheduler/includes/header.html",
-			"settings":
-			{
-				"buffer_size": 13770,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		}
 	],
 	"build_system": "",
 	"build_system_choices":
@@ -322,11 +313,23 @@
 	},
 	"expanded_folders":
 	[
-		"/Users/kevin/Sites/lpl-repository.com"
+		"/Users/kevin/Sites/lpl-repository.com",
+		"/Users/kevin/Sites/lpl-repository.com/scheduler/includes"
 	],
 	"file_history":
 	[
+		"/Users/kevin/Sites/lpl-repository.com/scheduler/qtip/imagesloaded.pkg.min.js",
+		"/Users/kevin/Sites/lpl-repository.com/scheduler/logout.php",
+		"/Users/kevin/Sites/lpl-repository.com/scheduler/login.php",
+		"/Users/kevin/Sites/lpl-repository.com/scheduler/includes/supersessionstart.php",
+		"/Users/kevin/Sites/lpl-repository.com/scheduler/includes/subneedssessionstart.php",
+		"/Users/kevin/Sites/lpl-repository.com/scheduler/includes/sessionstart.php",
+		"/Users/kevin/Sites/lpl-repository.com/scheduler/includes/loginheader.html",
+		"/Users/kevin/Sites/lpl-repository.com/scheduler/includes/header.html",
+		"/Users/kevin/Sites/lpl-repository.com/scheduler/sub_needs.php",
+		"/Users/kevin/Sites/lpl-repository.com/.gitattributes",
 		"/Users/kevin/Sites/lpl-repository.com/mysql_connect.php",
+		"/Users/kevin/Sites/lpl-repository.com/.gitignore",
 		"/Users/kevin/Sites/lpl-repository.com/.htaccess",
 		"/Users/kevin/Sites/lpl-repository.com/sess_clean.php",
 		"/Users/kevin/Sites/lpl-repository.com/trunk/scheduler/includes/allsessionvariables.php",
@@ -388,14 +391,12 @@
 		"/Users/kevin/Sites/lpl-repository.com/scheduler/includes/divdrop.php",
 		"/Users/kevin/Sites/lpl-repository.com/scheduler/includes/allsessionvariables.php",
 		"/Users/kevin/Sites/lpl-repository.com/scheduler/edit_coverage.php",
-		"/Users/kevin/Sites/lpl-repository.com/scheduler/includes/header.html",
 		"/Users/kevin/Sites/lpl-repository.com/scheduler/block_daily_schedule.php",
 		"/Users/kevin/Sites/lpl-repository.com/scheduler/index.php",
 		"/Users/kevin/Sites/lpl-repository.com/scheduler/display_functions.php",
 		"/Users/kevin/Sites/lpl-repository.com/scheduler/js/division_dates.js",
 		"/Users/kevin/Sites/lpl-repository.com/scheduler/edit_schedule.php",
 		"/Users/kevin/Sites/lpl-repository.com/mysql_connect_sched2.php",
-		"/Users/kevin/Sites/lpl-repository.com/scheduler/includes/sessionstart.php",
 		"/Users/kevin/Sites/lpl-repository.com/threed/includes/sessionstart.php",
 		"/Users/kevin/Sites/lpl-repository.com/threed/index.php",
 		"/Users/kevin/Sites/scheduler/add_pic_mobile.php",
@@ -444,16 +445,7 @@
 		"/Users/kevin/rails_projects/sample_app/app/views/users/new.html.erb",
 		"/Users/kevin/rails_projects/sample_app/Gemfile",
 		"/Users/kevin/rails_projects/sample_app/test/integration/site_layout_test.rb",
-		"/Users/kevin/rails_projects/sample_app/app/views/layouts/_footer.html.erb",
-		"/Users/kevin/rails_projects/sample_app/app/views/static_pages/about.html.erb",
-		"/Users/kevin/rails_projects/sample_app/test/controllers/static_pages_controller_test.rb",
-		"/Users/kevin/rails_projects/sample_app/app/views/layouts/application.html.erb",
-		"/Users/kevin/rails_projects/sample_app/app/assets/stylesheets/custom.css.scss",
-		"/Users/kevin/rails_projects/sample_app/app/controllers/static_pages_controller.rb",
-		"/Users/kevin/rails_projects/sample_app/app/views/static_pages/contact.html.erb",
-		"/Users/kevin/rails_projects/sample_app/app/views/layouts/_header.html.erb",
-		"/Users/kevin/rails_projects/sample_app/app/views/layouts/_shim.html.erb",
-		"/Users/kevin/rails_projects/sample_app/app/example_user.rb"
+		"/Users/kevin/rails_projects/sample_app/app/views/layouts/_footer.html.erb"
 	],
 	"find":
 	{
@@ -464,6 +456,10 @@
 		"height": 93.0,
 		"where_history":
 		[
+			"/Users/kevin/Sites/lpl-repository.com/scheduler/,-dompdf/*",
+			"/Users/kevin/Sites/lpl-repository.com/scheduler/,-*.dompdf/",
+			"/Users/kevin/Sites/lpl-repository.com/scheduler/,-*dompdf/",
+			"/Users/kevin/Sites/lpl-repository.com/scheduler/",
 			"/Users/kevin/Sites/lpl-repository.com/scheduler/trunk",
 			"/Users/kevin/Sites/lpl-repository.com/scheduler",
 			"/Users/kevin/Sites/slider-dev_local"
@@ -474,6 +470,16 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"http://",
+			"http:",
+			"http://",
+			"http",
+			"http://",
+			"http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js",
+			"assign_style",
+			"class=\\\"assign\\\"",
+			"<td class=\\\"assign\\\">",
+			"<td class=\"assign\">",
 			"tooltip",
 			"var_dump",
 			"\\$result2",
@@ -518,6 +524,8 @@
 		"regex": true,
 		"replace_history":
 		[
+			"https://",
+			"https",
 			"scheduler"
 		],
 		"reverse": false,
@@ -529,39 +537,8 @@
 	"groups":
 	[
 		{
-			"selected": 0,
 			"sheets":
 			[
-				{
-					"buffer": 0,
-					"file": "scheduler/includes/header.html",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 13770,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1986,
-								1989
-							]
-						],
-						"settings":
-						{
-							"git_gutter_enabled": true,
-							"syntax": "Packages/HTML/HTML.sublime-syntax",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"type": "text"
-				}
 			]
 		}
 	],
@@ -608,7 +585,7 @@
 	"project": "scheduler.sublime-project",
 	"replace":
 	{
-		"height": 42.0
+		"height": 64.0
 	},
 	"save_all_on_build": true,
 	"select_file":
@@ -650,7 +627,7 @@
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 195.0,
+	"side_bar_width": 163.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{
