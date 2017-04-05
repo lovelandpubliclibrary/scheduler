@@ -1,6 +1,6 @@
 mysql_connect.php export-ignore
 .gitattributes export-ignore
 .gitignore export-ignore
-/sess_tmp/* export-ignore
+sess_tmp/* export-ignore
 *.sublime-project export-ignore
 *.sublime-workspace export-ignore
