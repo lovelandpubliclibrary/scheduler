@@ -11,6 +11,9 @@ if (isset($_POST['submitted'])) {
 	header('Location: edit_schedule');
 	}
 elseif (isset($_SESSION['schedules_division'])) {
+	echo "<tt><pre>";
+var_dump($_POST);
+echo "</pre></tt><br>";
 	$division = $_SESSION['schedules_division'];
 	}
 
