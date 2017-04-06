@@ -168,7 +168,14 @@ class Block_Frame_Reflower extends Frame_Reflower {
     //  $cb = $frame->find_positionned_parent()->get_containing_block();
 
     if ( !isset($cb["w"]) )
-      throw new DOMPDF_Exception("Box property calculation requires containing block width");
+      try {
+        $cb["w"] = 0;
+      } catch (DOMPDF_Exception $e) {
+        echo "<tt><pre>";
+        var_dump($e);
+        echo "</pre></tt>";
+      }
+      //throw new DOMPDF_Exception("Box property calculation requires containing block width");
 	
     // Treat width 100% as auto
     if ( $style->width === "100%" ) {
