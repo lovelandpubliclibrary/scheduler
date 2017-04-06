@@ -1,6 +1,6 @@
 <?php #pdf_generator.php
 
-require_once("/dompdf/dompdf_config.inc.php");
+require_once("dompdf/dompdf_config.inc.php");
 
 ob_start();
 echo '<link rel="stylesheet" type="text/css" media="all" href="C:/Apache/htdocs/scheduler/style/dompdf.css" />';
