@@ -3,4 +3,4 @@ Scheduler\ Passwords.png
 .DS_Store
 *.sublime-*
 scheduler/archives/*
-scheduler/dompdf/lib/fonts/log.htm
+scheduler/dompdf/lib/fonts/*
