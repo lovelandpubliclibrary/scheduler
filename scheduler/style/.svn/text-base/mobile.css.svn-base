@@ -1,0 +1,474 @@
+body{
+-webkit-text-size-adjust:none;
+font-family:"Roboto",Helvetica, Arial, Verdana, sans-serif;
+}
+
+.screen{
+display:none;
+}
+
+.mobile{
+display:block;
+}
+
+#container {
+width:100%;
+margin:0 auto;
+min-height:768px;
+height:auto;
+border:none !important;
+}
+
+#logincontainer {
+padding-top:20px;
+width:90%;
+margin:0 auto;
+height:auto;
+}
+
+#header{
+width:100%;
+}
+
+.logonorm{
+display:none;
+}
+
+.logologin {
+position:absolute;
+top:15px;
+margin-right:5px;
+}
+
+.logologin img{
+width:40px;
+}
+
+.username{
+display:none;
+}
+
+.todaysdate{
+font-size:.9em;
+margin:0;
+float:none;
+text-align:center;
+}
+
+.main{
+display:none;
+}
+
+#menu{
+width:105%;
+height:30px;
+margin:0 auto 0 -2.5%;
+padding:0;
+clear:both;
+}
+
+#fullmenu{
+display:none;
+}
+
+#mobilemenu{
+display:block
+}
+
+#content{
+width:90%;
+}
+
+.loginmenu li{
+display:none !important;
+}
+
+#sidebar{
+display:none;
+}
+
+.menutab{
+display:inline;
+}
+
+h1{
+font-size:1.17em;
+}
+
+h3, .divspec{
+font-size:1em;
+}
+
+.error{
+width:100%;
+margin:0px !important;
+}
+
+.wideview{
+background:#ffffff;
+float:left;
+padding-top:50px;
+margin-top:-50px;
+padding-bottom:30px;
+margin-bottom:-30px;
+}
+
+/* Login Page */
+
+.loginwrapper{
+width:100%;
+margin:0 10px;
+}
+
+.loginform{
+position:relative;
+top:-25px;
+}
+
+.loginform  h2{
+color:#ffffff;
+font-weight:normal;
+text-shadow: 1px 1px 1px #000000;
+}
+
+.loginform form{
+margin-top:20px;
+margin-left:20px;
+}
+
+#footer{
+display:none;
+}
+
+#empty{
+clear:both;
+}
+
+.login_errors{
+float:none;
+width:inherit;
+margin-bottom:35px;
+margin-left:-10px;
+}
+
+/* Submenus */
+.submenu{
+margin:0 auto 10px auto;
+}
+
+.mastersub{
+width:270px;
+}
+
+.divsub{
+width:300px;
+margin-bottom:30px;
+margin-top:10px;
+}
+
+.submenu .title{
+text-align:center;
+margin-bottom:10px;
+color:#013953;
+}
+
+.submenu .tab{
+display:inline;
+padding:5px 6px;
+	-moz-border-radius:10px;  
+	-webkit-border-radius:10px;  
+	border-radius:10px;
+}
+
+.submenu .select{
+background:#E0EEE0;
+border:1px solid #BFBFBF;
+}
+/* Display Tables */
+.shift, .timeoff_reason, .empty{
+display:none;
+}
+
+.divisions .shift{
+display:table-cell;
+min-width:22px;
+font-size:10px;
+}
+
+.divisions tr.mobile, .detail tr.mobile{
+display:table-row;
+background:#ffffff;
+}
+
+tr.mobile td.day,
+tr.mobile td.hrs,
+td.hr_total{
+font-size:10px;
+}
+
+table.divisions{
+margin-top:0px;
+}
+
+.week_type, .division_specific{
+margin-top:0px;
+}
+
+#dayDiv, #weekDiv{
+margin-top:-10px;
+}
+
+.hr{
+font-size:.67em;
+}
+
+.dptsched td.first_name{
+min-width:75px;
+width:auto;
+}
+
+table.dptsched{
+width:100%;
+}
+
+.divboxes{
+margin-top:-7px;
+}
+
+.division_specific{
+padding:0px;
+border:none;
+}
+
+#timeoff{
+margin-top:20px;
+}
+
+/* Forms */
+#mobilehack{
+width:inherit;
+}
+
+#mobilehack #content{
+width:inherit;
+padding-right:0;
+padding-left:0;
+}
+
+.mobilewrapper_outer{
+float: right;
+right: 50%;
+position: relative;
+}
+
+.mobilewrapper_inner{
+float: right;
+right: -50%;
+position: relative;
+}
+
+.addform{
+margin-top:10px;
+}
+
+.editlabel{
+margin-top:10px;
+}
+
+.editform td, .message{
+max-width:230px;
+}
+
+.timeoffform input{
+max-width:200px;
+}
+
+.timeoffform .cal, .coverform .time{
+float:none;
+}
+
+.timeoffform .times{
+margin:0;
+}
+
+table.employees td:nth-child(2),
+table.employees td:nth-child(3),
+table.employees td:nth-child(4),
+table.employees th:nth-child(2),
+table.employees th:nth-child(3),
+table.employees th:nth-child(4){
+display:none;
+}
+
+.employees td{
+padding:0;
+}
+
+table.employees td:nth-child(1),
+table.employees td:nth-child(5){
+padding-left:3px;
+max-width:90px;
+}
+
+.marks .shift{
+display:inline;
+}
+
+.mobilefloat{
+float:none;
+}
+
+.keyd{
+margin-left:0px;
+}
+
+.detail{
+margin-left:-5px;
+}
+
+.detail .editbutton, .detail td.editbutton{
+padding:0;
+}
+
+.detail td{
+padding-left:2px;
+}
+
+.detail td.hrs,.detail td.hr_total{
+width:19px;
+}
+
+.smday{
+position:relative;
+top:3px;
+z-index:0;
+font-size:.67em;
+}
+
+.subkey{
+margin-top:15px;
+}
+
+.toggle{
+margin-top:3px;
+margin-bottom:15px;
+}
+
+.subrequestlink{
+margin-top:15px;
+}
+
+.sub_needs_wrapper{
+min-width:inherit;
+}
+
+.sub_needs table, .sub_needs thead, 
+.sub_needs tbody, .sub_needs th, 
+.sub_needs td, .sub_needs tr { 
+display:block; 
+border:none !important;
+}
+
+.sub_needs tr{
+border:1px solid #BFBFBF !important;
+}
+
+.sub_needs td{
+width:auto !important;
+padding: 5px 15px !important;
+}
+
+.sub_needs th{
+display:none;
+}
+
+.sub_needs .delete {
+text-align:right;
+}
+
+.pic_table{
+margin-bottom:0px;
+float:left;
+margin-right:20px;
+}
+
+.pic_table td{
+padding:0;
+}
+
+.pic_submit{
+clear:both;
+}
+
+.sect{
+float:left;
+margin-right:25px;
+}
+
+.sect_container{
+display:table;
+margin:20px auto 10px auto;
+}
+
+.links{
+padding-right:5px;
+left:5px;
+}
+
+.div_weeks{
+margin-bottom:10px;
+}
+
+#masterDiv{
+margin-top:-10px;
+}
+
+.editsched{
+min-width:inherit;
+}
+
+.editschedule table, .editschedule thead, 
+.editschedule tbody, .editschedule th, 
+.editschedule td, .editschedule tr { 
+display:block; 
+border:none !important;
+}
+
+.editschedule tr{
+border:1px solid #BFBFBF !important;
+clear:both;
+overflow:auto;
+}
+
+.editschedule td{
+width:auto !important;
+padding: 5px 15px;
+}
+
+.editschedule .headrow{
+display:none;
+}
+
+.editschedule{
+min-width:240px;
+}
+
+.scheddate.start{
+float:left;
+}
+
+.editbutton{
+padding:0px 15px !important;
+}
+
+.editbutton input[type="submit"]{
+float:left;
+}
+
+.editwrapper, .addeditsched{
+overflow:auto;
+}
+
+.daylink{
+padding:0px 11px;
+}

@@ -1,0 +1,56 @@
+<table class="contacts" cellspacing="0">
+	<tr>
+		<th>Supervisor</th>
+		<th>Phone #</th>
+	</tr>
+	<tr>
+		<td>Marcia</td>
+		<td>970-962-2404</td>
+	</tr>
+	<tr>
+		<td>Amy</td>
+		<td>970-962-2589</td>
+	</tr>
+	<tr>
+		<td>Beth</td>
+		<td>970-962-2448</td>
+	</tr>
+	<tr>
+		<td>Joanna</td>
+		<td>970-962-2593</td>
+	</tr>
+	<tr>
+		<td>Jesse</td>
+		<td>970-962-2598</td>
+	</tr>
+	<tr>
+		<td>Amber</td>
+		<td>970-962-2797</td>
+	</tr>
+	<tr>
+		<td>Snow Days</td>
+		<td>970-962-2020</td>
+	</tr>
+</table>
+<table class="contacts" cellspacing="0">
+	<tr>
+		<th>Facilities</th>
+		<th>Phone #</th>
+	</tr>
+	<tr>
+		<td><b>Russ:</b> M-F<br/>6am-3pm</td>
+		<td>970-646-2452</td>
+	</tr>
+	<tr>
+		<td><b>Carson:</b> Sun-Th<br/>2:30-10:30pm</td>
+		<td>970-237-1409</td>
+	</tr>
+	<tr>
+		<td><b>Jeremy:</b> M,T,Th,F,S<br/>6-2:30pm</td>
+		<td>970-568-6785</td>
+	</tr>
+	<tr>
+		<td><b>Heather:</b> T-S<br/>2:30-10:30pm</td>
+		<td>970-420-8511</td>
+	</tr>
+</table>

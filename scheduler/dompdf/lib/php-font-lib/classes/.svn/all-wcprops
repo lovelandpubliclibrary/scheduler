@@ -1,0 +1,179 @@
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/schedrepo/!svn/ver/4/dompdf/lib/php-font-lib/classes
+END
+font_woff_header.cls.php
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/schedrepo/!svn/ver/4/dompdf/lib/php-font-lib/classes/font_woff_header.cls.php
+END
+font_table_os2.cls.php
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/schedrepo/!svn/ver/4/dompdf/lib/php-font-lib/classes/font_table_os2.cls.php
+END
+font_table_maxp.cls.php
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/schedrepo/!svn/ver/4/dompdf/lib/php-font-lib/classes/font_table_maxp.cls.php
+END
+font_table_hhea.cls.php
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/schedrepo/!svn/ver/4/dompdf/lib/php-font-lib/classes/font_table_hhea.cls.php
+END
+font_woff_table_directory_entry.cls.php
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/schedrepo/!svn/ver/4/dompdf/lib/php-font-lib/classes/font_woff_table_directory_entry.cls.php
+END
+font_opentype_table_directory_entry.cls.php
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/schedrepo/!svn/ver/4/dompdf/lib/php-font-lib/classes/font_opentype_table_directory_entry.cls.php
+END
+font.cls.php
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/schedrepo/!svn/ver/4/dompdf/lib/php-font-lib/classes/font.cls.php
+END
+font_truetype.cls.php
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/schedrepo/!svn/ver/4/dompdf/lib/php-font-lib/classes/font_truetype.cls.php
+END
+font_table_loca.cls.php
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/schedrepo/!svn/ver/4/dompdf/lib/php-font-lib/classes/font_table_loca.cls.php
+END
+font_table_name_record.cls.php
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/schedrepo/!svn/ver/4/dompdf/lib/php-font-lib/classes/font_table_name_record.cls.php
+END
+font_table_name.cls.php
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/schedrepo/!svn/ver/4/dompdf/lib/php-font-lib/classes/font_table_name.cls.php
+END
+font_eot.cls.php
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/schedrepo/!svn/ver/4/dompdf/lib/php-font-lib/classes/font_eot.cls.php
+END
+font_table.cls.php
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/schedrepo/!svn/ver/4/dompdf/lib/php-font-lib/classes/font_table.cls.php
+END
+font_table_cmap.cls.php
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/schedrepo/!svn/ver/4/dompdf/lib/php-font-lib/classes/font_table_cmap.cls.php
+END
+font_table_hmtx.cls.php
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/schedrepo/!svn/ver/4/dompdf/lib/php-font-lib/classes/font_table_hmtx.cls.php
+END
+font_header.cls.php
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/schedrepo/!svn/ver/4/dompdf/lib/php-font-lib/classes/font_header.cls.php
+END
+font_truetype_header.cls.php
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/schedrepo/!svn/ver/4/dompdf/lib/php-font-lib/classes/font_truetype_header.cls.php
+END
+font_truetype_collection.cls.php
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/schedrepo/!svn/ver/4/dompdf/lib/php-font-lib/classes/font_truetype_collection.cls.php
+END
+font_table_post.cls.php
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/schedrepo/!svn/ver/4/dompdf/lib/php-font-lib/classes/font_table_post.cls.php
+END
+font_table_directory_entry.cls.php
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/schedrepo/!svn/ver/4/dompdf/lib/php-font-lib/classes/font_table_directory_entry.cls.php
+END
+font_truetype_table_directory_entry.cls.php
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/schedrepo/!svn/ver/4/dompdf/lib/php-font-lib/classes/font_truetype_table_directory_entry.cls.php
+END
+encoding_map.cls.php
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/schedrepo/!svn/ver/4/dompdf/lib/php-font-lib/classes/encoding_map.cls.php
+END
+font_binary_stream.cls.php
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/schedrepo/!svn/ver/4/dompdf/lib/php-font-lib/classes/font_binary_stream.cls.php
+END
+adobe_font_metrics.cls.php
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/schedrepo/!svn/ver/4/dompdf/lib/php-font-lib/classes/adobe_font_metrics.cls.php
+END
+font_woff.cls.php
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/schedrepo/!svn/ver/4/dompdf/lib/php-font-lib/classes/font_woff.cls.php
+END
+font_opentype.cls.php
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/schedrepo/!svn/ver/4/dompdf/lib/php-font-lib/classes/font_opentype.cls.php
+END
+font_table_kern.cls.php
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/schedrepo/!svn/ver/4/dompdf/lib/php-font-lib/classes/font_table_kern.cls.php
+END
+font_table_glyf.cls.php
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/schedrepo/!svn/ver/4/dompdf/lib/php-font-lib/classes/font_table_glyf.cls.php
+END
+font_table_head.cls.php
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/schedrepo/!svn/ver/4/dompdf/lib/php-font-lib/classes/font_table_head.cls.php
+END

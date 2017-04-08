@@ -1,0 +1,59 @@
+K 25
+svn:wc:ra_dav:version-url
+V 30
+/schedrepo/!svn/ver/413/dompdf
+END
+LICENSE.LGPL
+K 25
+svn:wc:ra_dav:version-url
+V 41
+/schedrepo/!svn/ver/4/dompdf/LICENSE.LGPL
+END
+dompdf.php
+K 25
+svn:wc:ra_dav:version-url
+V 39
+/schedrepo/!svn/ver/4/dompdf/dompdf.php
+END
+readme.html
+K 25
+svn:wc:ra_dav:version-url
+V 40
+/schedrepo/!svn/ver/4/dompdf/readme.html
+END
+changelog.txt
+K 25
+svn:wc:ra_dav:version-url
+V 42
+/schedrepo/!svn/ver/4/dompdf/changelog.txt
+END
+dompdf_config.custom.inc.php
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/schedrepo/!svn/ver/4/dompdf/dompdf_config.custom.inc.php
+END
+docblox.dist.xml
+K 25
+svn:wc:ra_dav:version-url
+V 45
+/schedrepo/!svn/ver/4/dompdf/docblox.dist.xml
+END
+load_font.php
+K 25
+svn:wc:ra_dav:version-url
+V 42
+/schedrepo/!svn/ver/4/dompdf/load_font.php
+END
+dompdf_config.inc.php
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/schedrepo/!svn/ver/4/dompdf/dompdf_config.inc.php
+END
+index.php
+K 25
+svn:wc:ra_dav:version-url
+V 38
+/schedrepo/!svn/ver/4/dompdf/index.php
+END

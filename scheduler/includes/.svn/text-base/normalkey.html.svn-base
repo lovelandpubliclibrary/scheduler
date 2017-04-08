@@ -1,0 +1,19 @@
+<span class="dp">Color Key:</span>
+<div class="keys">
+	<div class="keyer">
+		<div class="key here"></div> &ndash; Here
+	</div>
+	<div class="keyer">
+		<div class="key on"></div> &ndash; On Desk
+	</div>
+	<div class="keyer">
+		<div class="key busy"></div> &ndash; Busy
+	</div>
+	<div class="keyer">
+		<div class="key alert"></div> &ndash; Coverage Needed
+	</div>
+	<div class="keyer">
+		<div class="key def"></div> &ndash; Recurring Coverage Needed
+	</div>
+</div>
+<!-- normalkey.html -->

@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 41
+/schedrepo/!svn/ver/4/dompdf/lib/html5lib
+END
+TreeBuilder.php
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/schedrepo/!svn/ver/4/dompdf/lib/html5lib/TreeBuilder.php
+END
+Data.php
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/schedrepo/!svn/ver/4/dompdf/lib/html5lib/Data.php
+END
+Tokenizer.php
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/schedrepo/!svn/ver/4/dompdf/lib/html5lib/Tokenizer.php
+END
+InputStream.php
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/schedrepo/!svn/ver/4/dompdf/lib/html5lib/InputStream.php
+END
+Parser.php
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/schedrepo/!svn/ver/4/dompdf/lib/html5lib/Parser.php
+END
+named-character-references.ser
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/schedrepo/!svn/ver/4/dompdf/lib/html5lib/named-character-references.ser
+END

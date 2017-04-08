@@ -2,11 +2,11 @@
 
 /** LOCAL VERSIONS **/
 
-require_once("dompdf/dompdf_config.inc.php");
+require_once("/home/teulberg/lpl-repository.com/scheduler/dompdf/dompdf_config.inc.php");
 
 ob_start();
-echo '<link rel="stylesheet" type="text/css" media="all" href="style/dompdf.css" />';
-echo '<link rel="stylesheet" type="text/css" media="all" href="style/scheduler_tables.css" />';
+echo '<link rel="stylesheet" type="text/css" media="all" href="/home/teulberg/lpl-repository.com/scheduler/style/dompdf.css" />';
+echo '<link rel="stylesheet" type="text/css" media="all" href="/home/teulberg/lpl-repository.com/scheduler/style/scheduler_tables.css" />';
 date_default_timezone_set('America/Denver');
 $today = date('Y-m-d');
 
@@ -14,8 +14,8 @@ $yesterday = strtotime('-1 day', strtotime($today));
 $yesterday = date('Y-m-d', $yesterday);
 
 /* Delete Yesterday's Schedule */
-if(file_exists('future/'.$yesterday.'.pdf')){
-	unlink('future/'.$yesterday.'.pdf');
+if(file_exists('/home/teulberg/lpl-repository.com/scheduler/future/'.$yesterday.'.pdf')){
+	unlink('/home/teulberg/lpl-repository.com/scheduler/future/'.$yesterday.'.pdf');
 	}
 	
 /* Add New Future Schedule */
@@ -26,9 +26,9 @@ $month = date('F', $oneweek);
 $year = date('Y', $oneweek);
 
 $page_title = "$day $month $year";
-require_once ('display_functions.php');
+include ('/home/teulberg/lpl-repository.com/scheduler/display_functions.php');
 
-require_once ('../mysql_connect.php'); //Connect to the db.
+require_once ('/home/teulberg/lpl-repository.com/mysql_connect.php'); //Connect to the db.
 
 $dom = date('j', $oneweek);
 $day_long = date('l', $oneweek);
@@ -47,35 +47,31 @@ $dompdf->set_base_path('/');
 $dompdf->load_html($html);
 $dompdf->set_paper('legal', 'portrait');
 $dompdf->render();
-file_put_contents("future/$oneweekfull.pdf", $dompdf->output());
+file_put_contents("/home/teulberg/lpl-repository.com/scheduler/future/$oneweekfull.pdf", $dompdf->output());
 
 /** FTP VERSIONS **/
 $ftp_user = 'cityofloveftp';
-$ftp_pass = 'Sending files!';
+$ftp_pass = 'transmit';
 $url = 'colftp.ci.loveland.co.us';
 
 $connection = ftp_connect($url);
-var_dump($connection);
 $login = ftp_login($connection, $ftp_user, $ftp_pass);
 if (!$connection || !$login){ die('Connection attempt failed!');}
 
 /* Delete Yesterday's Schedule */
-$ftp_files = ftp_nlist($connection, '/FromCity');
-if ($ftp_files) {
-	foreach ($ftp_files as $file){
-		if ($file == ('/FromCity/Library/StaffSchedules/'.$yesterday.'.pdf')) {
-			ftp_delete($connection, $file);
-			}
+$ftp_files = ftp_nlist($connection, 'FromCity/Library/StaffSchedules');
+foreach ($ftp_files as $arr=>$file){
+	if ($file == ('FromCity/Library/StaffSchedules/'.$yesterday.'.pdf')) {
+		ftp_delete($connection, $file);
 		}
-}
+	}
 
 /* Add New Future Schedule */
-$local_file = "future/$oneweekfull.pdf";
-$ftp_path = "/FromCity/$oneweekfull.pdf";
+$local_file = "/home/teulberg/lpl-repository.com/scheduler/future/$oneweekfull.pdf";
+$ftp_path = "FromCity/Library/StaffSchedules/$oneweekfull.pdf";
 
-
-ftp_put($connection, $ftp_path, $local_file, FTP_BINARY);
-if (!$upload){echo 'FTP upload failed :(';}
+$upload = ftp_put($connection, $ftp_path, $local_file, FTP_BINARY);
+if (!upload){echo 'FTP upload failed :(';}
 
 ftp_close($connection);
 
