@@ -1,10 +1,10 @@
 <?php #pdf_generator.php
-
-require_once("dompdf/dompdf_config.inc.php");
+echo "Path to this file: " . __DIR__;
+require_once(__DIR__ . "/dompdf/dompdf_config.inc.php");
 
 ob_start();
-echo '<link rel="stylesheet" type="text/css" media="all" href="style/dompdf.css" />';
-echo '<link rel="stylesheet" type="text/css" media="all" href="style/scheduler_tables.css" />';
+echo '<link rel="stylesheet" type="text/css" media="all" href="' . __DIR__ . '/style/dompdf.css" />';
+echo '<link rel="stylesheet" type="text/css" media="all" href="' . __DIR__ . '/style/scheduler_tables.css" />';
 date_default_timezone_set('America/Denver');
 $today = date('Y-m-d');
 $day = date('j');
@@ -12,10 +12,8 @@ $month = date('F');
 $year = date('Y');
 
 $page_title = "$day $month $year";
-//include ('C:/Apache/htdocs/scheduler/display_functions.php');
-include ('display_functions.php');
+include (__DIR__ . '/display_functions.php');
 
-require_once ('../mysql_connect.php'); //Connect to the db.
 $divisions = array();
 require_once ('../mysql_connect.php'); //Connect to the db.
 $query = "SELECT * from divisions ORDER BY div_name";
@@ -42,6 +40,6 @@ $dompdf->set_base_path('/');
 $dompdf->load_html($html);
 $dompdf->set_paper('legal', 'portrait');
 $dompdf->render();
-file_put_contents("archives/$today.pdf", $dompdf->output());
+file_put_contents(__DIR__ . "/archives/$today.pdf", $dompdf->output());
 
 ?>
