@@ -1,5 +1,4 @@
 <?php #pdf_generator.php
-echo "Path to this file: " . __DIR__;
 require_once(__DIR__ . "/dompdf/dompdf_config.inc.php");
 
 ob_start();
