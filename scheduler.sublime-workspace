@@ -239,6 +239,14 @@
 	},
 	"buffers":
 	[
+		{
+			"file": "scheduler/lti.php",
+			"settings":
+			{
+				"buffer_size": 954,
+				"line_ending": "Unix"
+			}
+		}
 	],
 	"build_system": "",
 	"build_system_choices":
@@ -314,23 +322,31 @@
 	"expanded_folders":
 	[
 		"/Users/kevin/Sites/lpl-repository.com",
-		"/Users/kevin/Sites/lpl-repository.com/scheduler/includes"
+		"/Users/kevin/Sites/lpl-repository.com/scheduler"
 	],
 	"file_history":
 	[
-		"/Users/kevin/Sites/lpl-repository.com/scheduler/qtip/imagesloaded.pkg.min.js",
+		"/Users/kevin/Sites/lpl-repository.com/scheduler/pdf_generator.php",
+		"/Users/kevin/Sites/lpl-repository.com/scheduler/pdf_generator_live.php",
+		"/Users/kevin/Sites/lpl-repository.com/scheduler/add_payperiods.php",
+		"/Users/kevin/Sites/lpl-repository.com/scheduler/schedule_days.php",
+		"/Users/kevin/Sites/lpl-repository.com/scheduler/future/2017-04-13.pdf",
+		"/Users/kevin/Sites/lpl-repository.com/.gitignore",
+		"/Users/kevin/Sites/lpl-repository.com/scheduler/future_sched_generator.php",
+		"/Users/kevin/Sites/lpl-repository.com/.gitattributes",
+		"/Users/kevin/Sites/lpl-repository.com/scheduler/dompdf/include/block_frame_reflower.cls.php",
+		"/Users/kevin/Sites/lpl-repository.com/scheduler/includes/header.html",
+		"/Users/kevin/Sites/lpl-repository.com/scheduler/edit_schedule.php",
+		"/Users/kevin/Sites/lpl-repository.com/.htaccess",
 		"/Users/kevin/Sites/lpl-repository.com/scheduler/logout.php",
 		"/Users/kevin/Sites/lpl-repository.com/scheduler/login.php",
 		"/Users/kevin/Sites/lpl-repository.com/scheduler/includes/supersessionstart.php",
 		"/Users/kevin/Sites/lpl-repository.com/scheduler/includes/subneedssessionstart.php",
 		"/Users/kevin/Sites/lpl-repository.com/scheduler/includes/sessionstart.php",
+		"/Users/kevin/Sites/lpl-repository.com/scheduler/qtip/imagesloaded.pkg.min.js",
 		"/Users/kevin/Sites/lpl-repository.com/scheduler/includes/loginheader.html",
-		"/Users/kevin/Sites/lpl-repository.com/scheduler/includes/header.html",
 		"/Users/kevin/Sites/lpl-repository.com/scheduler/sub_needs.php",
-		"/Users/kevin/Sites/lpl-repository.com/.gitattributes",
 		"/Users/kevin/Sites/lpl-repository.com/mysql_connect.php",
-		"/Users/kevin/Sites/lpl-repository.com/.gitignore",
-		"/Users/kevin/Sites/lpl-repository.com/.htaccess",
 		"/Users/kevin/Sites/lpl-repository.com/sess_clean.php",
 		"/Users/kevin/Sites/lpl-repository.com/trunk/scheduler/includes/allsessionvariables.php",
 		"/Users/kevin/Sites/lpl-repository.com/branches/refactor-mysql-api/scheduler/includes/allsessionvariables.php",
@@ -395,7 +411,6 @@
 		"/Users/kevin/Sites/lpl-repository.com/scheduler/index.php",
 		"/Users/kevin/Sites/lpl-repository.com/scheduler/display_functions.php",
 		"/Users/kevin/Sites/lpl-repository.com/scheduler/js/division_dates.js",
-		"/Users/kevin/Sites/lpl-repository.com/scheduler/edit_schedule.php",
 		"/Users/kevin/Sites/lpl-repository.com/mysql_connect_sched2.php",
 		"/Users/kevin/Sites/lpl-repository.com/threed/includes/sessionstart.php",
 		"/Users/kevin/Sites/lpl-repository.com/threed/index.php",
@@ -438,14 +453,7 @@
 		"/Users/kevin/cffc/bike-coop-local/html/index.php",
 		"/Users/kevin/cffc/bike-coop-local/app/wp-config.php",
 		"/Users/kevin/cffc/bike-coop-local/html/index.html",
-		"/Applications/MAMP/bin/mamp/index.php",
-		"/Users/kevin/Desktop/:: configure the pi",
-		"/Users/kevin/rails_projects/sample_app/config/routes.rb",
-		"/Users/kevin/rails_projects/sample_app/app/views/static_pages/home.html.erb",
-		"/Users/kevin/rails_projects/sample_app/app/views/users/new.html.erb",
-		"/Users/kevin/rails_projects/sample_app/Gemfile",
-		"/Users/kevin/rails_projects/sample_app/test/integration/site_layout_test.rb",
-		"/Users/kevin/rails_projects/sample_app/app/views/layouts/_footer.html.erb"
+		"/Applications/MAMP/bin/mamp/index.php"
 	],
 	"find":
 	{
@@ -456,6 +464,8 @@
 		"height": 93.0,
 		"where_history":
 		[
+			"/Users/kevin/Sites/lpl-repository.com/",
+			"/Users/kevin/Sites/lpl-repository.com/scheduler/",
 			"/Users/kevin/Sites/lpl-repository.com/scheduler/,-dompdf/*",
 			"/Users/kevin/Sites/lpl-repository.com/scheduler/,-*.dompdf/",
 			"/Users/kevin/Sites/lpl-repository.com/scheduler/,-*dompdf/",
@@ -470,6 +480,18 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"add_closures.php",
+			"404.php",
+			"add_schedule_day",
+			"children.php",
+			"add_pic_mobile",
+			"admin_specific",
+			"admin",
+			"admin_specific",
+			"mysql_",
+			"INSERT into",
+			"http://",
+			"https://",
 			"http://",
 			"http:",
 			"http://",
@@ -537,8 +559,38 @@
 	"groups":
 	[
 		{
+			"selected": 0,
 			"sheets":
 			[
+				{
+					"buffer": 0,
+					"file": "scheduler/lti.php",
+					"semi_transient": true,
+					"settings":
+					{
+						"buffer_size": 954,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"git_gutter_enabled": true,
+							"syntax": "Packages/PHP/PHP.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
 			]
 		}
 	],
