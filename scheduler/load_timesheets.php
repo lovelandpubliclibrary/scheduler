@@ -10,7 +10,7 @@ $year5 = strtotime ('+5 years' , strtotime ($today)) ;
 $year5 = date('Y-m-d' , $year5 );
 
 
-require_once ('/home/teulberg/dev.lpl-repository.com/mysql_connect.php');
+require_once (__DIR__ . '/../mysql_connect.php');
 $query = "SELECT timesheets_start, timesheets_end from timesheet_alerts ORDER BY timesheets_id desc LIMIT 1";
 $result = mysqli_query($dbc, $query);
 
