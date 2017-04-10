@@ -10,7 +10,7 @@ $month6 = strtotime ('+2 years' , strtotime ( $today ) ) ;
 $month6 = date('Y-m-d' , $month6 );
 
 //Query database to get most recent date and week
-require_once ('/home/teulberg/dev.lpl-repository.com/mysql_connect.php');
+require_once (__DIR__ . '/../mysql_connect.php');
 $query = "SELECT date, week_type FROM dates ORDER BY date_id desc LIMIT 1";
 $result = mysqli_query($dbc, $query) or die(mysqli_error($dbc));
 
