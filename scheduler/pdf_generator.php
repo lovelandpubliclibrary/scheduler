@@ -40,5 +40,5 @@ $dompdf->load_html($html);
 $dompdf->set_paper('legal', 'portrait');
 $dompdf->render();
 file_put_contents(__DIR__ . "/archives/$today.pdf", $dompdf->output());
-
+echo "success";
 ?>

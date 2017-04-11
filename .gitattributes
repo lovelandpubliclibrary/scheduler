@@ -3,3 +3,4 @@
 sess_tmp/* export-ignore
 *.sublime-project export-ignore
 *.sublime-workspace export-ignore
+scheduler/archives/* export-ignore
