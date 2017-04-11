@@ -14,7 +14,7 @@ $page_title = "$day $month $year";
 include (__DIR__ . '/display_functions.php');
 
 $divisions = array();
-require_once ('../mysql_connect.php'); //Connect to the db.
+require_once (__DIR__ . '/../mysql_connect.php'); //Connect to the db.
 $query = "SELECT * from divisions ORDER BY div_name";
 $result = mysqli_query($dbc, $query);
 while ($row = mysqli_fetch_assoc($result)) {
