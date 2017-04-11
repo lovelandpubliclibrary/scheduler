@@ -39,7 +39,13 @@ $dompdf->set_base_path('/');
 $dompdf->load_html($html);
 $dompdf->set_paper('legal', 'portrait');
 $dompdf->render();
-file_put_contents(__DIR__ . "/archives/$today.pdf", $dompdf->output());
-echo "success";
-echo "<br>Script was run from the following location: " . __DIR__;
+if (file_put_contents(__DIR__ . "/archives/$today.pdf", $dompdf->output())) {
+	echo "success";
+	echo "<br>Script was run from the following location: " . __DIR__;
+	echo "<br>The contents of the archives/ directory after script is:<br>";
+	$dir_contents = scandir(__DIR__ . '/archives/', SCANDIR_SORT_DESCENDING);
+	echo "<tt><pre>";
+	print_r($dir_contents);
+	echo "</pre></tt>";
+}
 ?>
