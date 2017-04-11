@@ -1,5 +1,5 @@
 Scheduler\ Passwords.png
-/sess_tmp/*
+sess_tmp/*
 .DS_Store
 *.sublime-*
 scheduler/archives/*
