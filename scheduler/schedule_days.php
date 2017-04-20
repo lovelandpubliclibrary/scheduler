@@ -1,9 +1,11 @@
 <?php # Schedule_days.php
 
 $page_title="Add/Edit Schedule";
+
 include('./includes/supersessionstart.php');
 $came_from = $_SESSION['came_from'];
 include('./includes/allsessionvariables.php');
+
 if ((!isset($_POST['schedstart_datepick']))&&(!isset($_POST['specific_schedule']))){
 	header ('Location: add_schedule');
 	}
@@ -39,10 +41,10 @@ while ($row = mysqli_fetch_assoc($employee_result)) {
 	
 if(isset($_POST['init'])){
 	$division = $_POST['division'];
-	list($ss_mon, $ss_day, $ss_yr) = explode('/',$_POST['schedstart_datepick']);
-	$schedstart = "$ss_yr-$ss_mon-$ss_day";
-	list($se_mon, $se_day, $se_yr) = explode('/',$_POST['schedend_datepick']);
-	$schedend = "$se_yr-$se_mon-$se_day";
+	list($shift_start_mon, $shift_start_day, $shift_start_yr) = explode('/',$_POST['schedstart_datepick']);
+	$schedstart = "$shift_start_yr-$shift_start_mon-$shift_start_day";
+	list($shift_end_mon, $shift_end_day, $shift_end_yr) = explode('/',$_POST['schedend_datepick']);
+	$schedend = "$shift_end_yr-$shift_end_mon-$shift_end_day";
 	
 	//Check for previous schedule overlaps
 	$query = "SELECT * from schedules WHERE division='$division' and (schedule_start_date >= '$schedstart') 
@@ -173,8 +175,8 @@ foreach ($employees as $key=>$employeearray){
 		while ($row = mysqli_fetch_assoc($result)) {
 			$wt = $row['week_type'];
 			$d = $row['shift_day'];
-			$ss = explode(":",$row['shift_start']);
-			$se = explode(":",$row['shift_end']);
+			$shift_start = explode(":",$row['shift_start']);
+			$shift_end = explode(":",$row['shift_end']);
 			$ds = explode(":",$row['desk_start']);
 			$de = explode(":",$row['desk_end']);
 			$ds2 = explode(":",$row['desk_start2']);
@@ -182,19 +184,19 @@ foreach ($employees as $key=>$employeearray){
 			$ls = explode(":",$row['lunch_start']);
 			$le = explode(":",$row['lunch_end']);
 			
-			$ss_hr = (integer)$ss[0];
-				if ($ss_hr > 12){
-					$ss_hr = $ss_hr-12;
+			$shift_start_hour = (integer)$shift_start[0];
+				if ($shift_start_hour > 12){
+					$shift_start_hour = $shift_start_hour-12;
 					}
-			$ss_mn = $ss[1];
-			$prev_schedules[$emp_id][$wt][$d]['shift_start'] = array('hours'=>$ss_hr, 'minutes'=>$ss_mn);
+			$shift_start_minute = $shift_start[1];
+			$prev_schedules[$emp_id][$wt][$d]['shift_start'] = array('hours'=>$shift_start_hour, 'minutes'=>$shift_start_minute);
 			
-			$se_hr = (integer)$se[0];
-				if ($se_hr > 12){
-					$se_hr = $se_hr-12;
+			$shift_end_hour = (integer)$shift_end[0];
+				if ($shift_end_hour > 12){
+					$shift_end_hour = $shift_end_hour-12;
 					}
-			$se_mn = $se[1];
-			$prev_schedules[$emp_id][$wt][$d]['shift_end'] = array('hours'=>$se_hr, 'minutes'=>$se_mn);
+			$shift_end_minute = $shift_end[1];
+			$prev_schedules[$emp_id][$wt][$d]['shift_end'] = array('hours'=>$shift_end_hour, 'minutes'=>$shift_end_minute);
 			
 			$ds_hr = (integer)$ds[0];
 				if ($ds_hr > 12){
@@ -272,36 +274,39 @@ if ($result){
 if(isset($_POST['day_submit'])){
 	$schedule_array = $_POST['schedule'];
 	$def_array = $_POST['def'];
-	
 	$emp_id_str = implode(",",$emp_id_arr);
 	$deleteold_query = "DELETE from shifts WHERE emp_id not in ($emp_id_str) and specific_schedule='$specific_schedule'";
 	$deleteold_result = mysqli_query($dbc, $deleteold_query) or die(mysqli_error());
 	
-	foreach ($schedule_array as $emp_id=>$weekarray){
-		foreach ($weekarray as $week_type=>$dayarray){
-			foreach ($dayarray as $day=>$sched){
-				$ss_hr = $sched['shift_start']['hours'];
-					if (!empty($ss_hr) && ($ss_hr < 7)) {$ss_hr = $ss_hr+12;}
-					if (empty($ss_hr)){$ss_hr = "00";}
-				$ss_mn = $sched['shift_start']['minutes'];
-					if (empty($ss_mn)){$ss_mn = "00";}
-				$ss = "$ss_hr:$ss_mn:00";
-				if (!empty($ss_hr)){
-					$schedule_array[$emp_id][$week_type][$day]['shift_start']['minutes'] = $ss_mn;
+	foreach ($schedule_array as $emp_id=>$weekarray){  // for each employee
+		foreach ($weekarray as $week_type=>$dayarray){		// for each week
+			foreach ($dayarray as $day=>$sched){		// for each day
+
+				// process shift start for that day
+				$shift_start_hour = $sched['shift_start']['hours'];
+					if (!empty($shift_start_hour) && ($shift_start_hour < 7)) {$shift_start_hour = $shift_start_hour+12;}
+					if (empty($shift_start_hour)){$shift_start_hour = "00";}
+				$shift_start_minute = $sched['shift_start']['minutes'];
+					if (empty($shift_start_minute)){$shift_start_minute = "00";}
+				$shift_start = "$shift_start_hour:$shift_start_minute:00";		// format the shift start to be db-friendly
+				if (!empty($shift_start_hour)){
+					$schedule_array[$emp_id][$week_type][$day]['shift_start']['minutes'] = $shift_start_minute;
 					}
 				
-				$se_hr = $sched['shift_end']['hours'];
-					if (!empty($se_hr) && ($se_hr <= $ss_hr)) {$se_hr = $se_hr+12;}
-					elseif (!empty($se_hr) && ($se_hr >= $ss_hr) && ($se_hr < 9)) {$se_hr = $se_hr+12;}
-					if (empty($se_hr)){$se_hr = "00";}
-				$se_mn = $sched['shift_end']['minutes'];
-					if (empty($se_mn)){$se_mn = "00";}
-				$se = "$se_hr:$se_mn:00";
-				if (!empty($se_hr)){
-					$schedule_array[$emp_id][$week_type][$day]['shift_end']['minutes'] = $se_mn;
+				// process shift end for that day
+				$shift_end_hour = $sched['shift_end']['hours'];
+					if (!empty($shift_end_hour) && ($shift_end_hour <= $shift_start_hour)) {$shift_end_hour = $shift_end_hour+12;}
+					elseif (!empty($shift_end_hour) && ($shift_end_hour >= $shift_start_hour) && ($shift_end_hour < 9)) {$shift_end_hour = $shift_end_hour+12;}
+					if (empty($shift_end_hour)){$shift_end_hour = "00";}
+				$shift_end_minute = $sched['shift_end']['minutes'];
+					if (empty($shift_end_minute)){$shift_end_minute = "00";}
+				$shift_end = "$shift_end_hour:$shift_end_minute:00";
+				if (!empty($shift_end_hour)){
+					$schedule_array[$emp_id][$week_type][$day]['shift_end']['minutes'] = $shift_end_minute;
 					}
 				
-				if (($ss_hr=='00')&&($se_hr=='00')){
+				// unset desk shifts if the employee isn't scheduled for the day
+				if (($shift_start_hour=='00')&&($shift_end_hour=='00')){
 					$ds = "00:00:00";
 					$de = "00:00:00";
 					$ds2 = "00:00:00";
@@ -322,7 +327,7 @@ if(isset($_POST['day_submit'])){
 					$schedule_array[$emp_id][$week_type][$day]['lunch_end']['hours'] = '';
 					$schedule_array[$emp_id][$week_type][$day]['lunch_end']['minutes'] = '';
 					}
-				else{
+				else{	// the employee is scheduled for the day, process any desk shifts entered
 					$ds_hr = $sched['desk_start']['hours'];
 						if (!empty($ds_hr) && ($ds_hr < 8)) {$ds_hr = $ds_hr+12;}
 						if (empty($ds_hr)){$ds_hr = "00";}
@@ -385,7 +390,7 @@ if(isset($_POST['day_submit'])){
 					}
 			
 				if(array_key_exists($day, $prev_schedules[$emp_id][$week_type])){
-					$update_query = "UPDATE shifts SET shift_start='$ss', shift_end='$se', desk_start='$ds', desk_end='$de', 
+					$update_query = "UPDATE shifts SET shift_start='$shift_start', shift_end='$shift_end', desk_start='$ds', desk_end='$de', 
 						desk_start2='$ds2', desk_end2='$de2',lunch_start='$ls', lunch_end='$le'
 						WHERE week_type='$week_type' and shift_day='$day' and specific_schedule='$specific_schedule' and emp_id='$emp_id'";
 					$update_result = mysqli_query($dbc, $update_query) or die(mysqli_error());
@@ -393,7 +398,7 @@ if(isset($_POST['day_submit'])){
 				else{
 					$insert_query = "INSERT into shifts (week_type, shift_day, emp_id, shift_start, shift_end, desk_start, desk_end, 
 						desk_start2, desk_end2, lunch_start, lunch_end, specific_schedule) 
-						values ('$week_type','$day','$emp_id','$ss', '$se', '$ds', '$de', '$ds2', '$de2', '$ls', '$le', '$specific_schedule')";
+						values ('$week_type','$day','$emp_id','$shift_start', '$shift_end', '$ds', '$de', '$ds2', '$de2', '$ls', '$le', '$specific_schedule')";
 					$insert_result = mysqli_query($dbc, $insert_query) or die(mysqli_error());
 					}
 					
@@ -546,6 +551,7 @@ if(isset($_POST['day_submit'])){
 function schedule_form($day, $week_type, $employees, $prev_schedules, $prev_def){
 	$dow = date('l', strtotime($day));
 	$schedule_form = '';
+
 	foreach ($employees as $key=>$employeearray){
 		$empid = $employeearray['emp_id'];
 		if (isset($prev_schedules[$empid][$week_type][$day])){
@@ -920,13 +926,13 @@ foreach ($week_types as $k2=>$v2){
 			<table>';
 		schedule_form($v, $v2, $employees, $prev_schedules, $prev_def);
 		echo '<tr><td>';
-		echo '<input type="hidden" name="day_submit" value="TRUE" />
-			<input type="hidden" name="division" value="'.$division.'" />
-			<input type="hidden" name="specific_schedule" value="'.$specific_schedule.'"/>
-			<input type="hidden" name="schedstart" value="'.$schedstart.'"/>
-			<input type="hidden" name="schedend" value="'.$schedend.'"/>
-			<input type="hidden" name="week_type" value=""/>
-			<input type="hidden" name="day" value=""/>
+		echo '<div><label>day_submit: </label><input type="text" name="day_submit" value="TRUE" /></div>
+			<div><label>division: </label><input type="text" name="division" value="'.$division.'" /></div>
+			<div><label>specific_schedule: </label><input type="text" name="specific_schedule" value="'.$specific_schedule.'"/></div>
+			<div><label>schedstart: </label><input type="text" name="schedstart" value="'.$schedstart.'"/></div>
+			<div><label>schedend: </label><input type="text" name="schedend" value="'.$schedend.'"/></div>
+			<div><label>week_type: </label><input type="text" name="week_type" value=""/></div>
+			<div><label>day: </label><input type="text" name="day" value=""/></div>
 			<p><input type="submit" name="submit" value="Save Schedule"/></p></td></tr>';
 		echo '</table></div>';
 		}
