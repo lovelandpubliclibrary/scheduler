@@ -926,13 +926,13 @@ foreach ($week_types as $k2=>$v2){
 			<table>';
 		schedule_form($v, $v2, $employees, $prev_schedules, $prev_def);
 		echo '<tr><td>';
-		echo '<div><label>day_submit: </label><input type="text" name="day_submit" value="TRUE" /></div>
-			<div><label>division: </label><input type="text" name="division" value="'.$division.'" /></div>
-			<div><label>specific_schedule: </label><input type="text" name="specific_schedule" value="'.$specific_schedule.'"/></div>
-			<div><label>schedstart: </label><input type="text" name="schedstart" value="'.$schedstart.'"/></div>
-			<div><label>schedend: </label><input type="text" name="schedend" value="'.$schedend.'"/></div>
-			<div><label>week_type: </label><input type="text" name="week_type" value=""/></div>
-			<div><label>day: </label><input type="text" name="day" value=""/></div>
+		echo '<input type="hidden" name="day_submit" value="TRUE" />
+			<input type="hidden" name="division" value="'.$division.'" />
+			<input type="hidden" name="specific_schedule" value="'.$specific_schedule.'"/>
+			<input type="hidden" name="schedstart" value="'.$schedstart.'"/>
+			<input type="hidden" name="schedend" value="'.$schedend.'"/>
+			<input type="hidden" name="week_type" value=""/>
+			<input type="hidden" name="day" value=""/>
 			<p><input type="submit" name="submit" value="Save Schedule"/></p></td></tr>';
 		echo '</table></div>';
 		}
