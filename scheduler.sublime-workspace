@@ -256,12 +256,22 @@
 	"buffers":
 	[
 		{
-			"file": "scheduler/schedule_days.php",
+			"contents": "Searching 411 files for \"<table class=\"contacts\"\" (regex)\n\n/Users/kevin/Sites/lpl-repository.com/scheduler/includes/contacts.html:\n    1: <table class=\"contacts\" cellspacing=\"0\">\n    2  \t<tr>\n    3  \t\t<th>Supervisor</th>\n    .\n   37  \t</tr>\n   38  </table>\n   39: <table class=\"contacts\" cellspacing=\"0\">\n   40  \t<tr>\n   41  \t\t<th>Facilities</th>\n\n2 matches in 1 file\n",
 			"settings":
 			{
-				"buffer_size": 39269,
+				"buffer_size": 368,
+				"line_ending": "Unix",
+				"name": "Find Results",
+				"scratch": true
+			}
+		},
+		{
+			"file": "scheduler/includes/contacts.html",
+			"settings":
+			{
+				"buffer_size": 987,
 				"encoding": "UTF-8",
-				"line_ending": "Windows"
+				"line_ending": "Unix"
 			}
 		}
 	],
@@ -338,10 +348,13 @@
 	},
 	"expanded_folders":
 	[
-		"/Users/kevin/Sites/lpl-repository.com"
+		"/Users/kevin/Sites/lpl-repository.com",
+		"/Users/kevin/Sites/lpl-repository.com/scheduler"
 	],
 	"file_history":
 	[
+		"/Users/kevin/Sites/lpl-repository.com/scheduler/schedule_days.php",
+		"/Users/kevin/Sites/lpl-repository.com/.gitignore",
 		"/Users/kevin/Sites/lpl-repository.com/scheduler/includes/supersessionstart.php",
 		"/Users/kevin/Sites/lpl-repository.com/scheduler/add_employee.php",
 		"/Users/kevin/Sites/lpl-repository.com/scheduler/pdf_generator.php",
@@ -352,9 +365,7 @@
 		"/Users/kevin/Sites/lpl-repository.com/scheduler/load_dates.php",
 		"/Users/kevin/Sites/lpl-repository.com/scheduler/pdf_generator_live.php",
 		"/Users/kevin/Sites/lpl-repository.com/scheduler/add_payperiods.php",
-		"/Users/kevin/Sites/lpl-repository.com/scheduler/schedule_days.php",
 		"/Users/kevin/Sites/lpl-repository.com/scheduler/future/2017-04-13.pdf",
-		"/Users/kevin/Sites/lpl-repository.com/.gitignore",
 		"/Users/kevin/Sites/lpl-repository.com/scheduler/future_sched_generator.php",
 		"/Users/kevin/Sites/lpl-repository.com/scheduler/dompdf/include/block_frame_reflower.cls.php",
 		"/Users/kevin/Sites/lpl-repository.com/scheduler/includes/header.html",
@@ -480,6 +491,7 @@
 		"height": 93.0,
 		"where_history":
 		[
+			"",
 			"/Users/kevin/Sites/lpl-repository.com/scheduler/schedule_days.php",
 			"/Users/kevin/Sites/lpl-repository.com/",
 			"/Users/kevin/Sites/lpl-repository.com/scheduler/",
@@ -497,6 +509,7 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"<table class=\"contacts\"",
 			"var_dump",
 			"\\$prev_schedules",
 			"\\$desk_start",
@@ -608,34 +621,84 @@
 	"groups":
 	[
 		{
-			"selected": 0,
+			"selected": 1,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "scheduler/schedule_days.php",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 39269,
+						"buffer_size": 368,
+						"regions":
+						{
+							"match":
+							{
+								"flags": 112,
+								"regions":
+								[
+									[
+										138,
+										161
+									],
+									[
+										264,
+										287
+									]
+								],
+								"scope": ""
+							}
+						},
+						"selection":
+						[
+							[
+								146,
+								146
+							]
+						],
+						"settings":
+						{
+							"detect_indentation": false,
+							"line_numbers": false,
+							"output_tag": 1,
+							"result_base_dir": "",
+							"result_file_regex": "^([^ \t].*):$",
+							"result_line_regex": "^ +([0-9]+):",
+							"scroll_past_end": true,
+							"syntax": "Packages/Default/Find Results.hidden-tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "scheduler/includes/contacts.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 987,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								39043,
-								39043
+								421,
+								421
 							]
 						],
 						"settings":
 						{
-							"git_gutter_enabled": true,
-							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"git_gutter_is_enabled": true,
+							"syntax": "Packages/HTML/HTML.sublime-syntax",
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 13677.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
