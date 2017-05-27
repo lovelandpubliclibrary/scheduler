@@ -1,7 +1,7 @@
 Scheduler\ Passwords.png
 .DS_Store
-*.sublime-workspace
-*.sublime-project
+scheduler.sublime-workspace
+scheduler.sublime-project
 scheduler/archives/*
 scheduler/dompdf/lib/fonts/*
 
