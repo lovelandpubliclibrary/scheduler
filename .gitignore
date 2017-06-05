@@ -4,6 +4,9 @@ scheduler.sublime-workspace
 scheduler.sublime-project
 scheduler/archives/*
 scheduler/dompdf/lib/fonts/*
+db/*
+*.Dockerfile
+docker\ command\ reference
 
 # sess_tmp/ is not included on this list because it needs it's own .gitignore file
-# http://stackoverflow.com/questions/115983/how-can-i-add-an-empty-directory-to-a-git-repository
+# see http://stackoverflow.com/questions/115983/how-can-i-add-an-empty-directory-to-a-git-repository

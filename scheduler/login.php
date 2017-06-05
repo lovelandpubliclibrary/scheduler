@@ -38,7 +38,7 @@ else {
 			$query = "SELECT login_id, username, role, emp_id, assignment_id 
 				FROM logins WHERE username ='$user' AND password=SHA('$p')";
 			$result = @mysqli_query($dbc, $query);
-			$row = mysqli_fetch_array($result, MYSQL_NUM);
+			$row = mysqli_fetch_array($result, MYSQLI_NUM);
 			
 			if ($row){
 				$_SESSION['role'] = $row[2];
