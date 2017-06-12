@@ -105,7 +105,7 @@ if(isset($_POST['init'])){
 	$max = 0;
 	$query = "SELECT MAX(specific_schedule) FROM schedules";
 	$result = mysqli_query($dbc, $query);
-	while ($row = mysqli_fetch_array ($result, MYSQL_NUM)) {
+	while ($row = mysqli_fetch_array ($result, MYSQLI_NUM)) {
 		$max = $row[0];
 		}
 	$max += 1;
@@ -121,7 +121,7 @@ if(isset($_POST['separate'])){
 	$max = 0;
 	$query = "SELECT MAX(specific_schedule) FROM schedules";
 	$result = mysqli_query($dbc, $query);
-	while ($row = mysqli_fetch_array ($result, MYSQL_NUM)) {
+	while ($row = mysqli_fetch_array ($result, MYSQLI_NUM)) {
 		$max = $row[0];
 		}
 	$max += 1;

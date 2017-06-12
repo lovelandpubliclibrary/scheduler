@@ -22,7 +22,7 @@ function mysql_table_exists($tablename) {
 	$query = "SHOW TABLES FROM DB_NAME LIKE '$tablename'";
 	$result = mysqli_query($dbc, $query);
 	if ($result){
-		while ($row = mysqli_fetch_array($result, MYSQL_NUM)) {
+		while ($row = mysqli_fetch_array($result, MYSQLI_NUM)) {
 			$tables = $row[0];
 		}
 	} else {
