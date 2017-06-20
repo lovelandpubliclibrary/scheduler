@@ -40,7 +40,7 @@ echo "<div class=\"submenuhead\"><h5>Supervisors</h5></div>\n";
 	<div class="ui-corner-flat">
 	<a href="/scheduler/add_employee">Add Employee</a><br/>
 	<a href="/scheduler/view_employees">View & Edit Employees</a><br/>
-	<a href="/scheduler/replace_employee">Replace Employee</a>
+	<!--<a href="/scheduler/replace_employee">Replace Employee</a>-->
 	</div>
 	<h3 class="ui-corner-flat">PIC</h3>
 	<div class="ui-corner-flat">
