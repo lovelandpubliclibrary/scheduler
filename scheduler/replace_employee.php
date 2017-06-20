@@ -272,7 +272,7 @@ if (isset($_POST['submitted'])) {
 					$query5 = "SELECT specific_schedule from schedules WHERE schedule_end_date>'$today'";
 					$result5 = mysqli_query($dbc, $query5);
 					
-					while ($row5 = mysqli_fetch_assoc($result5, MYSQL_ASSOC)){
+					while ($row5 = mysqli_fetch_assoc($result5)){
 						$specific_schedule = $row5['specific_schedule'];
 						$query6 = "INSERT into shifts (week_type, shift_day, emp_id, shift_start, shift_end, 
 							desk_start, desk_end, desk_start2, desk_end2, lunch_start, lunch_end, specific_schedule, schedule_create) 
