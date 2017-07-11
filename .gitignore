@@ -5,6 +5,7 @@ scheduler.sublime-project
 scheduler/archives/*
 scheduler/dompdf/lib/fonts/*
 db/*
+database/*
 *.Dockerfile
 docker\ command\ reference
 

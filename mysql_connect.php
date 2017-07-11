@@ -8,7 +8,8 @@
 // Development credentials will need to be updated for testing/production
 DEFINE ('DB_USER', 'lpl_scheduler');
 DEFINE ('DB_PASSWORD', 'hqJfb4XOQdWhITWR');
-DEFINE ('DB_HOST', 'localhost');
+DEFINE ('DB_HOST', 'mysql-scheduler');
+>>>>>>> ceacaa55f9e3600503cda4ed55e8d0c13de7d2be
 DEFINE ('DB_NAME', 'dev_scheduler');
 
 //Make the connection
