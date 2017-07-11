@@ -830,7 +830,7 @@ function daily_schedule($now, $divisions) {
 									}
 								}
 
-							if (($divrow != 'Admin') && ($divrow != 'Tech Services') && ($divrow != 'Pages')){
+							if (($divrow != 'Admin') && ($divrow != 'Tech Services') && ($divrow != 'Material Handlers')){
 								if ($divrow == 'Customer Service'){
 									if (in_array(1,$alert_custserv)){
 										echo '<tr class="emps"><td class="first_name"><b>NEEDED</b></td>';
@@ -1202,19 +1202,23 @@ function division_daily($division, $now) {
 		}
 
 
-	//Standardize division names for DB
-	if ($division =='customerservice'){
-		$division = 'Customer Service';
-		}
-	if ($division == 'techservices'){
-		$division = 'Tech Services';
-		}
-	if ($division == 'lti'){
-		$ucdivision = 'Library Tech & Innovation';
-		}
-	else {
-		$ucdivision = ucwords($division);
-		}
+		//Standardize division names for DB
+		switch ($division) {
+			case 'customerservice':
+				$division = 'Customer Service';
+				break;
+			case 'techservices':
+				$division = 'Tech Services';
+				break;
+			case 'materialhandlers':
+				$division = 'Material Handlers';
+				break;
+			case 'lti':
+				$ucdivision = 'Library Technology & Innovation';
+				break;
+			default:
+				$ucdivision = ucwords($division);
+	}
 
 	echo '<div class="division_specific">'."\n".'<div class="divspec_head">'."\n".
 		'<input class="prev" type="button" onclick="loadprevDiv()" value="Previous" />'."\n".
@@ -1940,7 +1944,7 @@ function division_daily($division, $now) {
 								}
 							}
 						}
-					if (($divrow != 'Admin') && ($divrow != 'Tech Services')&&($divrow != 'Pages')){
+					if (($divrow != 'Admin') && ($divrow != 'Tech Services')&&($divrow != 'Material Handlers')){
 						if ($divrow == 'Customer Service'){
 							if (in_array("1",$alert_custserv)){
 								echo '<tr class="emps"><td class="first_name"><b>NEEDED</b></td>';
@@ -2908,7 +2912,7 @@ function division_weekly($division, $now) {
 	else {
 		$season = 'fall';
 		}
-	//Get division names.
+	//Get division names.	
 	$div_query = "SELECT div_name from divisions WHERE div_link = '$division'";
 	$div_result = mysqli_query($dbc, $div_query);
 	while ($div_row = mysqli_fetch_assoc($div_result)){
@@ -2917,7 +2921,7 @@ function division_weekly($division, $now) {
 	$query = "SELECT first_name, last_name, name_dup, emp_id, division FROM employees, divisions
 		WHERE div_link = '$division' and division like concat('%',div_name,'%') and active = 'Active'
 		and (employee_lastday >= '$today' or employee_lastday is null) ORDER BY exempt_status asc, weekly_hours desc, first_name asc";
-	$result = mysqli_query($dbc, $query);
+		$result = mysqli_query($dbc, $query);
 	if ($result){
 		$num_rows = mysqli_num_rows($result);
 		if ($num_rows != 0){
@@ -3329,13 +3333,13 @@ function division_weekly($division, $now) {
 							if (!empty($desk_display)){
 								echo '<br/><span class="desk">'.$desk_display.'</span>';
 								}
-							elseif ($division != 'pages'){
+							elseif ($division != 'materialhandlers'){
 								echo '<br/>';
 								}
 							if (!empty($ls12)){
 								echo '<br/><span class="lunch">'.$ls12.'-'.$le12.'</span>';
 								}
-							elseif ($division != 'pages'){
+							elseif ($division != 'materialhandlers'){
 								echo '<br/>&nbsp;';
 								}
 
